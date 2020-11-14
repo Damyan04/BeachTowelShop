@@ -20,7 +20,7 @@ namespace BeachTowelShop.Data.Models
         public UserSession UserSession { get; set; }
         public string ProductId { get; set; }
         public double Sum { get; set; }
-        public List<OriginalPictureName> OriginalPictureNames { get; set; }
+       // public List<OriginalPictureName> OriginalPictureNames { get; set; }
         public List<TextProperty> TextProperties { get; set; } = new List<TextProperty>();
         public string OrderId { get; set; }
         public Order Order { get; set; }

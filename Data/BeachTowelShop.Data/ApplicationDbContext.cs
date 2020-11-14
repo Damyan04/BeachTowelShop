@@ -29,7 +29,7 @@ namespace BeachTowelShop.Data
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<TextProperty> TextProperties { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
-        public DbSet<OriginalPictureName> OriginalPictureNames { get; set; }
+      // public DbSet<OriginalPictureName> OriginalPictureNames { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Server=.;Database=BeachTowelShop;Integrated Security=true;");
 
