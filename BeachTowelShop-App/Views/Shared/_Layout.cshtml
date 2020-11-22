@@ -3,46 +3,86 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BeachTowelShop_App</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/all.css">
+
+    <link rel="stylesheet" type="text/css" href="~/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="~/slick/slick-theme.css" />
+    <link type="text/css" rel="stylesheet" href="~/css/jquery.miniColors.css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700i,700&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dfc892c602.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BeachTowelShop_App</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
     </div>
+    <header>
+        <partial name="~/Views/Shared/_LoginPartial.cshtml" view-data="ViewData" />
+    </header>
+    @RenderBody()
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - BeachTowelShop_App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div id="footer-lists">
+            <ul class="about-site">
+                <li>BeachTowelShop.com</li>
+                <li><a href="">Home</a></li>
+                <li><a href="">Prices</a></li>
+                <li><a href="">Gallery</a> </li>
+                <li><a href="">How is done?</a></li>
+                <li><a href="">Questions</a> </li>
+                <li><a href="">About us</a> </li>
+                <li><a href="">Tearms and Conditions</a></li>
+            </ul>
+            <ul class="follow-us">
+                <li>Follow us</li>
+                <i></i>
+                <i></i>
+            </ul>
+            <ul class="discounts">
+                <li>Discounts</li>
+                <li><p>Sign up for our email </p><p>we mail only discounts - no spam</p></li>
+                <form>
+                    <input type="text" name="firstname" placeholder="Enter email">
+                    <button>
+                        I want a discount
+                    </button>
+                </form>
+            </ul>
+            <ul class="contacts">
+                <li>Contacts</li>
+                <li><i class="fas fa-phone-alt"></i>1234567 </li>
+                <li><i class="fas fa-envelope "></i>info &#x40 BeachTowelShop.com </li>
+                <li> <i class="far fa-clock "></i>Work time 10:00-17:00 </li>
+            </ul>
         </div>
+        <div class="footer-end">
+            <div class="content">
+               
+                <p> 2014 - 2019 All rights reserved - BeachTowelShop.com</p>
+            </div>
+        </div>
+
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <a href="#" class="scrollup" id="myBtn" style="display:none"><i class="fas fa-caret-square-up fa-3x"></i></a>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery.miniColors.min.js"></script>
+
+    <script src="~/js/site.js"></script>
+    <script src="~/js/ajaxScripts.js"></script>
+    <script src="~/js/scripts.js"></script>
+    <script type="text/javascript" src="~/slick/slick.min.js"></script>
+
+    <script type="text/javascript" src="~/js/cart.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.2/fabric.min.js"></script>
+    <script type="text/javascript" src="~/js/editor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     @RenderSection("Scripts", required: false)
+
+
+
+
+
 </body>
 </html>

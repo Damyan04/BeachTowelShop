@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using BeachTowelShop.Data.Models
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+<nav>
+    <a id="title" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/logo.png" alt=""></a>
+
+
+
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("admins"))
+    {
+        <ul>
+            <li class="nav-item">
+                <a asp-action="SizeAndPrice" asp-controller="Admin" asp-area="Admin">Size and Price</a>
+            </li>
+            <li class="nav-item">
+                <a asp-action="UploadItem" asp-controller="Admin" asp-area="Admin">Items</a>
+            </li>
+            <li class="nav-item">
+                <a asp-action="Orders" asp-controller="Admin" asp-area="Admin">Orders</a>
+            </li>
+
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+            </li>
+        </ul>
+
+
+    }
+    else if (SignInManager.IsSignedIn(User) && User.IsInRole("users"))
+    {
+        <ul>
+            <li><a asp-controller="Products" asp-action="Index">Towels</a></li>
+            <li><a href="/../#section-new">Price</a></li>
+            <li><a href="/../#how-is-done">How is done?</a></li>
+            <li><a href="/../#about-us">About us</a></li>
+            <li><a href="/../#questions">Questions</a></li>
+            <li><a asp-controller="Order" asp-action="Page" asp-route-id="1">Make IT!</a></li>
+        </ul>
+        <ul>
+            <li><a asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart fa-lg"></i></a></li>
+            <li><a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a></li>
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+
+
+        </ul>
+       
+
+
+
+    }
+    else
+    {
+<ul>
+    <li><a asp-controller="Products" asp-action="Index">Towels</a></li>
+    <li><a href="/../#section-new">Price</a></li>
+    <li><a href="/../#how-is-done">How is done?</a></li>
+    <li><a href="/../#about-us">About us</a></li>
+    <li><a href="/../#questions">Questions</a></li>
+    <li><a asp-controller="Order" asp-action="Page" asp-route-id="1">Make IT!</a></li>
+</ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart fa-lg"></i></a></li>
+            <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+            <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+
+        </ul>
+
+
+    }
+
+
+
+</nav>
+
