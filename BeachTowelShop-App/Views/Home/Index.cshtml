@@ -1,8 +1,354 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model BeachTowelShop.Models.HomePage.HomePageViewModel
+@{
+    ViewData["Title"] = "BeachTowelShop.com";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container" id="top-page">
+    <div id="top">
+
+        <h1>Правим страхотни персонализирани хавлии.</h1>
+        <div class="line">
+            <p>с гаджето, с детето, с колата, мотора, домашния любимец,</p>
+            <p>красив пейзаж, фирмено лого или какъвто и да е дизайн.</p>
+        </div>
+        <p>Доставяме щастие и уникални подаръци.</p>
+        <p>Цени от 10 лв. и пет размера.</p>
+        <div class="button">
+            <a asp-controller="Order" asp-action="Page" asp-route-id="1">Виж за какво става въпрос</a>
+        </div>
+    </div>
+
+    @*<div id="gallery">
+            <div class="item">
+                <div class="item-img">
+                    <div class="picture">
+                        <img src="~/pictures/designes/port5.jpg" alt="" class="gallery__img">
+                    </div>
+                    <div class="middle">
+                        <h2>Dreams</h2>
+                        <a class="info" asp-controller="Products" asp-action="Item">link here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+
+                <div class="picture">
+                    <img src="~/pictures/designes/port5.jpg" alt="" class="gallery__img">
+                </div>
+                <div class="middle">
+                    <h2>Dreams</h2>
+                    <a class="info" asp-controller="Products" asp-action="Item">link here</a>
+                </div>
+
+            </div>
+            <div class="item">
+
+                <div class="picture">
+                    <img src="~/pictures/designes/port5.jpg" alt="" class="gallery__img">
+                </div>
+                <div class="middle">
+                    <h2>Dreams</h2>
+                    <a class="info" asp-controller="Products" asp-action="Item">link here</a>
+                </div>
+
+            </div>
+        </div>*@
+</div>
+<div class="container">
+    <div id="section">
+        <div class="img">
+            <img src="~/pictures/specs-havliiki.png" alt="">
+        </div>
+        <div class="text">
+            <p>Хавлиите са 70% памук, 30% микрофибър.</p>
+            <p>Перат се до 40 °C.</p>
+            <p>Имат добра попивателност и се ползват не само за изненада, но и по предназначение.</p>
+            <p>едната страна са винаги снежно бели, а от другата щамповаме чрез сублимация. Чрез тази технология мастилото се вмъква директно във влакната на материята. Така щампата стои като част от продукта. Боята е свързана директно с материята. Това я прави устойчива на пране спрямо останалите стандарти за печат. Използваните мастила са екологични на водна основа и безвредни.</p>
+        </div>
+    </div>
+    <div id="how-is-done">
+
+        <h1>Как става?</h1>
+        <div class="row-left">
+            <div class="text">
+                <h2>1. Поръчка</h2>
+                <p>Подбираш си една или няколко страхотни снимки и правиш поръчка през сайта ни. Така качеството на файла се запазва. Поръчки през имейл и фейсбук намалят качеството на снимката => качеството и на готовата хавлийка. Приемаме поръчки само през сайта.</p>
+            </div>
+            <div class="img-div">
+                <img src="~/pictures/kak-1.png" alt="" class="img">
+            </div>
+        </div>
+        <div class="row-right">
+
+            <div class="img-div">
+                <img src="~/pictures/kak-2.png" alt="" class="img">
+            </div>
+            <div class="text">
+                <h2>2. Изработка</h2>
+
+                <p>Печатаме върху хубави и меки хавлийки. Щамповаме чрез сублимация. Чрез тази технология мастилото се вмъква директно във влакната на материята. Така щампата стои като част от продукта. Боята е свързана директно с материята. Това я прави устойчива на пране спрямо останалите стандарти за печат. Използваните мастила са екологични на водна основа и безвредни.</p>
+            </div>
+
+        </div>
+        <div class="row-left">
+            <div class="text">
+                <h2>3. Доставка</h2>
+                <p>Доставяме всеки петък или събота. Поръчка влиза в доставката, ако е направена до 13.00 часа в понеделника на същата седмица. Така например, ако днес е четвъртък (19.01.) и поръчаш сега –  ще получиш доставката следващата седмица в петък (27.01.). Ако желaeш бърза доставка – поръчай в дните преди понеделник. Доставяме безплатно до офис на Спиди.</p>
+            </div>
+
+            <div class="img-div">
+                <img src="~/pictures/kak-3.png" alt="" class="img">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div id="section-new">
+        <a href="">За цени на едро моля кликнете тук</a>
+    </div>
+    <div id="prices">
+
+        <h1>Цени</h1>
+
+        <p>В цената влиза 1 бр. хавлийка + печата.</p>
+        <div class="text">
+            <i class="fas fa-truck fa-flip-horizontal fa-xs"></i>
+            <p><span>Безплатна доставка</span> до офис на Спиди.</p>
+        </div>
+        <ul>
+            @foreach (var towel in Model.Towels)
+            {
+                <div class="inner">
+                    <img src="~/@towel.PicturePath" alt="">
+                    <li>
+                        <p>@towel.Price лв.</p>
+                        <a asp-controller="Order" asp-action="Page" asp-route-size="@towel.Size" asp-route-volume="2">Поръчай ></a>
+                    </li>
+                </div>
+            }
+
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div id="scroller">
+        <div class="title">
+            <i class="fas fa-chevron-left fa-2x"></i>
+            <h4>Доставяме усмивки</h4>
+            <i class="fas fa-chevron-right fa-2x"></i>
+        </div>
+        <div id="reviews">
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="review">
+                    <p>@comment.Description</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div id="about-us">
+        <h1>За нас</h1>
+        <div class="border"></div>
+        <h2>Хората зад хавлийките.</h2>
+        <p>BeachTowelShop не е хоби. Това е бизнес. Това е най-доброто място в интернет, от където можете да си купите уникални хавлии – с ваша снимка или дизайн. Защо сме най-добрите? Защото не сме мега корпорация или голяма фирма, ламтяща за огромни печалби. Ние сме малък бизнес, винаги коректни. Печелим пари като продаваме хавлийки. А клиентите? Клиентите ни получават уникално страхотни хавлийки. Толкова е просто. Ако сте любители на уникалните неща – добре сте доши на правилното място.</p>
+
+        <h3>Малко история</h3>
+        <p>Чрез проба-грешка през годините, намерихме най-добрия начин да използваме уменията си. В BeachTowelShop влагаме години опит в печат и изработка на хавлии в комбинация с разработка на уеб сайтове, за да ви предоставим най-добрата платформа в България за хавлии с ваши снимки.</p>
+
+
+        <h3>Запознай се с екипа</h3>
+        <p>Повечето компании са големи и безлични, без лица и бюрократични. Е, това не сме ние. Ние сме малка компания и ни е грижа. Пука ни за вас. Тук сме да помогнем да бъдете уникални, да се чувствате удовлетворени и щастливи.</p>
+
+
+        <h3>Това е всичко</h3>
+        <p>Вече ни познавате и сте готови за хавлийки. <a>Прикачете снимки и си купете уникални хавлийки.</a></p>
+
+        <p>Въпроси? Пишете ни на <a>info &#x40 BeachTowelShop.com</a> или се обади на 0896719887.</p>
+    </div>
+</div>
+<div class="container">
+    <div id="questions">
+
+        <h1>Въпроси и отговори</h1>
+        <div class="content">
+
+            <div class="text-content">
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Какво е BeachTowelShop?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>На BeachTowelShop.com можеш да поръчаш уникална и персонализирана хавлия. </p>
+                            <ul>
+                                <li>Постави:</li>
+                                <li>– любима снимка с човека до теб, децата, приятели или роднини</li>
+                                <li>– готина снимка, намерена в интернет</li>
+                                <li>– колаж от снимки, изработен от теб</li>
+                                <li>– всеки друг дизайн или лого, които искаш да видиш на своята хавлия</li>
+                            </ul>
+                            <ul>
+                                <li>Хавлийките могат да се ползват за:</li>
+                                <li>– плаж</li>
+                                <li>– всекидневна употребта</li>
+                                <li>– скъп спомен</li>
+                                <li>– прекрасен подарък</li>
+                                <li>– наметало с лого</li>
+                                <li>– или приятна изненада</li>
+                                <li>– или шега с близък :D…</li>
+                            </ul>
+                            <p>Налични са 5 размера, които покриват всички случаи.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Как да си прикача снимката?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+
+                            <p><a href="">Натисни тук</a>(линк). Важно е обаче снимката да е с добро качество. Колкото по-добро е качеството на снимката, толкова по-добра е хавлийката.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Какви размери има? Какво е качеството?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <ul>
+                                <li>Размери:</li>
+
+                                @foreach (var towel in Model.Towels)
+                                {
+                                    <li>@towel.Size см.</li>
+                                }
+
+                            </ul>
+                            <p>Хавлийките са висококачествени със състав: 70% памук и 30% микрофибър.</p>
+                            <p>Перат се до 40 градуса.</p>
+                            <p>Колкото по-качествена е снимката (файлът) – толкова по-качествен е и печатът.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Кога ще си получа хавлийката?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Когато получим поръчка се заемаме с предпечата и графичния дизайн. След това принтираме върху мека и приятна хавлийка. Само когато принтираме в перфектно качество сме готови. Този процес отнема около 5 работни дни. </p>
+                            <p>След това изпращаме с куриер на Спиди.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Мога ли да изпратя моя хавлия и да напечатате върху нея?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Не. Печатаме само върху наши хавлии.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Какво може да се печата върху хавлийките?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Абсолютно всичко! От снимки на кучето или семейството, до логота и всякакви драсканици.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Как и кога се плаща?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Плащаш с наложен платеж като получиш хавлиийката.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Има ли отстъпка за повече бройки?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Разбира се. Свържи се с нас.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Объркал съм адреса за доставка. Може ли да го сменя?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Свържи се с нас колкото може по-бързо и ще реагираме.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Каква ви е политиката за връщане?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Ако има нещо нередно с поръчката ти – върни ни я неизползвана в рамките на 14 дни от доставката. Ние ще ти върнем парите. Нужно е само да ни пишеш на <a href="">info &#x40 BeachTowelShop.com</a> с молба за рекламация.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="visible">
+                        <i class="fas fa-plus" onclick="accordeon()"></i>
+
+                        <p onclick="accordeon()">Кой стои зад BeachTowelShop.com?</p>
+                    </div>
+                    <div class="invisible">
+                        <div class="more-content">
+                            <p>Прочети всичко за нас на <a href="">тази страница</a> (линк)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="picture">
+                <img src="~/pictures/faq.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="viewport">
+    <h1>Доставяме щастие на хиляди българи.</h1>
+
+    <button>
+        <a asp-controller="Order" asp-action="Page" asp-route-id="1">Прикачи снимка</a>
+    </button>
 </div>
