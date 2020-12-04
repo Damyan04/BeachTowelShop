@@ -1,0 +1,37 @@
+﻿@model BeachTowelShop.Models.Products.OrderProductViewModel
+
+    <div class="text">
+        <h2>Add a picture</h2>
+        <p><span>Warning:</span> We can't make a good print from a poor quality photo. As is the picture, so is the finished towel. Printing is 1: 1. Select high quality photos. Most photos from Facebook are of low quality. We put inscriptions for free. We don't make collages (do it here)</p>
+        <form action="">
+            <label for="size">Size</label>
+            <select name="size" id="size">
+                @*<option value="">-- Избери размер --</option>*@
+                @foreach (var size in Model.SizeList)
+                {
+                    <option value="@size.Pixels" sizeName="@size.SizeName">@size.SizeName sm</option>
+
+                }
+            </select>
+            <label for="volume">Count</label>
+            <input type="number" name="volume" value="1" min="1" id="volume" autocomplete="off">
+            <div class="buttons">
+                <input id="stage-two" type="submit" value="Delivery details" class="button" asp-controller="Order" asp-action="Page" asp-route-id="2">
+                <h2>OR</h2>
+                <input type="submit" value="Create a new design" class="button" asp-controller="Order" asp-action="Page">
+            </div>
+        </form>
+      
+    </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery.miniColors.min.js"></script>
+
+    <script src="~/js/site.js"></script>
+    
+    <script src="https://kit.fontawesome.com/dfc892c602.js" crossorigin="anonymous"></script>
+    <script src="~/js/scripts.js"></script>
+    <script type="text/javascript" src="~/slick/slick.min.js"></script>
+
+}

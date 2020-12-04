@@ -1,0 +1,200 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model BeachTowelShop.Models.Orders.UserDetailsViewModel
+
+
+
+<form action="" id="secondStep">
+
+    <div class="column-div">
+        <h3>Delivery info</h3>
+        <div class="row-div">
+            <div class="column-div">
+                <span asp-validation-for="FullName" class="text-danger"></span>
+                <label asp-for="FullName" class="inp"><i class="fa fa-user"></i> Name</label>
+                <input asp-for="FullName" type="text" id="fname" placeholder="John Perterson">
+
+                <label asp-for="Email"><i class="fa fa-envelope"></i>Email</label>
+                <input type="text" id="email" asp-for="Email" placeholder="john@example.com">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="column-div">
+                <span asp-validation-for="Adress" class="text-danger"></span>
+                <label asp-for="Adress"><i class="fa fa-address-card-o"></i> Adress</label>
+                <input type="text" id="adr" asp-for="Adress">
+
+                <label asp-for="City"><i class="fa fa-institution"></i> City</label>
+                <input type="text" id="city" asp-for="City" placeholder="София">
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="column-div">
+                <span asp-validation-for="Phone" class="text-danger"></span>
+                <label asp-for="Phone"><i class="fas fa-phone-square-alt"></i> Phone</label>
+                <input type="text" id="phone" asp-for="Phone" placeholder="+359 123456789">
+
+                <label class="container-check" onclick="check()">
+                    Фактура
+
+                    <input type="checkbox" id="invoice" asp-for="@Model.Invoice" name="Invoice" onclick="check()">
+                    <span class="checkmark"></span>
+
+
+                </label>
+            </div>
+
+        </div>
+        @if (ViewData["error"].ToString().Length > 0)
+
+        {
+    <div class="invoice-danger">
+        <h5 class="invoice-danger">@ViewData["error"].ToString()</h5>
+
+    </div>
+    <div class="row-div" id="invoice-div">
+        
+        <div class="column-div">
+            <span asp-validation-for="InvoiceFirm" class="text-danger"></span>
+            <label asp-for="InvoiceFirm">* Firm</label>
+            <input type="text" id="company" asp-for="InvoiceFirm" placeholder="Firm">
+            <span asp-validation-for="InvoiceCity" class="text-danger"></span>
+            <label asp-for="InvoiceCity">
+                * City
+            </label>
+            @*TODO:*@
+            <select id="list3" asp-for="InvoiceCity">
+                <option value="">Choose a city</option>
+                <option value="volvo">City1</option>
+                <option value="saab">City1</option>
+                <option value="mercedes">City1</option>
+                <option value="audi">City1</option>
+            </select>
+            <span asp-validation-for="InvoiceType" class="text-danger"></span>
+            <label for="list2" asp-for="InvoiceType">
+                Invoice type
+            </label>
+            <select id="list2" asp-for="InvoiceType">
+                <option value="">Choose a type</option>
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="mercedes">Mercedes</option>
+                <option value="audi">Audi</option>
+            </select>
+        </div>
+
+        <div class="column-div">
+            <span asp-validation-for="InvoiceEIK" class="text-danger"></span>
+            <label asp-for="InvoiceEIK">* EIK</label>
+            <input type="text" id="eik" asp-for="InvoiceEIK">
+            <span asp-validation-for="InvoiceDDS" class="text-danger"></span>
+            <label asp-for="InvoiceDDS">* DDS</label>
+            <input type="text" id="dds" asp-for="InvoiceDDS">
+        </div>
+        <div class="column-div">
+            <span asp-validation-for="InvoiceAdress" class="text-danger"></span>
+            <label asp-for="InvoiceAdress">* Adress</label>
+            <input type="text" id="invoice-address" asp-for="InvoiceAdress">
+            <span asp-validation-for="InvoiceMOL" class="text-danger"></span>
+            <label asp-for="InvoiceMOL">* MOL</label>
+            <input type="text" id="mol" asp-for="InvoiceMOL">
+        </div>
+    </div>
+        }
+        <div class="row-div" id="invoice-div" style="display:none">
+            <div class="column-div">
+                <span asp-validation-for="InvoiceFirm" class="text-danger"></span>
+                <label asp-for="InvoiceFirm">* Firm</label>
+                <input type="text" id="company" asp-for="InvoiceFirm" placeholder="Firm">
+                <span asp-validation-for="InvoiceCity" class="text-danger"></span>
+                <span asp-validation-for="InvoiceCity" class="text-danger"></span>
+                <label asp-for="InvoiceCity">
+                    * City
+                </label>
+                <input type="text" id="invoice-city" asp-for="InvoiceCity">
+                <span asp-validation-for="InvoiceType" class="text-danger"></span>
+                <label for="list2" asp-for="InvoiceType">
+                    Invoice type
+                </label>
+                <select id="list2" asp-for="InvoiceType">
+                    <option value="">--Choose a option--</option>
+                    <option value="volvo">Legal entity</option>
+                    <option value="saab">Individual</option>
+                </select>
+            </div>
+
+            <div class="column-div">
+                <span asp-validation-for="InvoiceEIK" class="text-danger"></span>
+                <label asp-for="InvoiceEIK">*EIK</label>
+                <input type="text" id="eik" asp-for="InvoiceEIK">
+                <span asp-validation-for="InvoiceDDS" class="text-danger"></span>
+                <label asp-for="InvoiceDDS">* DDS</label>
+                <input type="text" id="dds" asp-for="InvoiceDDS">
+            </div>
+            <div class="column-div">
+                <span asp-validation-for="InvoiceAdress" class="text-danger"></span>
+                <label asp-for="InvoiceAdress">* Adress</label>
+                <input type="text" id="invoice-address" asp-for="InvoiceAdress">
+                <span asp-validation-for="InvoiceMOL" class="text-danger"></span>
+                <label asp-for="InvoiceMOL">* MOL</label>
+                <input type="text" id="mol" asp-for="InvoiceMOL">
+            </div>
+        </div>
+
+        <h3>Delivery</h3>
+        <div class="row-div">
+
+            <label for="adress" class="radio">
+                <input type="radio" id="adress" onclick="check()" value="Adress" checked="checked" asp-for="DeliveryMethod">
+                <span>To a address</span>
+
+            </label>
+            <label for="speedy" class="radio">
+                <input type="radio" id="speedy" onclick="check()" value="speedy" asp-for="DeliveryMethod">
+                <span> SPEEDY OFFICE</span>
+            </label>
+
+            <label for="econt" class="radio">
+                <input type="radio" id="econt" onclick="check()" value="econt" asp-for="DeliveryMethod">
+                <span>ECONT OFFICE</span>
+            </label>
+        </div>
+        <div class="row-div " style="display:none" id="office">
+            <label for="list">
+
+            </label>
+            <select id="list" asp-for="DeliveryAdress">
+                <option value="hide">--Choose a office--</option>
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="mercedes">Mercedes</option>
+                <option value="audi">Audi</option>
+            </select>
+        </div>
+
+        <h3>Payment</h3>
+        <div class="row-div">
+
+            <label for="cash" class="radio">
+                <input type="radio" id="cash" value="cash" checked="checked" asp-for="PaymentMethod">
+                <span>Casg</span>
+            </label>
+
+            <label for="card" class="radio">
+                <input type="radio" id="card" value="card" asp-for="PaymentMethod">
+                <span>Card</span>
+            </label>
+
+            @*<label for="cash1" class="radio">
+                <input type="radio" id="cash1" value="card2" asp-for="PaymentMethod">
+                <span>Плащане с карта</span>
+            </label>*@
+        </div>
+        <div class="buttons">
+            <input type="submit" id="final" value="Finish Order" class="button" asp-controller="Order" asp-action="Page" asp-route-id="3">
+        </div>
+    </div>
+</form>
+
+
+

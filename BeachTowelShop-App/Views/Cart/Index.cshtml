@@ -1,0 +1,61 @@
+﻿@model List<BeachTowelShop.Models.Orders.CartViewModel>
+@{
+    ViewData["Title"] = "Количка";
+}
+@Html.AntiForgeryToken()
+<div class="container">
+    <h1>Количка</h1>
+    <div class="cart">
+
+        <div class="cart-size">
+
+
+            <table>
+                <tr class="wheat-smoke">
+                    <td><span>Продукт</span></td>
+                    <td><span>Размер</span></td>
+                    <td><span>Брой</span></td>
+                    <td><span>Сума</span></td>
+                    <td></td>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    @if (item.ProductId==string.Empty||item.ProductId==null)
+                    {
+                        item.ProductId = item.DesignName;
+                    }
+
+                    <tr class="cart-products">
+                        <td class="img-holder">
+                            <img src="~/@item.DesignFolderPath/@item.DesignName" alt="Image" id="@item.ProductId"/>
+                        </td>
+                        <td class="cart-size-td"><span>@item.Size</span></td>
+                        <td><input type="number" name="volume" value="@item.Count" min="1" autocomplete="off" onchange="changeCart()" /></td>
+                        <td class="sum"><span>@(@item.Price*int.Parse(@item.Count))</span> лв.</td>
+                        <td><i class="fas fa-times fa-lg" onclick="removeFromCart()"></i></td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+    <div class="button shopping-cart">
+        <a asp-controller="Order" asp-action="Page" asp-route-id="2">Към завършване <i class="fas fa-arrow-circle-right"></i></a>
+
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function sumPrice(value) {
+
+            let count = $(value).find('input')[0].value;
+            let price = $(value).find('.price').find('span').text();
+            let sum = $(value).find('.sum').find('span').text();
+            let sumDiv = $(value).find('.sum').find('span');
+            sum = price * count;
+            sumDiv.text(sum);
+        }
+    </script>
+}

@@ -1,0 +1,30 @@
+﻿@model BeachTowelShop.Models.Orders.UserDetailsViewModel
+<div id="price-form">
+    <table>
+        <tr class="wheat-smoke">
+            <td colspan="2"><a asp-controller="Cart" asp-action="Index">Back to cart</a></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span>Total:@(Model.CartViewModelList.Select(a => a.Sum).Sum())</span> лв.</td>
+        </tr>
+        <tr id="cart-order-finish" onclick="opennnn()" class="wheat-smoke">
+            <td colspan="2"><span> @Model.CartViewModelList.Count</span>Products</td>
+        </tr>
+        @foreach (var item in Model.CartViewModelList)
+        {
+            <tr class="all-products" style="display: none ">
+                <th>
+                    <div class="img-holder">
+                        <img src="~/@item.DesignFolderPath/@item.DesignName" alt="Alternate Text" />
+                    </div>
+                </th>
+                <th><span> x</span> @item.Count</th>
+                <th><span>@item.Price</span> lv.</th>
+            </tr>
+        }
+
+
+    </table>
+
+    <p>Free delivery to a Speedy office.</p>
+</div>
