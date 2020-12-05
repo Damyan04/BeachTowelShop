@@ -1,0 +1,40 @@
+﻿@model List<BeachTowelShop.Areas.Admin.Models.OrderViewModel>
+<div class="container admin">
+    <h2>Orders</h2>
+    <div class="cart">
+
+        <div class="cart-size">
+
+
+            <table>
+                <tr class="wheat-smoke">
+
+                    <td><span>Order number</span></td>
+                    <td><span>Sum</span></td>
+                    <td><span>Status</span></td>
+                    <td></td>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr class="cart-products">
+
+                        <td class="cart-size-td"><span>@item.Id</span></td>
+                        <td class="sum"><span>@item.Sum</span> lv.</td>
+                        <td class="status"><span>@item.Status</span></td>
+                        <td><a asp-controller="Admin" asp-action="Info" asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a></td>
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+        @*<form action="" method="post">
+            <label for="sizeNew">New value</label>
+            <input type="text" name="sizeNew" value="">
+            <label for="priceNew">Price</label>
+            <input type="text" name="priceS" value="">
+            <input type="button" value="submit">
+        </form>*@
+    </div>

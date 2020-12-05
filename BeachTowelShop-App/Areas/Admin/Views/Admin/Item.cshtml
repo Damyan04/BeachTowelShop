@@ -1,0 +1,49 @@
+﻿s<div class="container admin ">
+
+    <form action="/" method="post" id="productEdit" >
+        <div class="column-div">
+            <h3>Product picture</h3>
+            <ul>
+                <li>path <i class="fas fa-minus"></i></li>
+            </ul>
+            <label for="import-file">
+                Add a picture
+            </label>
+            <input type="file" name="pic" accept="image/*" id="import-file">
+        </div>
+        @*<input type="button" name="name" value=" Добави път към снимка" class="button" />*@
+
+        <div class="column-div">
+            <h3>
+                Sizes:
+            </h3>
+            <ul>
+                <li> XXL <i class="fas fa-minus"></i></li>
+            </ul>
+
+        </div>
+
+
+        <div class="column-div">
+
+            <h3>Description</h3>
+            <textarea></textarea>
+        </div>
+            <div class="column-div">
+                <h3>Category for a product</h3>
+                <ul>
+                    <li>Kategoriq 1 <i class="fas fa-minus"></i></li>
+                </ul>
+                <h3>Add a category</h3>
+                <label>
+                   Category Name
+                    <input type="text" name="name" value="" />
+                </label>
+                <input type="button" name="name" value="Add a category" class="button" />
+           
+        </div>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </form>
+   
+</div>
+    

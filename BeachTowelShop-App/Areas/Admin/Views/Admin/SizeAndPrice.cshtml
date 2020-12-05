@@ -1,0 +1,18 @@
+﻿@model IList<BeachTowelShop.Areas.Admin.Models.AdminSizesViewModel>
+<div class="container admin">
+    <div id="size-price">
+        <h2>Всички размери и цени</h2>
+        
+        @foreach (var item in Model)
+        {
+    <form asp-controller="Admin" asp-action="SaveInDb" method="post" >
+        <label asp-for="@item.Name">Name</label>
+        <input type="text" asp-for="@item.Name" value="@item.Name">
+        <label asp-for="@item.Price">Price</label>
+        <input type="text" asp-for="@item.Price" value="@item.Price">
+        <input asp-for="@item.Id" value="@item.Id" type="hidden" />
+        <input type="submit" name="submit" value="Save to database"/>
+    </form>
+        }
+    </div>
+</div>
