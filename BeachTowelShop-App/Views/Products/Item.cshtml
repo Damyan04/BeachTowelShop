@@ -19,49 +19,49 @@
             <div class="item-image-right">
                 <h2>@Model.Product.Name</h2>
                 <div class="add-cart">
-                    <h3 id="h3-price">10 - 49 лв.</h3>
+                    <h3 id="h3-price">10 - 49 lv.</h3>
                     <label for="size">
-                        Размер:
+                        Size:
                         <select name="size" id="item-size" onchange="onSelectChange()" autocomplete="off">
-                            <option value=" " price=" ">Избери размер</option>
+                            <option value=" " price=" ">Choose a size</option>
                             @foreach (var item in Model.Product.Sizes)
                             {
-                                <option value="@item.SizeName" price="@item.Price">@item.SizeName см</option>
+                                <option value="@item.SizeName" price="@item.Price">@item.SizeName sm</option>
                             }
 
                         </select>
                     </label>
 
                     <label for="volume">
-                        Брой:
+                        Count:
                         <input type="number" name="volume" value="1" min="1" id="volume" onkeypress="onSelectChange()" onchange="onSelectChange()" autocomplete="off" />
                     </label>
 
                     <div class="buttons">
 
-                        <a id="add-to-cart" class="button" onclick="addToCart()">Добави в количка</a>
+                        <a id="add-to-cart" class="button" onclick="addToCart()">Add to cart</a>
 
 
                     </div>
 
                 </div>
-                <p>- ПОРЪЧАЙ ПО ТЕЛЕФОН - 0897 47 91 44 -</p>
-                <p> - ПОРЪЧАЙ ПО ТЕЛЕФОН - 0897 47 91 44 -</p>
+                <p>- ORDER BY PHONE - 0891 23 45 67 -</p>
+                <p>- ORDER BY PHONE - 0891 23 45 68 -</p>
 
 
                 <div class="description">
-                    <h3>Описание</h3>
+                    <h3>Description</h3>
                     <p>@Model.Product.Description</p>
                 </div>
             </div>
         </div>
         <div class="h3">
-            <h3>Подобни продукти</h3>
+            <h3>Similar products</h3>
         </div>
         @if (!Model.SimilarProducts.Any())
         {
   
-        <h1>---Няма подобни продукти---</h1>
+        <h1>---No similar products---</h1>
 
         }
         else
@@ -78,10 +78,10 @@
                             <img src="~/@item.PictureList[0]" alt="" class="gallery__img">
                         </div>
                         <h2>@item.Name</h2>
-                        <h3><span>От</span> 10 лв.</h3>
+                        <h3><span>From</span> 10 lv.</h3>
                         <div class="gallery-buttons">
 
-                            <a asp-controller="Products" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> Виж повече</a>
+                            <a asp-controller="Products" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
                         </div>
 
                     </div>
@@ -99,14 +99,14 @@
             let price = $('#item-size')[0].selectedOptions[0].attributes["price"].value;
            
             if (price == " " || price == undefined) {
-                $('#h3-price').text('10 - 49 лв.');
+                $('#h3-price').text('10 - 49 lv.');
 
             } else {
                 let volume = $('#volume')[0].value;
                 //console.log(volume * price);
                 let finalPrice = price * volume;
                 //console.log(finalPrice);
-                $('#h3-price').text(finalPrice + ' лв.');
+                $('#h3-price').text(finalPrice + ' lv.');
             }
 
         }

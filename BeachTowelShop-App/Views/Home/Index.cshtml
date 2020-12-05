@@ -6,10 +6,9 @@
 <div class="container" id="top-page">
     <div id="top">
 
-        <h1>Правим страхотни персонализирани хавлии.</h1>
+        <h1>We make great personalized towels.</h1>
         <div class="line">
-            <p>с гаджето, с детето, с колата, мотора, домашния любимец,</p>
-            <p>красив пейзаж, фирмено лого или какъвто и да е дизайн.</p>
+            <p>beautiful landscape, company logo or any design.</p>
         </div>
         <p>Доставяме щастие и уникални подаръци.</p>
         <p>Цени от 10 лв. и пет размера.</p>
@@ -60,10 +59,12 @@
             <img src="~/pictures/specs-havliiki.png" alt="">
         </div>
         <div class="text">
-            <p>Хавлиите са 70% памук, 30% микрофибър.</p>
-            <p>Перат се до 40 °C.</p>
-            <p>Имат добра попивателност и се ползват не само за изненада, но и по предназначение.</p>
-            <p>едната страна са винаги снежно бели, а от другата щамповаме чрез сублимация. Чрез тази технология мастилото се вмъква директно във влакната на материята. Така щампата стои като част от продукта. Боята е свързана директно с материята. Това я прави устойчива на пране спрямо останалите стандарти за печат. Използваните мастила са екологични на водна основа и безвредни.</p>
+            <p>The towels are 70% cotton, 30% microfiber.</p>
+            <p>Wash up to 40 ° C.</p>
+            <p>
+                They have good absorbency and are used not only for surprise, but also for their intended purpose.one side is always snow white, and on the other we stamp by sublimation. With this technology, the ink is inserted directly into the fibers of the fabric. Thus, the print stands as part of the product. The paint is directly related to the fabric. This makes it resistant to washing compared to other printing standards. The inks used are environmentally friendly, water-based and harmless.
+
+            </p>
         </div>
     </div>
     <div id="how-is-done">
@@ -71,8 +72,8 @@
         <h1>Как става?</h1>
         <div class="row-left">
             <div class="text">
-                <h2>1. Поръчка</h2>
-                <p>Подбираш си една или няколко страхотни снимки и правиш поръчка през сайта ни. Така качеството на файла се запазва. Поръчки през имейл и фейсбук намалят качеството на снимката => качеството и на готовата хавлийка. Приемаме поръчки само през сайта.</p>
+                <h2>1. Order</h2>
+                <p>You choose one or several great photos and place an order through our site. This preserves the quality of the file. Orders via email and Facebook reduce the quality of the photo => the quality of the finished towel. We accept orders only through the site.</p>
             </div>
             <div class="img-div">
                 <img src="~/pictures/kak-1.png" alt="" class="img">
@@ -84,16 +85,16 @@
                 <img src="~/pictures/kak-2.png" alt="" class="img">
             </div>
             <div class="text">
-                <h2>2. Изработка</h2>
+                <h2>2. Production</h2>
 
-                <p>Печатаме върху хубави и меки хавлийки. Щамповаме чрез сублимация. Чрез тази технология мастилото се вмъква директно във влакната на материята. Така щампата стои като част от продукта. Боята е свързана директно с материята. Това я прави устойчива на пране спрямо останалите стандарти за печат. Използваните мастила са екологични на водна основа и безвредни.</p>
+                <p>We print on nice and soft towels. We stamp by sublimation. With this technology, the ink is inserted directly into the fibers of the fabric. Thus, the print stands as part of the product. The paint is directly related to the fabric. This makes it resistant to washing compared to other printing standards. The inks used are environmentally friendly, water-based and harmless.</p>
             </div>
 
         </div>
         <div class="row-left">
             <div class="text">
-                <h2>3. Доставка</h2>
-                <p>Доставяме всеки петък или събота. Поръчка влиза в доставката, ако е направена до 13.00 часа в понеделника на същата седмица. Така например, ако днес е четвъртък (19.01.) и поръчаш сега –  ще получиш доставката следващата седмица в петък (27.01.). Ако желaeш бърза доставка – поръчай в дните преди понеделник. Доставяме безплатно до офис на Спиди.</p>
+                <h2>3. Delivery</h2>
+                <p>We deliver every Friday or Saturday. An order is included in the delivery if it is made by 13.00 on Monday of the same week. For example, if today is Thursday (19.01.) And you order now - you will receive the delivery next week on Friday (27.01.). If you want fast delivery - order in the days before Monday. We deliver free of charge to Speedy's office.</p>
             </div>
 
             <div class="img-div">
@@ -103,17 +104,15 @@
     </div>
 </div>
 <div class="container">
-    <div id="section-new">
-        <a href="">За цени на едро моля кликнете тук</a>
-    </div>
+    
     <div id="prices">
 
-        <h1>Цени</h1>
+        <h1>Prices</h1>
 
-        <p>В цената влиза 1 бр. хавлийка + печата.</p>
+        <p>The price includes 1 pc. towel + seal.</p>
         <div class="text">
             <i class="fas fa-truck fa-flip-horizontal fa-xs"></i>
-            <p><span>Безплатна доставка</span> до офис на Спиди.</p>
+            <p><span>Free delivery</span> to a Speedy office.</p>
         </div>
         <ul>
             @foreach (var towel in Model.Towels)
@@ -121,8 +120,8 @@
                 <div class="inner">
                     <img src="~/@towel.PicturePath" alt="">
                     <li>
-                        <p>@towel.Price лв.</p>
-                        <a asp-controller="Order" asp-action="Page" asp-route-size="@towel.Size" asp-route-volume="2">Поръчай ></a>
+                        <p>@towel.Price lv.</p>
+                        <a asp-controller="Order" asp-action="Page" asp-route-size="@towel.Size" asp-route-volume="2">Order></a>
                     </li>
                 </div>
             }
@@ -134,7 +133,7 @@
     <div id="scroller">
         <div class="title">
             <i class="fas fa-chevron-left fa-2x"></i>
-            <h4>Доставяме усмивки</h4>
+            <h4>We bring smiles</h4>
             <i class="fas fa-chevron-right fa-2x"></i>
         </div>
         <div id="reviews">
@@ -149,29 +148,38 @@
 </div>
 <div class="container">
     <div id="about-us">
-        <h1>За нас</h1>
+        <h1>About us</h1>
         <div class="border"></div>
-        <h2>Хората зад хавлийките.</h2>
-        <p>BeachTowelShop не е хоби. Това е бизнес. Това е най-доброто място в интернет, от където можете да си купите уникални хавлии – с ваша снимка или дизайн. Защо сме най-добрите? Защото не сме мега корпорация или голяма фирма, ламтяща за огромни печалби. Ние сме малък бизнес, винаги коректни. Печелим пари като продаваме хавлийки. А клиентите? Клиентите ни получават уникално страхотни хавлийки. Толкова е просто. Ако сте любители на уникалните неща – добре сте доши на правилното място.</p>
+        <h2>The people behind the towels.</h2>
+        <p>
+            BeachTowelShop is not a hobby. This is a business. This is the best place on the internet where you can buy unique towels - with your photo or design. Why are we the best? Because we are not a mega corporation or a big company, greedy for huge profits. We are a small business, always fair. We make money by selling towels. And the customers? Our customers receive uniquely great towels. It's so simple. If you are a fan of unique things - you are welcome in the right place.
 
-        <h3>Малко история</h3>
-        <p>Чрез проба-грешка през годините, намерихме най-добрия начин да използваме уменията си. В BeachTowelShop влагаме години опит в печат и изработка на хавлии в комбинация с разработка на уеб сайтове, за да ви предоставим най-добрата платформа в България за хавлии с ваши снимки.</p>
+        </p>
+
+        <h3>A little history</h3>
+        <p>
+            Through trial and error over the years, we have found the best way to use our skills. At BeachTowelShop we invest years of experience in printing and making towels in combination with website development to provide you with the best platform in Bulgaria for towels with your photos.
+
+        </p>
 
 
-        <h3>Запознай се с екипа</h3>
-        <p>Повечето компании са големи и безлични, без лица и бюрократични. Е, това не сме ние. Ние сме малка компания и ни е грижа. Пука ни за вас. Тук сме да помогнем да бъдете уникални, да се чувствате удовлетворени и щастливи.</p>
+        <h3>Meet the team</h3>
+        <p>
+            Most companies are large and impersonal, faceless and bureaucratic. Well, that's not us. We are a small company and we care. We care about you. We are here to help you be unique, to feel satisfied and happy.
+
+        </p>
 
 
-        <h3>Това е всичко</h3>
-        <p>Вече ни познавате и сте готови за хавлийки. <a>Прикачете снимки и си купете уникални хавлийки.</a></p>
+        <h3>That is all</h3>
+        <p>You already know us and you are ready for towels. <a>Attach photos and buy unique towels.</a></p>
 
-        <p>Въпроси? Пишете ни на <a>info &#x40 BeachTowelShop.com</a> или се обади на 0896719887.</p>
+        <p>questions? Write to us at <a>info &#x40 BeachTowelShop.com</a>or call +3591234567</p>
     </div>
 </div>
 <div class="container">
     <div id="questions">
 
-        <h1>Въпроси и отговори</h1>
+        <h1>Questions and Answers</h1>
         <div class="content">
 
             <div class="text-content">
@@ -179,29 +187,27 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Какво е BeachTowelShop?</p>
+                        <p onclick="accordeon()">What is BeachTowelShop?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>На BeachTowelShop.com можеш да поръчаш уникална и персонализирана хавлия. </p>
+                            <p>On BeachTowelShop.com you can order a unique and personalized towels. </p>
                             <ul>
-                                <li>Постави:</li>
-                                <li>– любима снимка с човека до теб, децата, приятели или роднини</li>
-                                <li>– готина снимка, намерена в интернет</li>
-                                <li>– колаж от снимки, изработен от теб</li>
-                                <li>– всеки друг дизайн или лого, които искаш да видиш на своята хавлия</li>
+                                <li>Put:</li>
+                                <li>– favorite photo with the person next to you, children, friends or relatives</li>
+                                <li>– cool photo found on the internet</li>
+                                <li>– photo collage made by you</li>
+                                <li>– any other design or logo you want to see on your towel</li>
                             </ul>
                             <ul>
-                                <li>Хавлийките могат да се ползват за:</li>
-                                <li>– плаж</li>
-                                <li>– всекидневна употребта</li>
-                                <li>– скъп спомен</li>
-                                <li>– прекрасен подарък</li>
-                                <li>– наметало с лого</li>
-                                <li>– или приятна изненада</li>
-                                <li>– или шега с близък :D…</li>
+                                <li>Towels can be used for:</li>
+                                <li>– beach</li>
+                                <li>– everyday use</li>
+                                <li>– dear memory</li>
+                                <li>– present</li>    
+                                <li>– as a goof :D…</li>
                             </ul>
-                            <p>Налични са 5 размера, които покриват всички случаи.</p>
+                            <p>There are 5 sizes available to cover all cases.</p>
                         </div>
                     </div>
                 </div>
@@ -209,12 +215,15 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Как да си прикача снимката?</p>
+                        <p onclick="accordeon()">
+                            How do I attach a photo?
+
+                        </p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
 
-                            <p><a href="">Натисни тук</a>(линк). Важно е обаче снимката да е с добро качество. Колкото по-добро е качеството на снимката, толкова по-добра е хавлийката.</p>
+                            <p><a href="">Click here</a>(link). However, it is important that the photo is of good quality. The better the picture quality, the better the towel.</p>
                         </div>
                     </div>
                 </div>
@@ -222,22 +231,22 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Какви размери има? Какво е качеството?</p>
+                        <p onclick="accordeon()">What sizes are there? What is the quality?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
                             <ul>
-                                <li>Размери:</li>
+                                <li>Sizes:</li>
 
                                 @foreach (var towel in Model.Towels)
                                 {
-                                    <li>@towel.Size см.</li>
+                                    <li>@towel.Size sm.</li>
                                 }
 
                             </ul>
-                            <p>Хавлийките са висококачествени със състав: 70% памук и 30% микрофибър.</p>
-                            <p>Перат се до 40 градуса.</p>
-                            <p>Колкото по-качествена е снимката (файлът) – толкова по-качествен е и печатът.</p>
+                            <p>The towels are of high quality with a composition: 70% cotton and 30% microfiber.</p>
+                            <p>Wash up to 40 degrees.</p>
+                            <p>The better the photo (file), the better the print.</p>
                         </div>
                     </div>
                 </div>
@@ -245,12 +254,12 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Кога ще си получа хавлийката?</p>
+                        <p onclick="accordeon()">When will I get my towel?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Когато получим поръчка се заемаме с предпечата и графичния дизайн. След това принтираме върху мека и приятна хавлийка. Само когато принтираме в перфектно качество сме готови. Този процес отнема около 5 работни дни. </p>
-                            <p>След това изпращаме с куриер на Спиди.</p>
+                            <p>When we receive an order, we deal with prepress and graphic design. Then we print on a soft and pleasant towel. Only when we print in perfect quality are we ready. This process takes about 5 working days. </p>
+                            <p>Then we send by courier to Speedy.</p>
                         </div>
                     </div>
                 </div>
@@ -258,11 +267,11 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Мога ли да изпратя моя хавлия и да напечатате върху нея?</p>
+                        <p onclick="accordeon()">Can I send my towel and print on it?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Не. Печатаме само върху наши хавлии.</p>
+                            <p>No. We only print on our towels.</p>
                         </div>
                     </div>
                 </div>
@@ -270,11 +279,11 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Какво може да се печата върху хавлийките?</p>
+                        <p onclick="accordeon()">What can be printed on towels?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Абсолютно всичко! От снимки на кучето или семейството, до логота и всякакви драсканици.</p>
+                            <p>Absolutely everything! From photos of the dog or family, to logos and all kinds of scribbles.</p>
                         </div>
                     </div>
                 </div>
@@ -282,11 +291,14 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Как и кога се плаща?</p>
+                        <p onclick="accordeon()">
+                            How and when is it paid?
+
+                        </p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Плащаш с наложен платеж като получиш хавлиийката.</p>
+                            <p>You pay by cash on delivery when you receive the towel.</p>
                         </div>
                     </div>
                 </div>
@@ -294,11 +306,14 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Има ли отстъпка за повече бройки?</p>
+                        <p onclick="accordeon()">
+                            Is there a discount for more pieces?
+
+                        </p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Разбира се. Свържи се с нас.</p>
+                            <p>Of course. Contact us.</p>
                         </div>
                     </div>
                 </div>
@@ -306,11 +321,13 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Объркал съм адреса за доставка. Може ли да го сменя?</p>
+                        <p onclick="accordeon()">I have confused the delivery address. Can I change it?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Свържи се с нас колкото може по-бързо и ще реагираме.</p>
+                            <p>
+                                Contact us as soon as possible and we will respond.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -318,26 +335,14 @@
                     <div class="visible">
                         <i class="fas fa-plus" onclick="accordeon()"></i>
 
-                        <p onclick="accordeon()">Каква ви е политиката за връщане?</p>
+                        <p onclick="accordeon()">What is your return policy?</p>
                     </div>
                     <div class="invisible">
                         <div class="more-content">
-                            <p>Ако има нещо нередно с поръчката ти – върни ни я неизползвана в рамките на 14 дни от доставката. Ние ще ти върнем парите. Нужно е само да ни пишеш на <a href="">info &#x40 BeachTowelShop.com</a> с молба за рекламация.</p>
+                            <p>If there is something wrong with your order - return it to us unused within 14 days of delivery. We will refund your money. All you have to do is write to u <a href="">info &#x40 BeachTowelShop.com</a>with a request for a complaint .</p>
                         </div>
                     </div>
-                </div>
-                <div class="list-item">
-                    <div class="visible">
-                        <i class="fas fa-plus" onclick="accordeon()"></i>
-
-                        <p onclick="accordeon()">Кой стои зад BeachTowelShop.com?</p>
-                    </div>
-                    <div class="invisible">
-                        <div class="more-content">
-                            <p>Прочети всичко за нас на <a href="">тази страница</a> (линк)</p>
-                        </div>
-                    </div>
-                </div>
+                </div>    
             </div>
             <div class="picture">
                 <img src="~/pictures/faq.png" alt="">
@@ -346,9 +351,9 @@
     </div>
 </div>
 <div id="viewport">
-    <h1>Доставяме щастие на хиляди българи.</h1>
+    <h1>We bring happiness to thousands of Bulgarians.</h1>
 
     <button>
-        <a asp-controller="Order" asp-action="Page" asp-route-id="1">Прикачи снимка</a>
+        <a asp-controller="Order" asp-action="Page" asp-route-id="1">Attach a photo</a>
     </button>
 </div>

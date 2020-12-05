@@ -9,27 +9,27 @@
             <ul>
                 @if ((int)ViewData["id"] == 1)
             {
-                <li id="one"><a asp-controller="Order" asp-action="Page" asp-route-id="1"><span style=" background-color: rgb(236, 100, 55);">1</span>Дизайн</a></li>
+                <li id="one"><a asp-controller="Order" asp-action="Page" asp-route-id="1"><span style=" background-color: rgb(236, 100, 55);">1</span>Design</a></li>
             }
             else
             {
-                <li id="one"><a asp-controller="Order" asp-action="Page" asp-route-id="1"><span>1</span>Дизайн</a></li>
+                <li id="one"><a asp-controller="Order" asp-action="Page" asp-route-id="1"><span>1</span>Design</a></li>
             }
                 @if ((int)ViewData["id"] == 2)
             {
-                <li id="two"><a href=""><span style=" background-color: rgb(236, 100, 55);text-decoration:none; cursor:default;">2</span>Данни за доставка</a></li>
+                <li id="two"><a href=""><span style=" background-color: rgb(236, 100, 55);text-decoration:none; cursor:default;">2</span>Delivery details</a></li>
             }
             else
             {
-                <li id="two"><a href="" style="text-decoration:none;cursor:default;"><span>2</span>Данни за доставка</a></li>
+                <li id="two"><a href="" style="text-decoration:none;cursor:default;"><span>2</span>Delivery details</a></li>
             }
                 @if ((int)ViewData["id"] == 3)
             {
-                <li id="three"><a href=""><span style=" background-color: rgb(236, 100, 55); text-decoration:none; cursor:default;">3</span>Успешна поръчка</a></li>
+                <li id="three"><a href=""><span style=" background-color: rgb(236, 100, 55); text-decoration:none; cursor:default;">3</span>Successful order</a></li>
             }
             else
             {
-                <li id="three"><a href="" style="text-decoration:none;cursor:default;"><span>3</span>Успешна поръчка</a></li>
+                <li id="three"><a href="" style="text-decoration:none;cursor:default;"><span>3</span>Successful order</a></li>
             }
 
             </ul>
