@@ -34,14 +34,23 @@ namespace BeachTowelShop.Services
         {
             //need picture URL,Name
             var products = _appDbContext.Products.ToList();
-
-            var dataDto = _mapper.Map<List<GalleryProductDto>>(products);
+            var prices = _appDbContext.ProductSizes.Select(p => (p.Price)).ToList();
+            var lowestPrice = prices.Min(p => p);
+            var highPrice = prices.Max(p => p);
+            
+        var dataDto = _mapper.Map<List<GalleryProductDto>>(products);
+            foreach (var item in dataDto)
+            {
+                item.LowestPrice = lowestPrice;
+                item.HighPrice = highPrice;
+            }
+            var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
             //TODO:refaktor with linq
             foreach (var item in products)
             {
-                var pictures = _appDbContext.ProductPictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
-
-                dataDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(pictures);
+                var picturesPath =pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
+                
+                dataDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(picturesPath);
             }
 
             return dataDto;
@@ -50,14 +59,23 @@ namespace BeachTowelShop.Services
         public ICollection<GalleryProductDto> GetAllProductsForCategory(string categoryId)
         {
             var productIds = _appDbContext.ProductCategories.Where(c => c.CategoryId == categoryId).Select(p => p.Product).ToList();
+            var prices = _appDbContext.ProductSizes.Select(p => (p.Price)).ToList();
+            var lowestPrice = prices.Min(p => p);
+            var highPrice = prices.Max(p => p);
             //var products = _appDbContext.Products.Where(p => productIds.Any());
             var dataDto = _mapper.Map<List<GalleryProductDto>>(productIds);
             //TODO:refaktor with linq
+            foreach (var item in dataDto)
+            {
+                item.LowestPrice = lowestPrice;
+                item.HighPrice = highPrice;
+            }
+            var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
             foreach (var item in productIds)
             {
-                var pictures = _appDbContext.ProductPictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
+                var picturesPath =pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
 
-                dataDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(pictures);
+                dataDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(picturesPath);
             }
 
             return dataDto;

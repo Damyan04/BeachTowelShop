@@ -76,6 +76,7 @@ namespace BeachTowelShop
                 //options.Cookie.Expiration = TimeSpan.FromDays(5);
 
             });
+            services.AddMemoryCache();
             // services.AddTransient(typeof(ISeeder), typeof(Seeder));
             //services.AddScoped(ISeeder, Seeder);
             //services.AddSingleton<IEmailSender, EmailSender>();

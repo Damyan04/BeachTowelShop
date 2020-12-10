@@ -35,7 +35,7 @@
                 <input type="text" id="phone" asp-for="Phone" placeholder="+359 123456789">
 
                 <label class="container-check" onclick="check()">
-                    Фактура
+                   Invoice
 
                     <input type="checkbox" id="invoice" asp-for="@Model.Invoice" name="Invoice" onclick="check()">
                     <span class="checkmark"></span>
@@ -177,7 +177,7 @@
 
             <label for="cash" class="radio">
                 <input type="radio" id="cash" value="cash" checked="checked" asp-for="PaymentMethod">
-                <span>Casg</span>
+                <span>Cash</span>
             </label>
 
             <label for="card" class="radio">

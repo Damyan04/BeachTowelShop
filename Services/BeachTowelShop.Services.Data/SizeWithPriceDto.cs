@@ -4,11 +4,10 @@ using System.Text;
 
 namespace BeachTowelShop.Services.Data
 {
- public class CategoryDto
+   public  class SizeWithPriceDto
     {
+        public string Size { get; set; }
+        public double Price { get; set; }
         public string Id { get; set; }
-        public string Name { get; set; }
-
-        public ICollection<string> ProductId { get; set; }
     }
 }

@@ -10,16 +10,16 @@
                     <img src="~/@Model.Product.PictureList[0]" alt="">
                 </div>
                 <div class="info">
-                    <p> <i class="fas fa-truck "></i>Преглед и тест при доставка на всяка поръчка!</p>
-                    <p><i class="fas fa-gift "></i>Идеален подарък за приятел или роднина!</p>
-                    <p><i class="fab fa-cotton-bureau "></i>Допирната част до тялото е 100% памук!</p>
-                    <p><i class="fas fa-shield-alt "></i>Продуктите с лого “Доверие в текстила” отговарят на най-строгите критерии на международната асоциация OEKO-TEX® и не съдържат вредни вещества.</p>
+                    <p> <i class="fas fa-truck "></i>Review and test upon delivery of each order!</p>
+                    <p><i class="fas fa-gift "></i>Perfect gift for a friend or relative!</p>
+                    <p><i class="fab fa-cotton-bureau "></i>The contact part to the body is 100% cotton!</p>
+                    <p><i class="fas fa-shield-alt "></i>Products with the logo "Trust in textiles" meet the strictest criteria of the international association OEKO-TEX® and do not contain harmful substances.</p>
                 </div>
             </div>
             <div class="item-image-right">
                 <h2>@Model.Product.Name</h2>
                 <div class="add-cart">
-                    <h3 id="h3-price">10 - 49 lv.</h3>
+                    <h3 id="h3-price">@Model.Product.Sizes.Min(a => a.Price) - @Model.Product.Sizes.Max(a => a.Price) lv.</h3>
                     <label for="size">
                         Size:
                         <select name="size" id="item-size" onchange="onSelectChange()" autocomplete="off">

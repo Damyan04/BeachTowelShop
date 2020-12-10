@@ -7,7 +7,7 @@ namespace BeachTowelShop.Services.Interfaces
 {
   public  interface IOrderService
     {
-        void SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto);
+        UserSessionCartDto SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto);
 
         List<UserSessionCartDto> GetItemsInCart(string sessionId);
 

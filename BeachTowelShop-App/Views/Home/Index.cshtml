@@ -10,13 +10,13 @@
         <div class="line">
             <p>beautiful landscape, company logo or any design.</p>
         </div>
-        <p>Доставяме щастие и уникални подаръци.</p>
-        <p>Цени от 10 лв. и пет размера.</p>
+        <p>We deliver smiles and great gifts.</p>
+        <p>Prices from @Model.Towels.Select(a=>a.Price).Min(a => a) and @Model.Towels.Count sizes</p>
         <div class="button">
-            <a asp-controller="Order" asp-action="Page" asp-route-id="1">Виж за какво става въпрос</a>
+            <a asp-controller="Order" asp-action="Page" asp-route-id="1">See what is up</a>
         </div>
     </div>
-
+    
     @*<div id="gallery">
             <div class="item">
                 <div class="item-img">
@@ -69,7 +69,7 @@
     </div>
     <div id="how-is-done">
 
-        <h1>Как става?</h1>
+        <h1>How it is done?</h1>
         <div class="row-left">
             <div class="text">
                 <h2>1. Order</h2>
@@ -121,7 +121,7 @@
                     <img src="~/@towel.PicturePath" alt="">
                     <li>
                         <p>@towel.Price lv.</p>
-                        <a asp-controller="Order" asp-action="Page" asp-route-size="@towel.Size" asp-route-volume="2">Order></a>
+                        <a asp-controller="Order" asp-action="Page" asp-route-size="@towel.Size" asp-route-volume="1">Order></a>
                     </li>
                 </div>
             }

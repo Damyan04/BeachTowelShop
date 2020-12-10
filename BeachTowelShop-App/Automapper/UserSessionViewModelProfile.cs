@@ -14,7 +14,7 @@ namespace BeachTowelShop.Automapper
         {
             CreateMap<UserSessionCartDto, OrderDataViewModel>()
             .ForMember(s => s.SessionId, t => t.MapFrom(src => src.UserSessionId))
-            .ForMember(s => s.Price, t => t.MapFrom(src => src.Price))
+            .ForMember(s => s.Price, t => t.MapFrom(src => src.Sum/src.Count))
             .ForMember(s => s.Size, t => t.MapFrom(src => src.Size))
             .ForMember(s => s.ProductId, t => t.MapFrom(src => src.ProductId))
              .ForMember(s => s.DesignName, t => t.MapFrom(src => src.DesignName))
@@ -26,7 +26,7 @@ namespace BeachTowelShop.Automapper
             //CartViewModel
             CreateMap<UserSessionCartDto, CartViewModel>()
            .ForMember(s => s.SessionId, t => t.MapFrom(src => src.UserSessionId))
-           .ForMember(s => s.Price, t => t.MapFrom(src => src.Price))
+           .ForMember(s => s.Price, t => t.MapFrom(src => src.Sum/src.Count))
            .ForMember(s => s.Size, t => t.MapFrom(src => src.Size))
            .ForMember(s => s.ProductId, t => t.MapFrom(src => src.ProductId))
             .ForMember(s => s.DesignName, t => t.MapFrom(src => src.DesignName))

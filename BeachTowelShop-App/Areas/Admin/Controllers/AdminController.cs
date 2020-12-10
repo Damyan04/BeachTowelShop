@@ -8,6 +8,7 @@ using BeachTowelShop.Models.Login;
 using BeachTowelShop.Models.Orders;
 using BeachTowelShop.Services.Data;
 using BeachTowelShop.Services.Interfaces;
+using BeachTowelShop_App.Areas.Admin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,15 +81,34 @@ namespace BeachTowelShop.Areas.Admin
             __adminService.SaveSizesToDb(sizesDto);
            return RedirectToAction("SizeAndPrice");
         }
-
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult SaveAdminProductInDb(IFormCollection keyValuePairs,string productId)
+        {
+            if (keyValuePairs == null)
+            {
+                return RedirectToAction("Item");
+            }
+            //TODO: make it better
+            var adminSizesViewModel = new AdminSizesViewModel() { Id = keyValuePairs["item.Id"], Name = keyValuePairs["item.Name"], Price = Double.Parse(keyValuePairs["item.Price"]) };
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Item");
+            }
+            var sizesDto = _mapper.Map<SizeWithPriceDto>(adminSizesViewModel);
+            __adminService.SaveAdminProductSize(sizesDto,productId);
+            return RedirectToAction("Item");
+        }
         [Authorize]
         [Route("Admin/UploadItem")]
         public ActionResult UploadItem()
         {
             // add login controler
 
+            var allProductsDto = __adminService.GetAllProductsForAdmin();
+            var allProductsViewModel = _mapper.Map<List<ProductViewModel>>(allProductsDto);
 
-            return View();
+            return View(allProductsViewModel);
         }
 
         // GET: Admin/Details/5
@@ -110,10 +130,13 @@ namespace BeachTowelShop.Areas.Admin
     }
         [Authorize]
         [Route("Admin/Item")]
-        public ActionResult ItemInfo(string id)
+        public ActionResult Item(string id)
         {
+            var productDto = __adminService.GetAdminProduct(id);
+            var productViewModel = _mapper.Map<ProductViewModel>(productDto);
+
             // add login controler
-            return View();
+            return View(productViewModel);
         }
 
     }

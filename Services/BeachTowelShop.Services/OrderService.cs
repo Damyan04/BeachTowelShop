@@ -95,7 +95,7 @@ namespace BeachTowelShop.Services
             
         }
 
-        public void SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto)
+        public UserSessionCartDto SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto)
         {
             var session = _appDbContext.UserSessions.FirstOrDefault(a => a.Id == userSessionDto.UserSessionId);
             if (session == null)
@@ -111,6 +111,7 @@ namespace BeachTowelShop.Services
             textList.ForEach(a => a.CartItemId = item.Id);
             _appDbContext.TextProperties.AddRange(textList);
             _appDbContext.SaveChanges();
+            return userSessionDto;
         }
 
         public void UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto)

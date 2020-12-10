@@ -1,4 +1,5 @@
-﻿<div class="container admin">
+﻿@model List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>
+<div class="container admin">
     <form action="">
         <h2>Add a design</h2>
         <input type="file" name="pic" accept="image/*">
@@ -13,25 +14,24 @@
         <div class="buttons">
             <button type="submit">Create product</button>
         </div>
-        
+
     </form>
     <h2>Designes:</h2>
     <div id="gallery">
+        @foreach (var item in Model)
+        {
         <div class="item">
             <div class="picture">
-                <a asp-controller="Admin" asp-action="Item" asp-route-id="1"> <img src="~/pictures/designes/port5.jpg" alt="" class="gallery__img"></a>
+                <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id"> <img src="~/@item.PictureList[0]" alt="" class="gallery__img"></a>
+            </div>
+            <h2>@item.Name</h2>
+          
+            <div class="gallery-buttons">
+                <a  asp-controller="Admin" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
             </div>
         </div>
-        <div class="item">
-            <div class="picture">
-                <a asp-controller="Admin" asp-action="Item" asp-route-id="1"> <img src="~/pictures/designes/port5.jpg" alt="" class="gallery__img"></a>
+        }
 
-            </div>
-        </div>
-        <div class="item">
-            <div class="picture">
-                <a asp-controller="Admin" asp-action="Item" asp-route-id="1"> <img src="~/pictures/designes/port5.jpg" alt="" class="gallery__img"></a>
-            </div>
-        </div>
+   
     </div>
 </div>

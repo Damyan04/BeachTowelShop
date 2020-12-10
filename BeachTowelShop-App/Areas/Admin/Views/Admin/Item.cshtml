@@ -1,10 +1,17 @@
-﻿s<div class="container admin ">
+﻿@model BeachTowelShop_App.Areas.Admin.Models.ProductViewModel
+<div class="container admin ">
 
-    <form action="/" method="post" id="productEdit" >
+    <form action="/" method="post" id="productEdit">
         <div class="column-div">
-            <h3>Product picture</h3>
+            <label asp-for="@Model.Name">Name</label>
+            <input type="text" asp-for="@Model.Name" value="@Model.Name">
+            
             <ul>
-                <li>path <i class="fas fa-minus"></i></li>
+                @foreach (var item in Model.PictureList)
+                {
+                    <li>@item <i class="fas fa-minus"></i></li>
+                }
+
             </ul>
             <label for="import-file">
                 Add a picture
@@ -12,38 +19,54 @@
             <input type="file" name="pic" accept="image/*" id="import-file">
         </div>
         @*<input type="button" name="name" value=" Добави път към снимка" class="button" />*@
+        <div class="container admin">
+            <div class="column-div">
+                <h3>
+                    Sizes:
+                </h3>
+               
+                   
+                <form asp-action="/">
+                    @foreach (var sizes in Model.SizesPricesList)
+                    {
+                        <label asp-for="@sizes.Size">Name</label>
+                        <input type="text" asp-for="@sizes.Size" value="@sizes.Size" readonly>
+                        <label asp-for="@sizes.Price">Price</label>
+                        <input type="text" asp-for="@sizes.Price" value="@sizes.Price">
+                        <input asp-for="@sizes.Id" value="@sizes.Id" type="hidden" />
+                    }
+                    </form>
+                   
 
-        <div class="column-div">
-            <h3>
-                Sizes:
-            </h3>
-            <ul>
-                <li> XXL <i class="fas fa-minus"></i></li>
-            </ul>
-
-        </div>
+               
+            </div>
+            </div>
 
 
-        <div class="column-div">
+            <div class="column-div">
 
-            <h3>Description</h3>
-            <textarea></textarea>
-        </div>
+                <h3>Description</h3>
+                <textarea>@Model.Description</textarea>
+            </div>
             <div class="column-div">
                 <h3>Category for a product</h3>
-                <ul>
-                    <li>Kategoriq 1 <i class="fas fa-minus"></i></li>
-                </ul>
+                @foreach (var category in Model.CategoryViews)
+                {
+                    <ul>
+                        <li>@category.Name <i class="fas fa-minus"></i></li>
+                    </ul>
+                }
+
                 <h3>Add a category</h3>
                 <label>
-                   Category Name
+                    Category Name
                     <input type="text" name="name" value="" />
                 </label>
                 <input type="button" name="name" value="Add a category" class="button" />
-           
-        </div>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
     </form>
-   
+
 </div>
-    
+

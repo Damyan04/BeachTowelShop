@@ -13,19 +13,22 @@ using Microsoft.AspNetCore.Http;
 using BeachTowelShop.Services.Interfaces;
 using AutoMapper;
 using BeachTowelShop_App.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BeachTowelShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+       
         private readonly IProductService __productService;
         private readonly IMapper _mapper;
-        public HomeController(ILogger<HomeController> logger, IProductService productService, IMapper mapper)
+        private readonly IMemoryCache _cache;
+        public HomeController( IProductService productService, IMapper mapper,IMemoryCache memoryCache)
         {
-            _logger = logger;
+           
             __productService = productService;
             _mapper = mapper;
+            _cache = memoryCache;
         }
 
         public IActionResult Index()
@@ -36,16 +39,25 @@ namespace BeachTowelShop.Controllers
             {
                 return View("~/Areas/Admin/Views/Admin/Index.cshtml");
             }
-            var homePageViewModel = new HomePageViewModel();
-          
+            
+            HomePageViewModel homePageViewModel;
+            if(!_cache.TryGetValue("HomePageViewModel",out homePageViewModel))
+            {
 
-            var towelsDtoList = __productService.GetSizes();
+
+                homePageViewModel = new HomePageViewModel();
+
+                  var towelsDtoList = __productService.GetSizes();
             var towelViewModelList = _mapper.Map < List < HomePageTowelsViewModel >> (towelsDtoList);
 
             homePageViewModel.Towels.AddRange(towelViewModelList.OrderBy(a => a.Price));
-            var generalCommentsDtoList=__productService.GetGeneralComments();
-            var generalCommetsViewModelList=_mapper.Map<List<CommentViewModel>>(generalCommentsDtoList);
-            homePageViewModel.Comments.AddRange(generalCommetsViewModelList);
+                var generalCommentsDtoList=__productService.GetGeneralComments();
+                var generalCommetsViewModelList=_mapper.Map<List<CommentViewModel>>(generalCommentsDtoList);
+                homePageViewModel.Comments.AddRange(generalCommetsViewModelList);
+                _cache.Set("HomePageViewModel", homePageViewModel);
+            }
+            homePageViewModel = _cache.Get("HomePageViewModel") as HomePageViewModel;
+         
 
             string cookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(cookie))

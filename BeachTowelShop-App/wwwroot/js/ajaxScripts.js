@@ -5,7 +5,7 @@
     let fd = new FormData();
     fd.append('image', files[0]);
     $.ajax({
-        url: 'https://localhost:44363/Order/CheckImg',
+        url: 'https://localhost:44381/Order/CheckImg',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -104,7 +104,7 @@ function addToCart() {
     });
    
     $.ajax({
-        url: 'https://localhost:44363/Products/AddToCart',
+        url: 'https://localhost:44381/Products/AddToCart',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -151,7 +151,7 @@ function createDesign() {
     })
   
     $.ajax({
-        url: 'https://localhost:44363/Order/CreateImg',
+        url: 'https://localhost:44381/Order/CreateImg',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -179,7 +179,7 @@ function createDesign() {
 }
 function checkCart(){
     $.ajax({
-        url: 'https://localhost:44363/Order/CheckCart',
+        url: 'https://localhost:44381/Order/CheckCart',
         type: 'GET',
          
         beforeSend: function (xhr) {
@@ -200,7 +200,7 @@ function removeFromCart() {
     let data = JSON.stringify({'productId':productId,"size":size});
    
     $.ajax({
-        url: 'https://localhost:44363/Cart/DeleteFromCart',
+        url: 'https://localhost:44381/Cart/DeleteFromCart',
         type: 'delete',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -240,7 +240,7 @@ function changeCart() {
     let data = JSON.stringify({ 'productid': productId,'count':count,'size':size });
     console.log(data);
     $.ajax({
-        url: 'https://localhost:44363/Cart/ChangeInCart',
+        url: 'https://localhost:44381/Cart/ChangeInCart',
         type: 'put',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
