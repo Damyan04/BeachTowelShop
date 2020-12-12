@@ -12,6 +12,7 @@ using BeachTowelShop.Services.Automapper;
 using BeachTowelShop.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,20 +74,29 @@ namespace BeachTowelShop
                 options.Cookie.Name = "BeachTowelShop-Session";
 
                 options.Cookie.IsEssential = true;
-                //options.Cookie.Expiration = TimeSpan.FromDays(5);
+               
+               
 
             });
             services.AddMemoryCache();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             // services.AddTransient(typeof(ISeeder), typeof(Seeder));
             //services.AddScoped(ISeeder, Seeder);
             //services.AddSingleton<IEmailSender, EmailSender>();
 
 
-       //     services.AddScoped<IUserClaimsPrincipalFactory<User>,
-       //         AdditionalUserClaimsPrincipalFactory>();
-       //   services.AddAuthorization(options =>
-       //options.AddPolicy("TwoFactorEnabled",
-       //    x => x.RequireClaim("amr", "mfa")));
+            //     services.AddScoped<IUserClaimsPrincipalFactory<User>,
+            //         AdditionalUserClaimsPrincipalFactory>();
+            //   services.AddAuthorization(options =>
+            //options.AddPolicy("TwoFactorEnabled",
+            //    x => x.RequireClaim("amr", "mfa")));
 
 
             // we can't await async in Main method, so here this is okay
@@ -118,7 +128,7 @@ namespace BeachTowelShop
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-           
+            app.UseCookiePolicy();
             //app.UseCookiePolicy();
             app.UseSession();
             app.UseEndpoints(endpoints =>

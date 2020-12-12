@@ -13,10 +13,10 @@ namespace BeachTowelShop_App.Areas.Admin.Models
 
         public string Description { get; set; }
 
-        public List<string> PictureList { get; set; } = new List<string>();
+        public List<PictureViewModel> PictureList { get; set; } = new List<PictureViewModel>();
 
         public int OrderCount { get; set; }
-
+        public string Error { get; set; } = "";
         public List<SizesWithPriceViewModel> SizesPricesList { get; set; } = new List<SizesWithPriceViewModel>();
         public List<CategoryViewModel> CategoryViews { get; set; } = new List<CategoryViewModel>();
 

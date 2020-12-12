@@ -20,6 +20,7 @@
     <header>
         <partial name="~/Views/Shared/_LoginPartial.cshtml" view-data="ViewData" />
     </header>
+
     @RenderBody()
 
     <footer>
@@ -58,12 +59,13 @@
         </div>
         <div class="footer-end">
             <div class="content">
-               
+
                 <p> 2014 - 2019 All rights reserved - BeachTowelShop.com</p>
             </div>
         </div>
 
     </footer>
+    <partial name="_CookieConsentPartial" />
     <a href="#" class="scrollup" id="myBtn" style="display:none"><i class="fas fa-caret-square-up fa-3x"></i></a>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="~/js/jquery.miniColors.min.js"></script>

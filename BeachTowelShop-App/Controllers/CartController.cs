@@ -40,6 +40,10 @@ namespace BeachTowelShop.Controllers
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
             }
+            if (Request.Cookies[cookie] == null)
+            {
+                return View();
+            }
             var userId = Request.Cookies[cookie];
             bool hasItems;
           
@@ -80,6 +84,10 @@ namespace BeachTowelShop.Controllers
             if (!Request.Cookies.ContainsKey(cookie))
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+            }
+            if (Request.Cookies[cookie] == null)
+            {
+                return View();
             }
 
             var userId = Request.Cookies[cookie];
@@ -127,6 +135,10 @@ namespace BeachTowelShop.Controllers
             if (!Request.Cookies.ContainsKey(cookie))
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+            }
+            if (Request.Cookies[cookie] == null)
+            {
+                return View();
             }
             double price = __productService.GetPriceForSize(cartItem.Size);
             cartItem.Sum = int.Parse(cartItem.Count) * price;
@@ -181,7 +193,7 @@ namespace BeachTowelShop.Controllers
         }
 
 
-        public void Set(string key, string value, int? expireTime)
+        private void Set(string key, string value, int? expireTime)
         {
             CookieOptions option = new CookieOptions();
 

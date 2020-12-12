@@ -31,9 +31,19 @@ namespace BeachTowelShop.Services
             order.CartItems.AddRange(cartItems);
            order.TextProperties.AddRange(textItems);
             order.Status = "Unconfirmed";
+           
             _appDbContext.Orders.Add(order);
             _appDbContext.SaveChanges();
-           
+            foreach (var item in cartItems)
+            {
+               var productToUpdate= _appDbContext.Products.Where(a => a.Id == item.ProductId).FirstOrDefault();
+                if (productToUpdate != null)
+                {
+                    productToUpdate.OrderCount += item.Count;
+                    _appDbContext.Products.Update(productToUpdate);
+                    _appDbContext.SaveChangesAsync();
+                }
+            }
         }
 
         public void DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionDto)

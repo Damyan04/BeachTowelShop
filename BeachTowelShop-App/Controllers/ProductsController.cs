@@ -37,7 +37,10 @@ namespace BeachTowelShop.Controllers
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
             }
-            
+            if (Request.Cookies[cookie]==null)
+            {
+                return View();
+            }
             GalleryProductsViewModel productList;
             if (!_cache.TryGetValue("GalleryProductsViewModel", out productList))
             {
@@ -66,6 +69,10 @@ namespace BeachTowelShop.Controllers
             if (!Request.Cookies.ContainsKey(cookie))
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+            }
+            if (Request.Cookies[cookie] == null)
+            {
+                return View();
             }
             GalleryProductsViewModel productList;
             GalleryProductsViewModel productList2;
@@ -105,6 +112,10 @@ namespace BeachTowelShop.Controllers
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
             }
+            if (Request.Cookies[cookie] == null)
+            {
+                return View();
+            }
             ProductViewModelList list;
             if (!_cache.TryGetValue($"ProductViewModelList{itemid}",out list))
             {
@@ -141,6 +152,10 @@ namespace BeachTowelShop.Controllers
             if (!Request.Cookies.ContainsKey(sessionCookie))
             {
                 Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+            }
+            if (Request.Cookies[sessionCookie] == null)
+            {
+                return View();
             }
             var userId = Request.Cookies[sessionCookie];
             OrderDataViewModel orderDataViewModel = new OrderDataViewModel();
@@ -184,7 +199,7 @@ namespace BeachTowelShop.Controllers
                  
              
             }
-        public void Set(string key, string value, int? expireTime)
+        private void Set(string key, string value, int? expireTime)
         {
             CookieOptions option = new CookieOptions();
 
@@ -196,6 +211,7 @@ namespace BeachTowelShop.Controllers
          
             
             Response.Cookies.Append(key, value, option);
+            
         }
         
     }

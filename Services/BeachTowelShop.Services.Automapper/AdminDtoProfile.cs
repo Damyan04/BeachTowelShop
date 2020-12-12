@@ -18,7 +18,7 @@ namespace BeachTowelShop.Services.Automapper
          .ForMember(s => s.Name, t => t.MapFrom(src => src.Name))
          .ForMember(s => s.OrderCount, t => t.MapFrom(src => src.OrderCount))
           .ForMember(s => s.Id, t => t.MapFrom(src => src.Id))
-
+         
          .ReverseMap();
 
             CreateMap<ProductSize,SizeWithPriceDto>()
@@ -26,6 +26,9 @@ namespace BeachTowelShop.Services.Automapper
                  .ForMember(s => s.Size, t => t.MapFrom(src => src.Size.Name))
                  .ForMember(s => s.Id, t => t.MapFrom(src => src.SizeId))
        .ReverseMap();
+
+
+           
         }
       
     }

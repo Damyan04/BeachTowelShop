@@ -83,8 +83,9 @@ function rotate() {
 
 
 jQuery(document).ready(function ($) {
+   
     window.onscroll = function () { scrollFunction() };
-
+ 
 
     function scrollFunction() {
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -93,7 +94,7 @@ jQuery(document).ready(function ($) {
             document.getElementById("myBtn").style.display = "none";
         }
     }
-
+   
     $('.scrollup').click(function () {
         $("html, body").animate({ scrollTop: 0 }, 1000);
 
@@ -107,5 +108,7 @@ jQuery(document).ready(function ($) {
             $menu.hide();
         }
     });
+   
     
 });
+

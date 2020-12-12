@@ -41,7 +41,8 @@ namespace BeachTowelShop.Controllers
             }
             
             HomePageViewModel homePageViewModel;
-            if(!_cache.TryGetValue("HomePageViewModel",out homePageViewModel))
+           
+            if (!_cache.TryGetValue("HomePageViewModel",out homePageViewModel))
             {
 
 

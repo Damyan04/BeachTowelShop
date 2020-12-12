@@ -21,13 +21,58 @@ namespace BeachTowelShop.Services
             _mapper = mapper;
         }
 
+        public void CreateProduct(AdminProductDto productDto)
+        {
+            var product = _mapper.Map<Product>(productDto);
+            product.Id = Guid.NewGuid().ToString();
+            var picture = _mapper.Map<List<Picture>>(productDto.PictureList);
+            
+            var categories = _mapper.Map<List<Category>>(productDto.CategoryViews);
+            var id = _appDbContext.Products.Select(a=>a.Id).FirstOrDefault();
+            var siezesPrices = GetAllSizesWithPrice(id);
+            var sizes = _mapper.Map<List<Size>>(productDto.SizesPricesList);
+            foreach (var pic in picture)
+            {
+               
+                _appDbContext.Pictures.Add(pic);
+                _appDbContext.SaveChanges();
+                var productPicture = new ProductPicture() { PictureId = pic.Id, ProductId = product.Id };
+                product.ProductPictures.Add(productPicture);
+                
+            }
+            foreach (var size in siezesPrices)
+            {
+                var sizesAndPrices = new ProductSize() { ProductId = product.Id, SizeId = size.Id, Price = size.Price };
+                product.ProductSizes.Add(sizesAndPrices);
+            }
+            foreach (var c in categories)
+            {
+                if (!_appDbContext.Categories.Where(a => a.Name == c.Name).Any())
+                {
+                    var category = new Category() { Name = c.Name };
+                    _appDbContext.Categories.Add(category);
+                    _appDbContext.SaveChanges();
+                }
+               
+                    var cId = _appDbContext.Categories.Where(a => a.Name == c.Name).Select(a => a.Id).FirstOrDefault();
+                    var pC= new ProductCategory() { CategoryId = cId, ProductId = product.Id };
+                    product.ProductCategories.Add(pC);
+                
+            }
+          
+          
+            _appDbContext.Products.Add(product);
+            _appDbContext.SaveChanges();
+        }
+
         public AdminProductDto GetAdminProduct(string id)
         {
 
             var product = _appDbContext.Products.Where(item => item.Id == id).FirstOrDefault();
             var productDto = _mapper.Map<AdminProductDto>(product);
-            var pictures = _appDbContext.ProductPictures.Where(p => p.ProductId == productDto.Id).Select(p => p.Picture.Path).ToList();
-            productDto.PictureList.AddRange(pictures);
+            var pictures = _appDbContext.ProductPictures.Where(p => p.ProductId == productDto.Id).Select(p => p.Picture).ToList();
+            var pictureDto = _mapper.Map<List<PictureDto>>(pictures);
+            productDto.PictureList.AddRange(pictureDto);
             var sizesAndPrices = GetAllSizesWithPrice(id);
             productDto.SizesPricesList.AddRange(sizesAndPrices);
             var categories = _appDbContext.ProductCategories.Where(a => a.ProductId == id).Select(a=>a.Category).ToList();
@@ -52,9 +97,9 @@ namespace BeachTowelShop.Services
             var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
             foreach (var item in allProducts)
             {
-                var picturesPath = pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
-
-                allProductsDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(picturesPath);
+                var picturesPath = pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture).ToList();
+                var picturesDto = _mapper.Map<List<PictureDto>>(picturesPath);
+                allProductsDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(picturesDto);
             }
             return allProductsDto;
         }

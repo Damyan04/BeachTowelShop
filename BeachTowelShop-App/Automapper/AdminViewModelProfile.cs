@@ -16,6 +16,10 @@ namespace BeachTowelShop_App.Automapper
 
             CreateMap<SizeWithPriceDto, SizesWithPriceViewModel>()
         .ReverseMap();
+            CreateMap<PictureDto, PictureViewModel>()
+        .ReverseMap();
+
+            
         }
     }
 }

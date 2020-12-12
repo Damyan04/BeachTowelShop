@@ -1,18 +1,19 @@
 ﻿@model List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>
 <div class="container admin">
-    <form action="">
+    @Model[0].Error;
+    <form method="post" enctype="multipart/form-data" >
         <h2>Add a design</h2>
-        <input type="file" name="pic" accept="image/*">
+        <input type="file" name="pic" accept="image/*" multiple>
         <label for="name">Name of the product</label>
         <input type="text" name="name" value="" />
-        <label for="product-description">Description</label>
+        <label for="productDescription">Description</label>
         <br />
-        <textarea id="product-description"></textarea>
+        <textarea id="productDescription" name="productDescription"></textarea>
         <br />
         <label for="categories">Categories with ";" delimeter</label>
-        <input type="text" name="categories" value="" pattern="[A-Za-z0-9]+;" />
+        <input type="text" name="categories" value="" pattern="[A-Za-z0-9 ]+;" />
         <div class="buttons">
-            <button type="submit">Create product</button>
+            <button type="submit" asp-controller="Admin" asp-action="CreateItem">Create product</button>
         </div>
 
     </form>
@@ -20,18 +21,22 @@
     <div id="gallery">
         @foreach (var item in Model)
         {
-        <div class="item">
-            <div class="picture">
-                <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id"> <img src="~/@item.PictureList[0]" alt="" class="gallery__img"></a>
+            <div class="item">
+                <div class="picture">
+                    @foreach (var pic in item.PictureList)
+                    {
+                        <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id"> <img src="~/@pic.Path" alt="" class="gallery__img"></a>
+                    }
+
+                </div>
+                <h2>@item.Name</h2>
+
+                <div class="gallery-buttons">
+                    <a asp-controller="Admin" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
+                </div>
             </div>
-            <h2>@item.Name</h2>
-          
-            <div class="gallery-buttons">
-                <a  asp-controller="Admin" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
-            </div>
-        </div>
         }
 
-   
+
     </div>
 </div>

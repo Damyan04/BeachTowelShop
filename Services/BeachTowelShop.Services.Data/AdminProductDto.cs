@@ -11,7 +11,7 @@ namespace BeachTowelShop.Services.Data
 
         public string Description { get; set; }
 
-        public List<string> PictureList { get; set; } = new List<string>();
+        public List<PictureDto> PictureList { get; set; } = new List<PictureDto>();
 
         public int OrderCount { get; set; }
 
