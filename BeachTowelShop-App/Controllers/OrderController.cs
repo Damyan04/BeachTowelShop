@@ -80,7 +80,7 @@ namespace BeachTowelShop.Controllers
                     var userId = Request.Cookies[cookie];
                     var cartHasItems = false;
                     cartHasItems = __orderService.HasItems(userId);
-
+                   
                     if (Request.Cookies.ContainsKey("BeachTowelShop-Session") && cartHasItems)
                     {
                         List<CartViewModel> viewListViewModel;
@@ -103,21 +103,7 @@ namespace BeachTowelShop.Controllers
                     ////TODO: Need something better
                     else
                     {
-                        ViewData["id"] = 1;
-
-                        OrderProductViewModel orderProductViewmodel1;
-                        if (!_cache.TryGetValue("OrderProductViewModel", out orderProductViewmodel1))
-                        {
-
-                            var sizesDto = __productService.GetAllSizes();
-                            var sizesViewModelForProduct = _mapper.Map<List<SizeViewModel>>(sizesDto).OrderBy(x => x.SizeName);
-                            orderProductViewmodel1 = new OrderProductViewModel();
-                            orderProductViewmodel1.SizeList.AddRange(sizesViewModelForProduct);
-
-                            _cache.Set("OrderProductViewModel", orderProductViewmodel1);
-                        }
-                        orderProductViewmodel1 = _cache.Get("OrderProductViewModel") as OrderProductViewModel;
-                        return View(orderProductViewmodel1);
+                        break;
                     }
 
                     //TODO: check if cart has items
@@ -131,6 +117,11 @@ namespace BeachTowelShop.Controllers
                     }
 
                      userId = Request.Cookies[cookie];
+                    var hasItems = __orderService.HasItems(userId);
+                    if (!hasItems)
+                    {
+                        break;
+                    }
                     if (userId != null)
                     {
                         if (!ModelState.IsValid)
@@ -185,19 +176,36 @@ namespace BeachTowelShop.Controllers
                         var userDetailsDto = _mapper.Map<UserDetailsDto>(detailsViewModel);
                         userDetailsDto.UsersessionId = userId;
                         userDetailsDto.Sum = __orderService.GetSumForSession(userId);
+                      
 
-
-
-                        __orderService.CreateOrder(userDetailsDto);
-                        _cache.Remove($"CartViewModel{userId}");
-                        return View();
+                        if (userDetailsDto.Sum > 0 &&hasItems)
+                        {
+                            __orderService.CreateOrder(userDetailsDto);
+                            _cache.Remove($"CartViewModel{userId}");
+                            return View();
+                        }
+                        break;
                     }
                     break;
                     
                 default:
                     break;
             }
-            return View();
+            ViewData["id"] = 1;
+
+            OrderProductViewModel orderProductViewmodel2;
+            if (!_cache.TryGetValue("OrderProductViewModel", out orderProductViewmodel2))
+            {
+
+                var sizesDto = __productService.GetAllSizes();
+                var sizesViewModelForProduct = _mapper.Map<List<SizeViewModel>>(sizesDto).OrderBy(x => x.SizeName);
+                orderProductViewmodel2 = new OrderProductViewModel();
+                orderProductViewmodel2.SizeList.AddRange(sizesViewModelForProduct);
+
+                _cache.Set("OrderProductViewModel", orderProductViewmodel2);
+            }
+            orderProductViewmodel2 = _cache.Get("OrderProductViewModel") as OrderProductViewModel;
+            return View(orderProductViewmodel2);
 
         }
 

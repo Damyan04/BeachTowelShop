@@ -14,7 +14,7 @@
         <textarea id="productDescription" name="productDescription"></textarea>
         <br />
         <label for="categories">Categories with ";" delimeter</label>
-        <input type="text" name="categories" value="" pattern="[A-Za-z0-9 ]+;" />
+        <input type="text" name="categories" value="" pattern="([A-Za-z0-9\s\D]+;)" />
         <div class="buttons">
             <button type="submit" asp-controller="Admin" asp-action="CreateItem">Create product</button>
         </div>

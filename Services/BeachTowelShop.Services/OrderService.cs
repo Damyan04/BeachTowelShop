@@ -26,6 +26,10 @@ namespace BeachTowelShop.Services
           
        
             var cartItems = _appDbContext.CartItems.Where(a => a.UserSessionId == userDetailsViewDto.UsersessionId && a.OrderId == null).ToList();
+            if (cartItems.Count>0)
+            {
+
+           
             var textItems = _appDbContext.TextProperties.Where(a => a.UserSessionId==userDetailsViewDto.UsersessionId && a.OrderId == null).ToList();
             _appDbContext.Orders.Add(order);
             order.CartItems.AddRange(cartItems);
@@ -45,15 +49,19 @@ namespace BeachTowelShop.Services
                 }
             }
         }
+        }
 
         public void DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionDto)
         {
            var item= _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionDto.ProductId&&a.Size.Contains(userSessionDto.Size)).FirstOrDefault();
-           var textPropertiesList= _appDbContext.TextProperties.Where(a => a.UserSessionId == sessionId && a.CartItemId == item.Id).ToList();
+            if (item != null)
+            {
+                var textPropertiesList = _appDbContext.TextProperties.Where(a => a.UserSessionId == sessionId && a.CartItemId == item.Id).ToList();
 
-            _appDbContext.CartItems.Remove(item);
-            _appDbContext.TextProperties.RemoveRange(textPropertiesList);
-            _appDbContext.SaveChanges();
+                _appDbContext.CartItems.Remove(item);
+                _appDbContext.TextProperties.RemoveRange(textPropertiesList);
+                _appDbContext.SaveChanges();
+            }
         }
 
         public string GetItemFolderPath(string productId)
