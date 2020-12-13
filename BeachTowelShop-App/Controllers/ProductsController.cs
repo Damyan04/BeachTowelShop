@@ -30,23 +30,19 @@ namespace BeachTowelShop.Controllers
         }
         // GET: Products
         //Works here
-        public ActionResult Index()
+       
+        [AllowAnonymous]
+        [Route("Products")]
+        public IActionResult Products()
         {
-            string cookie = "BeachTowelShop-Session";
-            if (!Request.Cookies.ContainsKey(cookie))
-            {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
-            }
-            if (Request.Cookies[cookie]==null)
-            {
-                return View();
-            }
+            
             GalleryProductsViewModel productList;
             if (!_cache.TryGetValue("GalleryProductsViewModel", out productList))
             {
+                productList = new GalleryProductsViewModel();
                 var allCategories = __productService.GetAllCategories();
                 var categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name);
-                productList = new GalleryProductsViewModel();
+              
                 productList.AllCategories.AddRange(categoryViewModelList);
                 var allProducts = __productService.GetAllProducts();
                 var productViewModelList = _mapper.Map<List<GalleryProductViewModel>>(allProducts);
@@ -63,35 +59,29 @@ namespace BeachTowelShop.Controllers
 
         // GET: Products/id?
         [Route("Products/Sort/{id?}")]
-        public ActionResult GetItemsForCategory(string categoryid)
+      
+        public IActionResult GetItemsForCategory(string categoryid)
         {
-            string cookie = "BeachTowelShop-Session";
-            if (!Request.Cookies.ContainsKey(cookie))
-            {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
-            }
-            if (Request.Cookies[cookie] == null)
-            {
-                return View();
-            }
+           
             GalleryProductsViewModel productList;
             GalleryProductsViewModel productList2;
             if (!_cache.TryGetValue("GalleryProductsViewModel", out productList2))
             {
                 //TODO:refaktor caching and viewbag
-              
+                productList2 = new GalleryProductsViewModel();
                 var allCategories = __productService.GetAllCategories();
                 var categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name);
                 var allProducts = __productService.GetAllProductsForCategory(categoryid);
-                 productList2 = new GalleryProductsViewModel();
+                
                 productList2.AllCategories.AddRange(categoryViewModelList);
                 _cache.Set("GalleryProductsViewModelFilter",productList2);
                
             }
             if(!_cache.TryGetValue($"GalleryProductsViewModelFilter{categoryid}",out productList))
             {
+                 productList = new GalleryProductsViewModel();
                 productList2 = _cache.Get("GalleryProductsViewModel") as GalleryProductsViewModel;
-                productList = new GalleryProductsViewModel();
+               
                 productList.AllCategories.AddRange(productList2.AllCategories);
                 var allProductsDto = __productService.GetAllProductsForCategory(categoryid);
                 var filteredProducts = _mapper.Map<List<GalleryProductViewModel>>(allProductsDto);
@@ -102,20 +92,12 @@ namespace BeachTowelShop.Controllers
           
           
             
-            return View("Index",productList);
+            return View("Products", productList);
         }
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Item(string itemid)
+        public IActionResult Item(string itemid)
         {
-            string cookie = "BeachTowelShop-Session";
-            if (!Request.Cookies.ContainsKey(cookie))
-            {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
-            }
-            if (Request.Cookies[cookie] == null)
-            {
-                return View();
-            }
+            
             ProductViewModelList list;
             if (!_cache.TryGetValue($"ProductViewModelList{itemid}",out list))
             {
@@ -146,7 +128,7 @@ namespace BeachTowelShop.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]     
-        public ActionResult AddToCart([FromBody] CartViewModel cartViewModels)
+        public IActionResult AddToCart([FromBody] CartViewModel cartViewModels)
         {
             string sessionCookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(sessionCookie))
@@ -207,11 +189,15 @@ namespace BeachTowelShop.Controllers
                 option.Expires = DateTime.Now.AddMinutes(expireTime.Value);
             else
                 option.Expires = DateTime.Now.AddMilliseconds(10);
-            option.SameSite = SameSiteMode.Strict;
-         
             
+
+            option.SameSite = SameSiteMode.None;
+            option.HttpOnly = true;
+            option.Secure = true;
+            option.IsEssential = true;
+
             Response.Cookies.Append(key, value, option);
-            
+          
         }
         
     }

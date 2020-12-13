@@ -1,0 +1,42 @@
+﻿@model BeachTowelShop.Models.Products.GalleryProductsViewModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+
+
+<div class="container">
+
+    <div class="gallery-row">
+        <div class="side-bar">
+            <h3>Categories</h3>
+            <ul>
+                @foreach (var category in Model.AllCategories)
+                {
+
+                <li> <a asp-controller="Products" asp-action="GetItemsForCategory" asp-route-categoryid="@category.Id"><i class="fas fa-chevron-right fa-xs"></i>@category.Name </a></li>
+
+                }
+            </ul>
+        </div>
+        <div id="gallery-products">
+            @foreach (var item in Model.AllProducts)
+            {
+            <div class="item">
+
+                <div class="picture">
+                    <a asp-controller="Products" asp-action="Item" asp-route-itemid="@item.Id"> <img src="~/@item.PictureList.FirstOrDefault()" alt="" class="gallery__img"></a>
+                </div>
+                <h2>@item.Name</h2>
+                <h3><span>From</span> @item.LowestPrice lv</h3>
+                <div class="gallery-buttons">
+
+                    <a asp-controller="Products" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
+                </div>
+
+            </div>
+            }
+        </div>
+    </div>
+</div>
+

@@ -1,7 +1,10 @@
 ﻿@model List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>
+@{
+    ViewData["Title"] = "UploadItem";
+}
 <div class="container admin">
-    @Model[0].Error;
-    <form method="post" enctype="multipart/form-data" >
+    
+    <form method="post" enctype="multipart/form-data">
         <h2>Add a design</h2>
         <input type="file" name="pic" accept="image/*" multiple>
         <label for="name">Name of the product</label>
@@ -21,20 +24,20 @@
     <div id="gallery">
         @foreach (var item in Model)
         {
-            <div class="item">
-                <div class="picture">
-                    @foreach (var pic in item.PictureList)
+        <div class="item">
+            <div class="picture">
+                @foreach (var pic in item.PictureList)
                     {
-                        <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id"> <img src="~/@pic.Path" alt="" class="gallery__img"></a>
+                <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id"> <img src="~/@pic.Path" alt="" class="gallery__img"></a>
                     }
 
-                </div>
-                <h2>@item.Name</h2>
-
-                <div class="gallery-buttons">
-                    <a asp-controller="Admin" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
-                </div>
             </div>
+            <h2>@item.Name</h2>
+
+            <div class="gallery-buttons">
+                <a asp-controller="Admin" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
+            </div>
+        </div>
         }
 
 

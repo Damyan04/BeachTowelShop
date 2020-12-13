@@ -66,19 +66,22 @@ namespace BeachTowelShop
             services.AddRazorPages();
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
-            services.AddDistributedMemoryCache();
-           
+          //  services.AddDistributedMemoryCache();
+            
 
             services.AddSession(options =>
             {
                 options.Cookie.Name = "BeachTowelShop-Session";
 
                 options.Cookie.IsEssential = true;
-               
-               
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.HttpOnly = true;
+
+
 
             });
-            services.AddMemoryCache();
+           services.AddMemoryCache();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential 
@@ -119,7 +122,7 @@ namespace BeachTowelShop
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStatusCodePagesWithReExecute("/error/{0}");
-          
+        
             //var dataTextProduct = System.IO.File.ReadAllText(@"product.json");
             //var dataTextPicture = System.IO.File.ReadAllText(@"pictures.json");
             //var dataTextCategory = System.IO.File.ReadAllText(@"categories.json");
@@ -128,14 +131,19 @@ namespace BeachTowelShop
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCookiePolicy();
+           app.UseCookiePolicy();
             //app.UseCookiePolicy();
             app.UseSession();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-         name: "Admin",
-         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+        name: "Admin",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+        name: "Identity",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 //app.UseMvc(routes =>
                 //{

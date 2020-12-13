@@ -23,7 +23,7 @@ namespace BeachTowelShop.Models.Orders
         [Required]
         [Phone]
         public string Phone { get; set; } 
-        public string DeliveryMethod { get; set; } //make it an enum
+        public string DeliveryMethod { get; set;  } //make it an enum
         public string PaymentMethod { get; set; } //make it an enum
         public bool Invoice { get; set; }
       

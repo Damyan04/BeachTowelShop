@@ -39,4 +39,8 @@
     <ProjectReference Include="..\Services\BeachTowelShop.Services\BeachTowelShop.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Login\" />
+  </ItemGroup>
+
 </Project>

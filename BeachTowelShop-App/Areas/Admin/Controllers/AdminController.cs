@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BeachTowelShop.Areas.Admin.Models;
-using BeachTowelShop.Models.Login;
+
 using BeachTowelShop.Models.Orders;
 using BeachTowelShop.Models.Products;
 using BeachTowelShop.Services.Data;
@@ -21,6 +21,7 @@ namespace BeachTowelShop.Areas.Admin
 {
 
     [Area("Admin")]
+   
     public class AdminController : Controller
     {
         private readonly IProductService __productService;
@@ -40,7 +41,7 @@ namespace BeachTowelShop.Areas.Admin
         // GET: Admin
         [Route("Admin/Index")]
         [Authorize]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             // add login controler
 
@@ -49,7 +50,7 @@ namespace BeachTowelShop.Areas.Admin
         }
         [Authorize]
         [Route("Admin/Orders")]
-        public ActionResult Orders()
+        public IActionResult Orders()
         {
             // add login controler
             var allOrdersDtoList = __adminService.GetAllOrders().OrderByDescending(a => a.Status);
@@ -59,7 +60,7 @@ namespace BeachTowelShop.Areas.Admin
         [Authorize]
         [HttpGet]
         [Route("Admin/SizeAndPrice")]
-        public ActionResult SizeAndPrice()
+        public IActionResult SizeAndPrice()
         {
             var allSizes = __productService.GetAllSizes();
             var allSizesDto = _mapper.Map<List<AdminSizesViewModel>>(allSizes);
@@ -70,14 +71,15 @@ namespace BeachTowelShop.Areas.Admin
 
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult SaveInDb(IFormCollection keyValuePairs)
+        public IActionResult SaveInDb(IFormCollection keyValuePairs)
         {
             if (keyValuePairs == null)
             {
                 return RedirectToAction("SizeAndPrice");
             }
             //TODO: make it better
-            var adminSizesViewModel = new AdminSizesViewModel() { Id = keyValuePairs["item.Id"], Name = keyValuePairs["item.Name"], Price = Double.Parse(keyValuePairs["item.Price"]) };
+            
+            var adminSizesViewModel = new AdminSizesViewModel() { Id = keyValuePairs["item.Id"], Name = keyValuePairs["item.Name"], Price = Double.Parse(keyValuePairs["item.Price"] )};
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("SizeAndPrice");
@@ -90,7 +92,7 @@ namespace BeachTowelShop.Areas.Admin
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult SaveAdminProductInDb(IFormCollection keyValuePairs, string productId)
+        public IActionResult SaveAdminProductInDb(IFormCollection keyValuePairs, string productId)
         {
             if (keyValuePairs == null)
             {
@@ -109,7 +111,7 @@ namespace BeachTowelShop.Areas.Admin
         }
         [Authorize]
         [Route("Admin/UploadItem")]
-        public ActionResult UploadItem()
+        public IActionResult UploadItem()
         {
             // add login controler
             
@@ -121,7 +123,7 @@ namespace BeachTowelShop.Areas.Admin
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult CreateItem(List<IFormFile> pic, string name, string productDescription, string categories)
+        public IActionResult CreateItem(List<IFormFile> pic, string name, string productDescription, string categories)
         {
            
             if (categories == null)
@@ -188,18 +190,24 @@ namespace BeachTowelShop.Areas.Admin
             __adminService.CreateProduct(productDto);
             var allProductsDto = __adminService.GetAllProductsForAdmin();
             var allProductsViewModel = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto);
-            _cache.Remove("GalleryProductsViewModel");
+           
+               
+            //_cache.Remove("GalleryProductsViewModel");
+            //_cache.Remove("HomePageViewModel");
+           
+            _cache.Remove("OrderProductViewModel");
             _cache.Remove("GalleryProductsViewModelFilter");
            
-           
-            
+
+
+
             return View("UploadItem",allProductsViewModel);
         }
         // GET: Admin/Details/5
 
         [Authorize]
         [Route("Admin/Info")]
-        public ActionResult Info(string id)
+        public IActionResult Info(string id)
         {
             // add login controler
             var fullOrderDto = __adminService.GetOrderById(id);
@@ -214,7 +222,7 @@ namespace BeachTowelShop.Areas.Admin
     }
         [Authorize]
         [Route("Admin/Item")]
-        public ActionResult Item(string id)
+        public IActionResult Item(string id)
         {
             var productDto = __adminService.GetAdminProduct(id);
             var productViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(productDto);

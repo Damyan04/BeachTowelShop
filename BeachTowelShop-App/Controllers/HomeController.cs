@@ -31,15 +31,13 @@ namespace BeachTowelShop.Controllers
             _cache = memoryCache;
         }
 
+        [Route("/")]
+        
         public IActionResult Index()
         {
-            bool isAuthenticated = User.Identity.IsAuthenticated;
-            bool admin = User.IsInRole("Admin");
-            if (isAuthenticated&&admin)
-            {
-                return View("~/Areas/Admin/Views/Admin/Index.cshtml");
-            }
-            
+
+           
+           
             HomePageViewModel homePageViewModel;
            
             if (!_cache.TryGetValue("HomePageViewModel",out homePageViewModel))
@@ -60,11 +58,7 @@ namespace BeachTowelShop.Controllers
             homePageViewModel = _cache.Get("HomePageViewModel") as HomePageViewModel;
          
 
-            string cookie = "BeachTowelShop-Session";
-            if (!Request.Cookies.ContainsKey(cookie))
-            {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
-            }
+            
             
            
         
@@ -82,17 +76,6 @@ namespace BeachTowelShop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        private void Set(string key, string value, int? expireTime)
-        {
-            CookieOptions option = new CookieOptions();
-
-            if (expireTime.HasValue)
-                option.Expires = DateTime.Now.AddMinutes(expireTime.Value);
-            else
-                option.Expires = DateTime.Now.AddMilliseconds(10);
-
-            option.SameSite = SameSiteMode.Strict;
-            Response.Cookies.Append(key, value, option);
-        }
+        
     }
 }
