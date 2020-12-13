@@ -19,10 +19,10 @@ namespace BeachTowelShop.Services.Interfaces
 
         ICollection<SizeDto> GetAllSizes();
 
-        double GetPriceForSize(string size);
+        double GetPriceForSize(string size, string productId);
         bool VerifyId(string productId);
         ICollection<SizeDto>GetSizes();
         ICollection<CommentDto>GetGeneralComments();
-
+        double GetPriceForSizeGeneric(string size);
     }
 }

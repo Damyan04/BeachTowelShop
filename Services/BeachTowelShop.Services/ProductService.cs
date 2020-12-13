@@ -34,14 +34,25 @@ namespace BeachTowelShop.Services
         {
             //need picture URL,Name
             var products = _appDbContext.Products.ToList();
-            var prices = _appDbContext.ProductSizes.Select(p => (p.Price)).ToList();
-            var lowestPrice = prices.Min(p => p);
-            var highPrice = prices.Max(p => p);
+            
+            
             
         var dataDto = _mapper.Map<List<GalleryProductDto>>(products);
             foreach (var item in dataDto)
             {
-                item.LowestPrice = lowestPrice;
+                var lowPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id&&a.Price>0).Select(a => a.Price).ToList();
+                double lowPrice = 0;
+                double highPrice = 0;
+                if (lowPriceList.Count > 0)
+                {
+                    lowPrice = lowPriceList.Min(p => p);
+                }
+                var highPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id&&a.Price>0).Select(a => a.Price).ToList();
+                if (highPriceList.Count > 0)
+                {
+                    highPrice = lowPriceList.Max(p => p);
+                }
+                item.LowestPrice = lowPrice;
                 item.HighPrice = highPrice;
             }
             var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
@@ -59,15 +70,25 @@ namespace BeachTowelShop.Services
         public ICollection<GalleryProductDto> GetAllProductsForCategory(string categoryId)
         {
             var productIds = _appDbContext.ProductCategories.Where(c => c.CategoryId == categoryId).Select(p => p.Product).ToList();
-            var prices = _appDbContext.ProductSizes.Select(p => (p.Price)).ToList();
-            var lowestPrice = prices.Min(p => p);
-            var highPrice = prices.Max(p => p);
+           
             //var products = _appDbContext.Products.Where(p => productIds.Any());
             var dataDto = _mapper.Map<List<GalleryProductDto>>(productIds);
             //TODO:refaktor with linq
             foreach (var item in dataDto)
             {
-                item.LowestPrice = lowestPrice;
+                var lowPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id && a.Price > 0).Select(a => a.Price).ToList();
+                double lowPrice = 0;
+                double highPrice = 0;
+                if (lowPriceList.Count > 0)
+                {
+                    lowPrice = lowPriceList.Min(p => p);
+                }
+                var highPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id && a.Price > 0).Select(a => a.Price).ToList();
+                if (highPriceList.Count > 0)
+                {
+                    highPrice = lowPriceList.Max(p => p);
+                }
+                item.LowestPrice = lowPrice;
                 item.HighPrice = highPrice;
             }
             var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
@@ -104,10 +125,17 @@ namespace BeachTowelShop.Services
             return generalCommentsDtoList;
         }
 
-        public double GetPriceForSize(string sizeName)
+        public double GetPriceForSize(string sizeName,string productId)
         {
 
-            var price = _appDbContext.Sizes.Where(a => a.Name == sizeName).Select(b => b.Price).FirstOrDefault();
+            var sizeId = _appDbContext.Sizes.Where(a => a.Name == sizeName).Select(b => b.Id).FirstOrDefault();
+            var towelPrice = _appDbContext.ProductSizes.Where(a => a.SizeId == sizeId && a.ProductId == productId).Select(a => a.Price).FirstOrDefault();
+            return towelPrice;
+        }
+
+        public double GetPriceForSizeGeneric(string size)
+        {
+            var price = _appDbContext.Sizes.Where(a => a.Name == size).Select(b => b.Price).FirstOrDefault();
             return double.Parse(price);
         }
 

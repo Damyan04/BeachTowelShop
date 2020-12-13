@@ -13,6 +13,7 @@ using BeachTowelShop.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -74,9 +75,9 @@ namespace BeachTowelShop
                 options.Cookie.Name = "BeachTowelShop-Session";
 
                 options.Cookie.IsEssential = true;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.HttpOnly = true;
+             
 
 
 
@@ -89,6 +90,16 @@ namespace BeachTowelShop
                 options.CheckConsentNeeded = context => true;
                 // requires using Microsoft.AspNetCore.Http;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = int.MaxValue;
+            });
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue; // if don't set default value is: 128 MB
+                x.MultipartHeadersLengthLimit = int.MaxValue;
             });
             // services.AddTransient(typeof(ISeeder), typeof(Seeder));
             //services.AddScoped(ISeeder, Seeder);

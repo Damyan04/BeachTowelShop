@@ -45,7 +45,7 @@ namespace BeachTowelShop.Services
                 {
                     productToUpdate.OrderCount += item.Count;
                     _appDbContext.Products.Update(productToUpdate);
-                    _appDbContext.SaveChangesAsync();
+                    _appDbContext.SaveChanges();
                 }
             }
         }
@@ -53,10 +53,10 @@ namespace BeachTowelShop.Services
 
         public void DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionDto)
         {
-           var item= _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionDto.ProductId&&a.Size.Contains(userSessionDto.Size)).FirstOrDefault();
+           var item= _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionDto.ProductId&&a.Size.Contains(userSessionDto.Size)&&a.OrderId==null).FirstOrDefault();
             if (item != null)
             {
-                var textPropertiesList = _appDbContext.TextProperties.Where(a => a.UserSessionId == sessionId && a.CartItemId == item.Id).ToList();
+                var textPropertiesList = _appDbContext.TextProperties.Where(a => a.UserSessionId == sessionId && a.CartItemId == item.Id&&a.OrderId==null).ToList();
 
                 _appDbContext.CartItems.Remove(item);
                 _appDbContext.TextProperties.RemoveRange(textPropertiesList);
@@ -66,7 +66,7 @@ namespace BeachTowelShop.Services
 
         public string GetItemFolderPath(string productId)
         {
-            return _appDbContext.CartItems.Where(a => a.ProductId == productId).Select(a => a.DesignFolderPath).FirstOrDefault();
+            return _appDbContext.CartItems.Where(a => a.ProductId == productId&&a.OrderId==null).Select(a => a.DesignFolderPath).FirstOrDefault();
         }
 
         public List<UserSessionCartDto> GetItemsInCart(string sessionId)
@@ -87,7 +87,7 @@ namespace BeachTowelShop.Services
            return _appDbContext.CartItems.Any(a => a.UserSessionId == sessionId && a.OrderId == null);
         }
 
-        public void SaveItemToCart(UserSessionCartDto userSessionDto)
+        public UserSessionCartDto SaveItemToCart(UserSessionCartDto userSessionDto)
         {
             var session = _appDbContext.UserSessions.FirstOrDefault(a => a.Id == userSessionDto.UserSessionId);
             if (session==null)
@@ -97,19 +97,22 @@ namespace BeachTowelShop.Services
                 _appDbContext.SaveChanges();
             }
             var item = _mapper.Map<CartItem>(userSessionDto);
-            var item2 = _appDbContext.CartItems.Where(a => a.UserSessionId == userSessionDto.UserSessionId && a.ProductId == userSessionDto.ProductId && a.Size.Contains(userSessionDto.Size)).FirstOrDefault();
+            var item2 = _appDbContext.CartItems.Where(a => a.UserSessionId == userSessionDto.UserSessionId && a.ProductId == userSessionDto.ProductId && a.Size.Contains(userSessionDto.Size)&&a.OrderId==null).FirstOrDefault();
             if (item2 != null)
             {
                 item2.Count += userSessionDto.Count;
                 item2.Sum += userSessionDto.Sum;
                 _appDbContext.CartItems.Update(item2);
                 _appDbContext.SaveChanges();
+                userSessionDto.Count = item2.Count;
+                userSessionDto.Sum = item2.Sum;
             }
             else
             {
                 _appDbContext.CartItems.Add(item);
                 _appDbContext.SaveChanges();
             }
+            return userSessionDto;
             
         }
 
@@ -132,15 +135,20 @@ namespace BeachTowelShop.Services
             return userSessionDto;
         }
 
-        public void UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto)
+        public UserSessionCartDto UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto)
         {
-            var item = _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionCartDto.ProductId && a.Size.Contains(userSessionCartDto.Size)).FirstOrDefault();
+            var item = _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionCartDto.ProductId && a.Size==userSessionCartDto.Size && a.OrderId==null).FirstOrDefault();
             if (item != null)
             {
                 item.Count = userSessionCartDto.Count;
-                item.Sum = userSessionCartDto.Sum;
+                item.Sum =item.Price*item.Count;
+                userSessionCartDto.Price = item.Price;
+                userSessionCartDto.Sum = item.Sum;
+                userSessionCartDto.Size = item.Size;
             }
             _appDbContext.SaveChanges();
+
+            return userSessionCartDto;
             
         }
     }

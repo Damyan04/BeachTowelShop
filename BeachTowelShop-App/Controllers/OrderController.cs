@@ -182,6 +182,7 @@ namespace BeachTowelShop.Controllers
                         {
                             __orderService.CreateOrder(userDetailsDto);
                             _cache.Remove($"CartViewModel{userId}");
+
                             return View();
                         }
                         break;
@@ -321,7 +322,7 @@ namespace BeachTowelShop.Controllers
             orderDataViewModel.DesignFolderPath = splitPath[0] + "/" + splitPath[1];
             orderDataViewModel.Size = objectsInCanvas.Size;
             orderDataViewModel.Count = int.Parse(objectsInCanvas.Count);
-            orderDataViewModel.Price = __productService.GetPriceForSize(orderDataViewModel.Size);
+            orderDataViewModel.Price = __productService.GetPriceForSizeGeneric(orderDataViewModel.Size);
             orderDataViewModel.ProductId = splitPath[2];
             orderDataViewModel.Sum = orderDataViewModel.Price * orderDataViewModel.Count;
             // orderDataViewModel.SessionId = Request.Cookies[cookie];
@@ -410,11 +411,9 @@ namespace BeachTowelShop.Controllers
             else
                 option.Expires = DateTime.Now.AddMilliseconds(10);
 
-            option.SameSite = SameSiteMode.None;
-            option.HttpOnly = true;
-            option.Secure = true;
-            option.IsEssential = true;
-           
+            option.SameSite = SameSiteMode.Strict;
+
+
             Response.Cookies.Append(key, value, option);
             
         }

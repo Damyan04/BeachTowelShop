@@ -21,5 +21,6 @@ namespace BeachTowelShop.Services.Interfaces
         void SaveAdminProductSize(SizeWithPriceDto productSize,string productId);
 
        void CreateProduct(AdminProductDto productDto);
+        void UpdateItem(AdminProductDto productDto);
     }
 }

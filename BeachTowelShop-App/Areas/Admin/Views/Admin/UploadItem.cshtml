@@ -28,14 +28,15 @@
             <div class="picture">
                 @foreach (var pic in item.PictureList)
                     {
-                <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id"> <img src="~/@pic.Path" alt="" class="gallery__img"></a>
-                    }
+                <a asp-controller="Admin" asp-action="Item" asp-route-itemId="@item.Id"> <img src="~/@pic.Path" alt="" class="gallery__img"></a>
+                    break;
+                }
 
             </div>
             <h2>@item.Name</h2>
 
             <div class="gallery-buttons">
-                <a asp-controller="Admin" asp-action="Item" asp-route-itemid="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
+                <a asp-controller="Admin" asp-action="Item" asp-route-itemId="@item.Id"> <i class="fas fa-plus-square fa-lg"></i> See more</a>
             </div>
         </div>
         }

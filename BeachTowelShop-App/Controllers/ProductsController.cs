@@ -128,6 +128,7 @@ namespace BeachTowelShop.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]     
+        [Route("Products/AddToCart")]
         public IActionResult AddToCart([FromBody] CartViewModel cartViewModels)
         {
             string sessionCookie = "BeachTowelShop-Session";
@@ -137,7 +138,7 @@ namespace BeachTowelShop.Controllers
             }
             if (Request.Cookies[sessionCookie] == null)
             {
-                return View();
+                return BadRequest();
             }
             var userId = Request.Cookies[sessionCookie];
             OrderDataViewModel orderDataViewModel = new OrderDataViewModel();
@@ -150,29 +151,37 @@ namespace BeachTowelShop.Controllers
                 orderDataViewModel.DesignFolderPath = values[0];
                 orderDataViewModel.DesignName =values[1];
             }
-            orderDataViewModel.Size = cartViewModels.Size;
-            orderDataViewModel.Price = __productService.GetPriceForSize(orderDataViewModel.Size);
             var doesIdExist = __productService.VerifyId(cartViewModels.ProductId);
             if (!doesIdExist)
             {
                 return NotFound();
             }
+            orderDataViewModel.Size = cartViewModels.Size;
+           
+            
+            
+            orderDataViewModel.Price = __productService.GetPriceForSize(orderDataViewModel.Size, cartViewModels.ProductId);
             orderDataViewModel.ProductId = cartViewModels.ProductId;
             orderDataViewModel.SessionId = Request.Cookies[sessionCookie];
             orderDataViewModel.Sum = orderDataViewModel.Price * orderDataViewModel.Count;
                                                                    
             var userSessionDto = _mapper.Map<UserSessionCartDto>(orderDataViewModel);
            
-            __orderService.SaveItemToCart(userSessionDto);
+          var updateItem=  __orderService.SaveItemToCart(userSessionDto);
 
             List<CartViewModel> itemsInCache;
             if (!_cache.TryGetValue($"CartViewModel{userId}", out itemsInCache))
             {
                 itemsInCache = new List<CartViewModel>();
-                _cache.Set($"CartViewModel{userId}", itemsInCache);
+               _cache.Set($"CartViewModel{userId}", itemsInCache);
             }
             itemsInCache = _cache.Get($"CartViewModel{userId}") as List<CartViewModel>;
-            var cartItem = _mapper.Map<CartViewModel>(userSessionDto);
+            var cartItem = _mapper.Map<CartViewModel>(updateItem);
+           var itemToRemove= itemsInCache.Where(a => a.SessionId == updateItem.UserSessionId && a.ProductId == updateItem.ProductId&&a.Size==updateItem.Size).FirstOrDefault();
+            if (itemToRemove != null)
+            {
+                itemsInCache.Remove(itemToRemove);
+            }
             itemsInCache.Add(cartItem);
             _cache.Remove($"CartViewModel{userId}");
             _cache.Set($"CartViewModel{userId}", itemsInCache);
@@ -189,12 +198,9 @@ namespace BeachTowelShop.Controllers
                 option.Expires = DateTime.Now.AddMinutes(expireTime.Value);
             else
                 option.Expires = DateTime.Now.AddMilliseconds(10);
-            
 
-            option.SameSite = SameSiteMode.None;
-            option.HttpOnly = true;
-            option.Secure = true;
-            option.IsEssential = true;
+            option.SameSite = SameSiteMode.Strict;
+
 
             Response.Cookies.Append(key, value, option);
           

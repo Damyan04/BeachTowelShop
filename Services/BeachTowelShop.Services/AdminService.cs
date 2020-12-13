@@ -154,5 +154,38 @@ namespace BeachTowelShop.Services
             _appDbContext.SaveChanges();
 
         }
+
+        public void UpdateItem(AdminProductDto productDto)
+        {
+            var product = _mapper.Map<Product>(productDto);
+            var pictures = _mapper.Map<List<Picture>>(productDto.PictureList);
+            var categories = _mapper.Map<List<Category>>(productDto.CategoryViews);
+            var prices = new List<ProductSize>();
+            foreach (var item in productDto.SizesPricesList)
+            {
+                var price = new ProductSize() { Price = item.Price, ProductId = productDto.Id, SizeId = item.Id};
+                prices.Add(price);
+            }
+            foreach (var picture in pictures)
+            {
+                _appDbContext.Pictures.Update(picture);
+                _appDbContext.SaveChanges();
+            }
+            foreach (var category in categories)
+            {
+                _appDbContext.Categories.Update(category);
+                _appDbContext.SaveChanges();
+            }
+            foreach (var price in prices)
+            {
+                
+                _appDbContext.ProductSizes.Update(price);
+                _appDbContext.SaveChanges();
+            }
+            _appDbContext.Products.Update(product);
+            _appDbContext.SaveChanges();
+
+
+        }
     }
 }

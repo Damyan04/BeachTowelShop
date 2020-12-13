@@ -15,9 +15,9 @@ namespace BeachTowelShop.Services.Interfaces
 
         void DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionCartDto);
 
-        void UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto);
+        UserSessionCartDto UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto);
 
-        void SaveItemToCart(UserSessionCartDto userSessionDto);
+        UserSessionCartDto SaveItemToCart(UserSessionCartDto userSessionDto);
         void CreateOrder(UserDetailsDto userDetailsViewDto);
 
         double GetSumForSession(string sessionId);

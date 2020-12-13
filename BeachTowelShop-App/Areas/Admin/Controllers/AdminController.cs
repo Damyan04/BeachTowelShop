@@ -192,7 +192,7 @@ namespace BeachTowelShop.Areas.Admin
             var allProductsViewModel = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto);
            
                
-            //_cache.Remove("GalleryProductsViewModel");
+            _cache.Remove("GalleryProductsViewModel");
             //_cache.Remove("HomePageViewModel");
            
             _cache.Remove("OrderProductViewModel");
@@ -222,13 +222,27 @@ namespace BeachTowelShop.Areas.Admin
     }
         [Authorize]
         [Route("Admin/Item")]
-        public IActionResult Item(string id)
+        public IActionResult Item(string itemId)
         {
-            var productDto = __adminService.GetAdminProduct(id);
+            var productDto = __adminService.GetAdminProduct(itemId);
             var productViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(productDto);
-
+            productViewModel.Id = itemId;
             // add login controler
             return View(productViewModel);
+        }
+        [Authorize]
+        [Route("Admin/Item")]
+        [HttpPost]
+        public IActionResult UpdateItem(AdminProductDto productDto)
+        {
+            //var productDto = _mapper.Map<AdminProductDto>(productViewModel);
+            __adminService.UpdateItem(productDto);
+            string id = productDto.Id;
+            var updatedProductDto=  __adminService.GetAdminProduct(id);
+            var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return View("Item", updatedProductViewModel);
         }
 
     }
