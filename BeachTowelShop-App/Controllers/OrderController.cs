@@ -316,6 +316,13 @@ namespace BeachTowelShop.Controllers
                 img.Save(fullPath, ImageFormat.Png);
 
             }
+            double count = 0;
+            var canConvert = double.TryParse(objectsInCanvas.Count, out count);
+            if (!canConvert || double.Parse(objectsInCanvas.Count) <= 0)
+            {
+                objectsInCanvas.Count = "1";
+            }
+          
             var splitPath = fullPath.Split("/").TakeLast(3).ToList();
             orderDataViewModel.SessionId = cookieValueFromReq;
             orderDataViewModel.DesignName = splitPath[2];

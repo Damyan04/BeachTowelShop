@@ -3,9 +3,11 @@
     ViewData["Title"] = "Admin-Item";
 }
 <div class="container admin ">
-    <p>Item ordered: @Model.OrderCount</p>
+   
     
     <form method="post" id="productEdit" enctype="multipart/form-data">
+        <label asp-for="@Model.OrderCount">Item ordered:</label>
+        <input asp-for="@Model.OrderCount" value="@Model.OrderCount" readonly/>
         <input asp-for="@Model.Id" value="@Model.Id" type="hidden" />
         <div class="column-div">
             <label asp-for="@Model.Name">Name</label>

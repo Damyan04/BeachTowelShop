@@ -77,12 +77,21 @@ namespace BeachTowelShop.Areas.Admin
             {
                 return RedirectToAction("SizeAndPrice");
             }
+            double count = 0;
+            var canConvert = double.TryParse(keyValuePairs["item.Price"], out count);
+            AdminSizesViewModel adminSizesViewModel  =new AdminSizesViewModel();
+            if (canConvert ||( double.Parse(keyValuePairs["item.Price"]) > 0))
+            {
+                adminSizesViewModel.Id = keyValuePairs["item.Id"];
+                adminSizesViewModel.Name = keyValuePairs["item.Name"];
+                adminSizesViewModel.Price = Double.Parse(keyValuePairs["item.Price"]);
+            }
             //TODO: make it better
-            
-            var adminSizesViewModel = new AdminSizesViewModel() { Id = keyValuePairs["item.Id"], Name = keyValuePairs["item.Name"], Price = Double.Parse(keyValuePairs["item.Price"] )};
+
+          
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("SizeAndPrice");
+                return BadRequest();
             }
             var sizesDto = _mapper.Map<SizeDto>(adminSizesViewModel);
             __adminService.SaveSizesToDb(sizesDto);
@@ -235,6 +244,10 @@ namespace BeachTowelShop.Areas.Admin
         [HttpPost]
         public IActionResult UpdateItem(AdminProductDto productDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             //var productDto = _mapper.Map<AdminProductDto>(productViewModel);
             __adminService.UpdateItem(productDto);
             string id = productDto.Id;

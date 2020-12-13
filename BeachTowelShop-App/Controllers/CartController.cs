@@ -158,7 +158,7 @@ namespace BeachTowelShop.Controllers
             itemsInCache.Remove(item);
             itemsInCache.Add(updatedItem);
             
-            _cache.Remove($"CartViewModel{userId}");
+           // _cache.Remove($"CartViewModel{userId}");
             
             _cache.Set($"CartViewModel{userId}", itemsInCache);
             return Ok("Ok");

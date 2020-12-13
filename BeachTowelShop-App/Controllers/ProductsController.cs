@@ -140,6 +140,17 @@ namespace BeachTowelShop.Controllers
             {
                 return BadRequest();
             }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            double count = 0;
+            var canConvert = double.TryParse(cartViewModels.Count, out count);
+            if (!canConvert)
+            {
+                cartViewModels.Count = "1";
+            }
+
             var userId = Request.Cookies[sessionCookie];
             OrderDataViewModel orderDataViewModel = new OrderDataViewModel();
             orderDataViewModel.Count = int.Parse(cartViewModels.Count);
@@ -183,7 +194,7 @@ namespace BeachTowelShop.Controllers
                 itemsInCache.Remove(itemToRemove);
             }
             itemsInCache.Add(cartItem);
-            _cache.Remove($"CartViewModel{userId}");
+            //_cache.Remove($"CartViewModel{userId}");
             _cache.Set($"CartViewModel{userId}", itemsInCache);
 
             return Ok("Towel added to the cart");
