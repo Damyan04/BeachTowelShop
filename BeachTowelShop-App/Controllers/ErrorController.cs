@@ -18,6 +18,13 @@ namespace BeachTowelShop.Controllers
           
             return View();
         }
+        [Route("error/400")]
+        public IActionResult Error400()
+        {
+
+
+            return View();
+        }
 
         [Route("error/{code:int}")]
         public IActionResult Error(int code)

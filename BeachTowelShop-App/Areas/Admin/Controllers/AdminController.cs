@@ -99,25 +99,7 @@ namespace BeachTowelShop.Areas.Admin
             _cache.Remove("OrderProductViewModel");
             return RedirectToAction("SizeAndPrice");
         }
-        [Authorize]
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult SaveAdminProductInDb(IFormCollection keyValuePairs, string productId)
-        {
-            if (keyValuePairs == null)
-            {
-                return RedirectToAction("Item");
-            }
-            //TODO: make it better
-            var adminSizesViewModel = new AdminSizesViewModel() { Id = keyValuePairs["item.Id"], Name = keyValuePairs["item.Name"], Price = Double.Parse(keyValuePairs["item.Price"]) };
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Item");
-            }
-            var sizesDto = _mapper.Map<SizeWithPriceDto>(adminSizesViewModel);
-            __adminService.SaveAdminProductSize(sizesDto, productId);
-          
-            return RedirectToAction("Item");
-        }
+  
         [Authorize]
         [Route("Admin/UploadItem")]
         public IActionResult UploadItem()
@@ -176,14 +158,11 @@ namespace BeachTowelShop.Areas.Admin
 
                     System.Drawing.Image images = System.Drawing.Image.FromStream(ms);
 
-                    if (images.Width < 700 || images.Height < 1400)
-                    {
-                        var allProductsDto1 = __adminService.GetAllProductsForAdmin();
-                        var allProductsViewModel1 = _mapper.Map< List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel >> (allProductsDto1);
-                        allProductsViewModel1[0].Error = "The photo doesn't meet the requirements";
-                        return View(allProductsViewModel1);
+                    //if (images.Width < 700 || images.Height < 1400)
+                    //{
+                    //    return BadRequest("Attach a better photo");
                       
-                    }
+                    //}
 
 
 
@@ -248,7 +227,7 @@ namespace BeachTowelShop.Areas.Admin
             {
                 return BadRequest();
             }
-            //var productDto = _mapper.Map<AdminProductDto>(productViewModel);
+           
             __adminService.UpdateItem(productDto);
             string id = productDto.Id;
             var updatedProductDto=  __adminService.GetAdminProduct(id);
@@ -256,6 +235,23 @@ namespace BeachTowelShop.Areas.Admin
             _cache.Remove("GalleryProductsViewModelFilter");
             _cache.Remove("GalleryProductsViewModel");
             return View("Item", updatedProductViewModel);
+        }
+        [Authorize]
+        [Route("Admin/DeleteItem")]
+        [HttpPost]
+        public IActionResult DeleteItem(string id)
+        {
+            if (id==null)
+            {
+                return BadRequest();
+            }
+            
+            __adminService.DeleteItemById(id);
+           
+            
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return RedirectToAction("UploadItem");
         }
 
     }

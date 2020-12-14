@@ -83,5 +83,12 @@
 
         <button type="submit" class="btn btn-primary" asp-controller="Admin" asp-action="AddPicAndCat">Save changes</button>
     </form>
+    <div class="buttons">
+        <form method="post">
+            <input type="submit" value="DeleteItem" asp-controller="Admin" asp-action="DeleteItem" asp-route-id="@Model.Id"/>
+        </form>
+  
+
+</div> 
 </div>
 

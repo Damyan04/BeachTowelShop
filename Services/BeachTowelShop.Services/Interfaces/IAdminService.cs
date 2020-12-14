@@ -22,5 +22,6 @@ namespace BeachTowelShop.Services.Interfaces
 
        void CreateProduct(AdminProductDto productDto);
         void UpdateItem(AdminProductDto productDto);
+        void DeleteItemById(string id);
     }
 }

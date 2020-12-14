@@ -65,6 +65,39 @@ namespace BeachTowelShop.Services
             _appDbContext.SaveChanges();
         }
 
+        public void DeleteItemById(string id)
+        {
+            //TODO if picture is not assosiated with a item delete the picture/category/
+            var itemToDelete = _appDbContext.Products.Where(a => a.Id == id).FirstOrDefault();
+            if (itemToDelete != null)
+            {
+                var allCategoriesForTheProduct = _appDbContext.ProductCategories.Where(a => a.ProductId == id).Select(a => a.Category).ToList();
+                var allPicturesForProduct = _appDbContext.ProductPictures.Where(a => a.ProductId == id).Select(a => a.Picture).ToList();
+                _appDbContext.Products.Remove(itemToDelete);
+                _appDbContext.SaveChanges();
+                foreach (var item in allCategoriesForTheProduct)
+                {
+                    var isCategoryEmpty = _appDbContext.ProductCategories.Where(a => a.CategoryId == item.Id).ToList();
+                    if (isCategoryEmpty.Count == 0)
+                    {
+                        _appDbContext.Categories.Remove(item);
+                        _appDbContext.SaveChanges();
+                    }
+                }
+                foreach (var item in allPicturesForProduct)
+                {
+                    var isCategoryEmpty = _appDbContext.ProductPictures.Where(a => a.PictureId == item.Id).ToList();
+                    if (isCategoryEmpty.Count == 0)
+                    {
+                        _appDbContext.Pictures.Remove(item);
+                        _appDbContext.SaveChanges();
+                    }
+                }
+
+
+            }
+        }
+
         public AdminProductDto GetAdminProduct(string id)
         {
 

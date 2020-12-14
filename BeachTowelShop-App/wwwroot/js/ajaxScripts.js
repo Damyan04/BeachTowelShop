@@ -123,8 +123,8 @@ function addToCart() {
         },
         error: function (response) {
             if (response != 0) {
-                // console.log(response);
-                alert(response.responseText);
+                //console.log(response);
+                alert(response.status + "\n"+ response.statusText);
             }
         },
     });
