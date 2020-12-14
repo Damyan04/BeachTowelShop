@@ -18,7 +18,13 @@
                 {
                     <li><input type="text" asp-for="@Model.PictureList[i].Path" value="@Model.PictureList[i].Path"></li>
                     <li><input asp-for="@Model.PictureList[i].Id" value="@Model.PictureList[i].Id" type="hidden" /></li>
+                    if (Model.PictureList.Count > 1)
+                    {
+                        <li><input type="submit" asp-controller="Admin" asp-action="DeletePath" asp-route-id="@Model.Id" asp-route-pathId="@Model.PictureList[i].Id" value="DeletePicture"/></li>
+                        } 
                 }
+
+                
 
             </ul>
 
@@ -57,10 +63,14 @@
             <h3>Category for a product</h3>
             @for (int i = 0; i < Model.CategoryViews.Count; i++)
             {
-                <ul>
-                    <li> <input type="text" asp-for="@Model.CategoryViews[i].Name" value="@Model.CategoryViews[i].Name"></li>
-                    <li><input asp-for="@Model.CategoryViews[i].Id" value="@Model.CategoryViews[i].Id" type="hidden" /></li>
-                </ul>
+        <ul>
+            <li> <input type="text" asp-for="@Model.CategoryViews[i].Name" value="@Model.CategoryViews[i].Name"></li>
+            <li><input asp-for="@Model.CategoryViews[i].Id" value="@Model.CategoryViews[i].Id" type="hidden" /></li>
+            @if (Model.CategoryViews.Count > 1)
+            {
+            <li><input type="submit" value="DeleteCategory" asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@Model.Id" asp-route-categoryId="@Model.CategoryViews[i].Id"/></li>
+            }
+        </ul>
             }
 
 
@@ -69,19 +79,20 @@
 
         <button type="submit" class="btn btn-primary" asp-controller="Admin" asp-action="UpdateItem">Save changes</button>
     </form>
-    <form method="post">
-        <label for="import-file">
-            Add a picture
+    <form method="post" enctype="multipart/form-data">
+        <label for="pic">
+            Add a picture for product
+            <input type="file" name="pic" accept="image/*" multiple>
         </label>
-        <input type="file" name="import-file" accept="image/*" multiple>
+        
         <h3>Add a category</h3>
-        <label>
+        <label for="category">
             Category Name split by ";"
             <input type="text" name="category" value="" pattern="([A-Za-z0-9\s\D]+;)"/>
         </label>
         
 
-        <button type="submit" class="btn btn-primary" asp-controller="Admin" asp-action="AddPicAndCat">Save changes</button>
+        <button type="submit" class="btn btn-primary" asp-controller="Admin" asp-action="AddPicAndCat" asp-route-id="@Model.Id" asp-route-name="@Model.Name">Save changes</button>
     </form>
     <div class="buttons">
         <form method="post">

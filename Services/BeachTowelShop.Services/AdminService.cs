@@ -21,6 +21,53 @@ namespace BeachTowelShop.Services
             _mapper = mapper;
         }
 
+        public void CreateCategoryAndPictureForItem(List<PictureDto> picturePathList, List<string> categoryList,string id)
+        {
+            var product = _appDbContext.Products.Where(a => a.Id == id).FirstOrDefault();
+            foreach (var item in categoryList)
+            {
+                
+                var doesCategoryExistsForProduct = _appDbContext.ProductCategories.Where(a => a.ProductId == id && a.Category.Name == item).Any();
+                if (doesCategoryExistsForProduct)
+                {
+                    return;
+                }
+                var doesCategoryExist = _appDbContext.Categories.Where(a => a.Name == item).FirstOrDefault();
+                if (doesCategoryExist == null)
+                {
+                    var category = new Category() { Name = item };
+                    _appDbContext.Categories.Add(category);
+                    _appDbContext.SaveChanges();
+                   
+                   
+
+                }
+                var cId = _appDbContext.Categories.Where(a => a.Name == item).Select(a => a.Id).FirstOrDefault();
+                var pC = new ProductCategory() { CategoryId = cId, ProductId = id };
+              
+                  product.ProductCategories.Add(pC);
+               
+              
+
+            }
+            var picture = _mapper.Map<List<Picture>>(picturePathList);
+            foreach (var pic in picture)
+            {
+                var doesPicExist = _appDbContext.Pictures.Where(a => a.Path == pic.Path).Any();
+                if (!doesPicExist)
+                {
+                    _appDbContext.Pictures.Add(pic);
+                    _appDbContext.SaveChanges();
+                }
+                
+                var productPicture = new ProductPicture() { PictureId = pic.Id, ProductId = id };
+                product.ProductPictures.Add(productPicture);
+
+            }
+            _appDbContext.SaveChanges();
+
+        }
+       
         public void CreateProduct(AdminProductDto productDto)
         {
             var product = _mapper.Map<Product>(productDto);
@@ -33,9 +80,13 @@ namespace BeachTowelShop.Services
             var sizes = _mapper.Map<List<Size>>(productDto.SizesPricesList);
             foreach (var pic in picture)
             {
+                var doesPicExist = _appDbContext.Pictures.Where(a => a.Path == pic.Path).Any();
+                if (!doesPicExist)
+                {
+                    _appDbContext.Pictures.Add(pic);
+                    _appDbContext.SaveChanges();
+                }
                
-                _appDbContext.Pictures.Add(pic);
-                _appDbContext.SaveChanges();
                 var productPicture = new ProductPicture() { PictureId = pic.Id, ProductId = product.Id };
                 product.ProductPictures.Add(productPicture);
                 
@@ -53,16 +104,50 @@ namespace BeachTowelShop.Services
                     _appDbContext.Categories.Add(category);
                     _appDbContext.SaveChanges();
                 }
-               
+
+                var doesCategoryExistsForProduct = _appDbContext.ProductCategories.Where(a => a.ProductId == id && a.Category.Name == c.Name).Any();
+                if (!doesCategoryExistsForProduct)
+                {
                     var cId = _appDbContext.Categories.Where(a => a.Name == c.Name).Select(a => a.Id).FirstOrDefault();
-                    var pC= new ProductCategory() { CategoryId = cId, ProductId = product.Id };
+                    var pC = new ProductCategory() { CategoryId = cId, ProductId = product.Id };
                     product.ProductCategories.Add(pC);
+                }
                 
+                
+            }
+            if (siezesPrices.Count == 0)
+            {
+                var allGenericSizes= _appDbContext.Sizes.ToList();
+                foreach (var size in allGenericSizes)
+                {
+                    var genericSizesWithPrice = new ProductSize { ProductId = product.Id, SizeId = size.Id, Price = double.Parse(size.Price) };
+                    product.ProductSizes.Add(genericSizesWithPrice);
+                }
+               
             }
           
           
             _appDbContext.Products.Add(product);
             _appDbContext.SaveChanges();
+        }
+
+        public void DeleteCategory(string productId, string categoryId)
+        {
+            var categoryPair = _appDbContext.ProductCategories.Where(a => a.ProductId == productId && a.CategoryId == categoryId).FirstOrDefault();
+            var allCategories = _appDbContext.ProductCategories.Where(a => a.ProductId == productId).ToList();
+            // var product=_appDbContext.Products.
+            if (categoryPair != null &&allCategories.Count>1)
+            {
+                _appDbContext.ProductCategories.Remove(categoryPair);
+                _appDbContext.SaveChanges();
+                var doesCategoryExists = _appDbContext.ProductPictures.Where(a => a.PictureId == categoryId).FirstOrDefault();
+                if (doesCategoryExists == null)
+                {
+                    var category = _appDbContext.Categories.Where(a => a.Id == categoryId).FirstOrDefault();
+                    _appDbContext.Categories.Remove(category);
+                    _appDbContext.SaveChanges();
+                }
+            }
         }
 
         public void DeleteItemById(string id)
@@ -95,6 +180,25 @@ namespace BeachTowelShop.Services
                 }
 
 
+            }
+        }
+
+        public void DeletePicture(string productId, string picturePathId)
+        {
+            var picturePair = _appDbContext.ProductPictures.Where(a => a.ProductId == productId && a.PictureId == picturePathId).FirstOrDefault();
+            var allPicturePairs = _appDbContext.ProductPictures.Where(a => a.ProductId == productId).ToList();
+            // var product=_appDbContext.Products.
+            if (picturePair != null&&allPicturePairs.Count>1)
+            {
+                _appDbContext.ProductPictures.Remove(picturePair);
+                _appDbContext.SaveChanges();
+                var doesPictureExists=_appDbContext.ProductPictures.Where(a=>a.PictureId == picturePathId).FirstOrDefault();
+                if (doesPictureExists == null)
+                {
+                 var picture=   _appDbContext.Pictures.Where(a => a.Id == picturePathId).FirstOrDefault();
+                    _appDbContext.Pictures.Remove(picture);
+                    _appDbContext.SaveChanges();
+                }
             }
         }
 

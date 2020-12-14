@@ -21,7 +21,7 @@ namespace BeachTowelShop.Areas.Admin
 {
 
     [Area("Admin")]
-   
+    [Authorize(Roles = "admins")]
     public class AdminController : Controller
     {
         private readonly IProductService __productService;
@@ -48,7 +48,7 @@ namespace BeachTowelShop.Areas.Admin
 
             return View();
         }
-        [Authorize]
+        [Authorize(Roles = "admins")]
         [Route("Admin/Orders")]
         public IActionResult Orders()
         {
@@ -57,7 +57,7 @@ namespace BeachTowelShop.Areas.Admin
             var orderDtoList = _mapper.Map<List<OrderViewModel>>(allOrdersDtoList);
             return View(orderDtoList);
         }
-        [Authorize]
+        [Authorize(Roles = "admins")]
         [HttpGet]
         [Route("Admin/SizeAndPrice")]
         public IActionResult SizeAndPrice()
@@ -69,7 +69,7 @@ namespace BeachTowelShop.Areas.Admin
             return View(allSizesDto);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admins")]
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult SaveInDb(IFormCollection keyValuePairs)
         {
@@ -99,8 +99,8 @@ namespace BeachTowelShop.Areas.Admin
             _cache.Remove("OrderProductViewModel");
             return RedirectToAction("SizeAndPrice");
         }
-  
-        [Authorize]
+
+        [Authorize(Roles = "admins")]
         [Route("Admin/UploadItem")]
         public IActionResult UploadItem()
         {
@@ -111,7 +111,7 @@ namespace BeachTowelShop.Areas.Admin
 
             return View(allProductsViewModel);
         }
-        [Authorize]
+        [Authorize(Roles = "admins")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult CreateItem(List<IFormFile> pic, string name, string productDescription, string categories)
@@ -131,16 +131,147 @@ namespace BeachTowelShop.Areas.Admin
                 var categoryDto = new CategoryDto() { Name = categoriesList[i] };
                 categoryDtoList.Add(categoryDto);
             }
-            var picturePath = $"C:/Users/damot/source/repos/BeachTowelShop/BeachTowelShop-App/wwwroot/pictures";
+            var picturePathList = new List<PictureDto>();
+            CreateImg(pic,name,picturePathList);
+           var productDto = new AdminProductDto() { Name = name, Description = productDescription, CategoryViews = categoryDtoList, PictureList = picturePathList };
+            __adminService.CreateProduct(productDto);
+            var allProductsDto = __adminService.GetAllProductsForAdmin();
+            var allProductsViewModel = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto);
+
+            _cache.Remove("GalleryProductsViewModel");
+            //_cache.Remove("HomePageViewModel");
+           
+            _cache.Remove("OrderProductViewModel");
+            _cache.Remove("GalleryProductsViewModelFilter");
+           
+
+
+
+            return View("UploadItem",allProductsViewModel);
+        }
+        // GET: Admin/Details/5
+
+        [Authorize(Roles = "admins")]
+        [Route("Admin/Info")]
+        public IActionResult Info(string id)
+        {
+            // add login controler
+            var fullOrderDto = __adminService.GetOrderById(id);
+            var fullOrderViewModel = _mapper.Map<FullOrderViewModel>(fullOrderDto);
+            var disignViewModelList = _mapper.Map<List<CartViewModel>>(fullOrderDto.FinishedDesings);
+            var textViewModelList = _mapper.Map<List<TextOrderDataViewModel>>(fullOrderDto.TextForDesings);
+            fullOrderViewModel.ListOfProducts.AddRange(disignViewModelList);
+            fullOrderViewModel.TextOrderDataViews.AddRange(textViewModelList);
+            return View(fullOrderViewModel);
+           //TODO:Dising imgs can be a list
+
+    }
+        [Authorize(Roles = "admins")]
+        [Route("Admin/Item")]
+        public IActionResult Item( string itemId)
+        {
+            var productDto = __adminService.GetAdminProduct(itemId);
+            var productViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(productDto);
+            productViewModel.Id = itemId;
+            // add login controler
+            return View(productViewModel);
+        }
+        [Authorize(Roles = "admins")]
+        [Route("Admin/Item")]
+        [HttpPost]
+        public IActionResult UpdateItem(AdminProductDto productDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+           
+            __adminService.UpdateItem(productDto);
+            string id = productDto.Id;
+            var updatedProductDto=  __adminService.GetAdminProduct(id);
+            var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return View("Item", updatedProductViewModel);
+        }
+        //AddPicAndCat
+        [Authorize(Roles = "admins")]
+        [Route("Admin/AddPicAndCat")]
+        [HttpPost]
+        public IActionResult AddPicAndCat(List<IFormFile> pic, string category,string name,string id)
+        {
 
             var picturePathList = new List<PictureDto>();
+            CreateImg(pic, name, picturePathList);
+            var categoryList = category.Trim().Split(";", StringSplitOptions.RemoveEmptyEntries).ToList();
+            __adminService.CreateCategoryAndPictureForItem(picturePathList,categoryList,id);
+            var updatedProductDto = __adminService.GetAdminProduct(id);
+            var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return View("Item", updatedProductViewModel);
+        }
+        [Authorize(Roles = "admins")]
+        [Route("Admin/DeletePath")]
+        [HttpPost]
+        public IActionResult DeletePath(string pathId,string id)
+        {
+            if (pathId == null || id == null)
+            {
+                return BadRequest();
+            }
+            __adminService.DeletePicture(id, pathId);
+            var updatedProductDto = __adminService.GetAdminProduct(id);
+            var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return View("Item", updatedProductViewModel);
+        }
+        
+           
+        [Route("Admin/DeleteCategory")]
+        [HttpPost]
+        [Authorize(Roles = "admins")]
+        public IActionResult DeleteCategory(string id, string categoryId)
+        {
+            if (categoryId == null || id == null)
+            {
+                return BadRequest();
+            }
+            __adminService.DeleteCategory(id, categoryId);
+            var updatedProductDto = __adminService.GetAdminProduct(id);
+            var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return View("Item", updatedProductViewModel);
+        }
+        [Authorize(Roles = "admins")]
+        [Route("Admin/DeleteItem")]
+        [HttpPost]
+        public IActionResult DeleteItem(string id)
+        {
+            if (id==null)
+            {
+                return BadRequest();
+            }
+            
+            __adminService.DeleteItemById(id);
+           
+            
+            _cache.Remove("GalleryProductsViewModelFilter");
+            _cache.Remove("GalleryProductsViewModel");
+            return RedirectToAction("UploadItem");
+        }
+       
+        private IActionResult CreateImg(List<IFormFile> pic,string name, List<PictureDto> picturePathList)
+        {
+            var picturePath = $"C:/Users/damot/source/repos/BeachTowelShop/BeachTowelShop-App/wwwroot/pictures";
+
+            //var picturePathList = new List<PictureDto>();
             if (pic == null)
             {
-                var allProductsDto1 = __adminService.GetAllProductsForAdmin();
-                var allProductsViewModel1 = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto1);
-                allProductsViewModel1[0].Error = "attach a at lest one picture";
-                return View(allProductsViewModel1);
-               
+                return BadRequest();
+
             }
             foreach (var image in pic)
             {
@@ -161,7 +292,7 @@ namespace BeachTowelShop.Areas.Admin
                     //if (images.Width < 700 || images.Height < 1400)
                     //{
                     //    return BadRequest("Attach a better photo");
-                      
+
                     //}
 
 
@@ -169,89 +300,12 @@ namespace BeachTowelShop.Areas.Admin
 
 
                     images.Save(fullPath, ImageFormat.Png);
-                    var pictureDto = new PictureDto() { Path="pictures/"+picName};
+                    var pictureDto = new PictureDto() { Path = "pictures/" + picName };
                     picturePathList.Add(pictureDto);
 
                 }
             }
-            var productDto = new AdminProductDto() { Name = name, Description = productDescription, CategoryViews=categoryDtoList, PictureList = picturePathList };
-            __adminService.CreateProduct(productDto);
-            var allProductsDto = __adminService.GetAllProductsForAdmin();
-            var allProductsViewModel = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto);
-           
-               
-            _cache.Remove("GalleryProductsViewModel");
-            //_cache.Remove("HomePageViewModel");
-           
-            _cache.Remove("OrderProductViewModel");
-            _cache.Remove("GalleryProductsViewModelFilter");
-           
-
-
-
-            return View("UploadItem",allProductsViewModel);
-        }
-        // GET: Admin/Details/5
-
-        [Authorize]
-        [Route("Admin/Info")]
-        public IActionResult Info(string id)
-        {
-            // add login controler
-            var fullOrderDto = __adminService.GetOrderById(id);
-            var fullOrderViewModel = _mapper.Map<FullOrderViewModel>(fullOrderDto);
-            var disignViewModelList = _mapper.Map<List<CartViewModel>>(fullOrderDto.FinishedDesings);
-            var textViewModelList = _mapper.Map<List<TextOrderDataViewModel>>(fullOrderDto.TextForDesings);
-            fullOrderViewModel.ListOfProducts.AddRange(disignViewModelList);
-            fullOrderViewModel.TextOrderDataViews.AddRange(textViewModelList);
-            return View(fullOrderViewModel);
-           //TODO:Dising imgs can be a list
-
-    }
-        [Authorize]
-        [Route("Admin/Item")]
-        public IActionResult Item(string itemId)
-        {
-            var productDto = __adminService.GetAdminProduct(itemId);
-            var productViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(productDto);
-            productViewModel.Id = itemId;
-            // add login controler
-            return View(productViewModel);
-        }
-        [Authorize]
-        [Route("Admin/Item")]
-        [HttpPost]
-        public IActionResult UpdateItem(AdminProductDto productDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-           
-            __adminService.UpdateItem(productDto);
-            string id = productDto.Id;
-            var updatedProductDto=  __adminService.GetAdminProduct(id);
-            var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
-            return View("Item", updatedProductViewModel);
-        }
-        [Authorize]
-        [Route("Admin/DeleteItem")]
-        [HttpPost]
-        public IActionResult DeleteItem(string id)
-        {
-            if (id==null)
-            {
-                return BadRequest();
-            }
-            
-            __adminService.DeleteItemById(id);
-           
-            
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
-            return RedirectToAction("UploadItem");
+            return Ok();
         }
 
     }
