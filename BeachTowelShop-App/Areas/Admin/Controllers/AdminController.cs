@@ -137,12 +137,12 @@ namespace BeachTowelShop.Areas.Admin
             __adminService.CreateProduct(productDto);
             var allProductsDto = __adminService.GetAllProductsForAdmin();
             var allProductsViewModel = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto);
-
-            _cache.Remove("GalleryProductsViewModel");
+            _cache.Remove("GalleryProductViewModel");
+            _cache.Remove("CategoryViewModel");
             //_cache.Remove("HomePageViewModel");
            
             _cache.Remove("OrderProductViewModel");
-            _cache.Remove("GalleryProductsViewModelFilter");
+           
            
 
 
@@ -190,8 +190,8 @@ namespace BeachTowelShop.Areas.Admin
             string id = productDto.Id;
             var updatedProductDto=  __adminService.GetAdminProduct(id);
             var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
+            _cache.Remove("GalleryProductViewModel");
+            _cache.Remove("CategoryViewModel");
             return View("Item", updatedProductViewModel);
         }
         //AddPicAndCat
@@ -200,15 +200,19 @@ namespace BeachTowelShop.Areas.Admin
         [HttpPost]
         public IActionResult AddPicAndCat(List<IFormFile> pic, string category,string name,string id)
         {
-
+            List<string> categoryList=new List<string>();
+            if (category != null)
+            {
+                 categoryList = category.Trim().Split(";", StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
             var picturePathList = new List<PictureDto>();
             CreateImg(pic, name, picturePathList);
-            var categoryList = category.Trim().Split(";", StringSplitOptions.RemoveEmptyEntries).ToList();
+           
             __adminService.CreateCategoryAndPictureForItem(picturePathList,categoryList,id);
             var updatedProductDto = __adminService.GetAdminProduct(id);
             var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
+            _cache.Remove("GalleryProductViewModel");
+            _cache.Remove("CategoryViewModel");
             return View("Item", updatedProductViewModel);
         }
         [Authorize(Roles = "admins")]
@@ -223,8 +227,8 @@ namespace BeachTowelShop.Areas.Admin
             __adminService.DeletePicture(id, pathId);
             var updatedProductDto = __adminService.GetAdminProduct(id);
             var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
+            _cache.Remove("GalleryProductViewModel");
+            _cache.Remove("CategoryViewModel");
             return View("Item", updatedProductViewModel);
         }
         
@@ -241,8 +245,8 @@ namespace BeachTowelShop.Areas.Admin
             __adminService.DeleteCategory(id, categoryId);
             var updatedProductDto = __adminService.GetAdminProduct(id);
             var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
+            _cache.Remove("GalleryProductViewModel");
+            _cache.Remove("CategoryViewModel");
             return View("Item", updatedProductViewModel);
         }
         [Authorize(Roles = "admins")]
@@ -256,10 +260,10 @@ namespace BeachTowelShop.Areas.Admin
             }
             
             __adminService.DeleteItemById(id);
-           
-            
-            _cache.Remove("GalleryProductsViewModelFilter");
-            _cache.Remove("GalleryProductsViewModel");
+
+
+            _cache.Remove("GalleryProductViewModel");
+            _cache.Remove("CategoryViewModel");
             return RedirectToAction("UploadItem");
         }
        

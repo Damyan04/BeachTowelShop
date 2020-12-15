@@ -20,16 +20,29 @@
                     <li><input asp-for="@Model.PictureList[i].Id" value="@Model.PictureList[i].Id" type="hidden" /></li>
                     if (Model.PictureList.Count > 1)
                     {
-                        <li><input type="submit" asp-controller="Admin" asp-action="DeletePath" asp-route-id="@Model.Id" asp-route-pathId="@Model.PictureList[i].Id" value="DeletePicture"/></li>
-                        } 
+                        <li><input type="submit" asp-controller="Admin" asp-action="DeletePath" asp-route-id="@Model.Id" asp-route-pathId="@Model.PictureList[i].Id" value="DeletePicture" /></li>
+                    }
                 }
 
-                
+
 
             </ul>
-
+            <h3>Description</h3>
+            <textarea asp-for="Description">@Model.Description</textarea>
+            <h3>Category for a product</h3>
+            @for (int i = 0; i < Model.CategoryViews.Count; i++)
+            {
+                <ul>
+                    <li> <input type="text" asp-for="@Model.CategoryViews[i].Name" value="@Model.CategoryViews[i].Name"></li>
+                    <li><input asp-for="@Model.CategoryViews[i].Id" value="@Model.CategoryViews[i].Id" type="hidden" /></li>
+                    @if (Model.CategoryViews.Count > 1)
+                    {
+                        <li><input type="submit" value="DeleteCategory" asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@Model.Id" asp-route-categoryId="@Model.CategoryViews[i].Id" /></li>
+                    }
+                </ul>
+            }
         </div>
-        @*<input type="button" name="name" value=" Добави път към снимка" class="button" />*@
+
         <div class="container admin">
             <div class="column-div">
                 <h3>
@@ -53,30 +66,6 @@
             </div>
         </div>
 
-
-        <div class="column-div">
-
-            <h3>Description</h3>
-            <textarea asp-for="Description">@Model.Description</textarea>
-        </div>
-        <div class="column-div">
-            <h3>Category for a product</h3>
-            @for (int i = 0; i < Model.CategoryViews.Count; i++)
-            {
-        <ul>
-            <li> <input type="text" asp-for="@Model.CategoryViews[i].Name" value="@Model.CategoryViews[i].Name"></li>
-            <li><input asp-for="@Model.CategoryViews[i].Id" value="@Model.CategoryViews[i].Id" type="hidden" /></li>
-            @if (Model.CategoryViews.Count > 1)
-            {
-            <li><input type="submit" value="DeleteCategory" asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@Model.Id" asp-route-categoryId="@Model.CategoryViews[i].Id"/></li>
-            }
-        </ul>
-            }
-
-
-
-        </div>
-
         <button type="submit" class="btn btn-primary" asp-controller="Admin" asp-action="UpdateItem">Save changes</button>
     </form>
     <form method="post" enctype="multipart/form-data">
@@ -95,8 +84,9 @@
         <button type="submit" class="btn btn-primary" asp-controller="Admin" asp-action="AddPicAndCat" asp-route-id="@Model.Id" asp-route-name="@Model.Name">Save changes</button>
     </form>
     <div class="buttons">
-        <form method="post">
-            <input type="submit" value="DeleteItem" asp-controller="Admin" asp-action="DeleteItem" asp-route-id="@Model.Id"/>
+        <form method="post" style="border-color:red;text-align:center;">
+            <h2><span>Delete Item</span></h2>
+            <input style="margin:0;" type="submit" value="Delete Item !" asp-controller="Admin" asp-action="DeleteItem" asp-route-id="@Model.Id"/>
         </form>
   
 

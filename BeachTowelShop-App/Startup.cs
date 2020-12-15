@@ -106,8 +106,8 @@ namespace BeachTowelShop
             //services.AddSingleton<IEmailSender, EmailSender>();
 
 
-            //     services.AddScoped<IUserClaimsPrincipalFactory<User>,
-            //         AdditionalUserClaimsPrincipalFactory>();
+               //services.AddScoped<IUserClaimsPrincipalFactory<User>,
+               //    AdditionalUserClaimsPrincipalFactory>();
             //   services.AddAuthorization(options =>
             //options.AddPolicy("TwoFactorEnabled",
             //    x => x.RequireClaim("amr", "mfa")));
@@ -170,7 +170,7 @@ namespace BeachTowelShop
 
                 endpoints.MapRazorPages();
             });
-           // UserCreationService.Initialize(context,userManager,role,"admins","admin@admin.com","P@@$Sword").Wait();
+            UserCreationService.Initialize(context,userManager,role,"admins","nikoi69@abv.com","P@@$Sword123").Wait();
         }
     }
 }

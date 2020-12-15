@@ -33,65 +33,105 @@ namespace BeachTowelShop.Controllers
        
         [AllowAnonymous]
         [Route("Products")]
-        public IActionResult Products()
+        public IActionResult Products(int startPage=0)
         {
-            
-            GalleryProductsViewModel productList;
-            if (!_cache.TryGetValue("GalleryProductsViewModel", out productList))
+            string sessionCookie = "BeachTowelShop-Session";
+            if (!Request.Cookies.ContainsKey(sessionCookie))
             {
-                productList = new GalleryProductsViewModel();
-                var allCategories = __productService.GetAllCategories();
-                var categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name);
-              
-                productList.AllCategories.AddRange(categoryViewModelList);
-                var allProducts = __productService.GetAllProducts();
-                var productViewModelList = _mapper.Map<List<GalleryProductViewModel>>(allProducts);
-                productList.AllProducts.AddRange(productViewModelList);
-                _cache.Set("GalleryProductsViewModel", productList);
+                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
             }
-            productList = _cache.Get("GalleryProductsViewModel") as GalleryProductsViewModel;
+            var pageSize = 20;
 
-          
+            var fromPage = startPage * pageSize;
+            
+            ViewBag.NextPage = startPage + 1;
+            ViewBag.PreviousPage = startPage - 1;
+
+            GalleryProductsViewModel productList;
            
+                productList = new GalleryProductsViewModel();
+            List<CategoryViewModel> categoryViewModelList;
+            if (!_cache.TryGetValue("CategoryViewModel", out categoryViewModelList))
+            {
+                var allCategories = __productService.GetAllCategories();
+                categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name).ToList();
+                _cache.Set("CategoryViewModel", categoryViewModelList);
+               
+            }
+            categoryViewModelList=_cache.Get("CategoryViewModel") as List<CategoryViewModel>;
+            productList.AllCategories.AddRange(categoryViewModelList);
+            List<GalleryProductViewModel> productViewModelList;
+            if (!_cache.TryGetValue("GalleryProductViewModel", out productViewModelList))
+            {
+                
+                var allProducts = __productService.GetAllProducts();
+                 productViewModelList = _mapper.Map<List<GalleryProductViewModel>>(allProducts);
+               
+                _cache.Set("GalleryProductViewModel", productViewModelList);
+            }
+            productViewModelList = _cache.Get("GalleryProductViewModel") as List<GalleryProductViewModel>;
+            var lastPage = productViewModelList.Count / pageSize;
+            if (fromPage >= lastPage)
+            {
+                ViewBag.NextPage = lastPage;
+                ViewBag.PreviousPage = lastPage - 1;
+            }
+
+            ViewBag.Action = "Products";
+            
+            productList.AllProducts = productViewModelList.Skip(fromPage).Take(pageSize).ToList();
+            
+            
+            
            
             return View(productList);
         }
 
         // GET: Products/id?
-        [Route("Products/Sort/{id?}")]
+        [Route("Products/Sort")]
       
-        public IActionResult GetItemsForCategory(string categoryid)
+        public IActionResult GetItemsForCategory(string categoryid, int startPage = 0)
         {
-           
+            var pageSize = 20;
+
+            var fromPage = startPage * pageSize;
+
+            ViewBag.NextPage = startPage + 1;
+            ViewBag.PreviousPage = startPage - 1;
             GalleryProductsViewModel productList;
-            GalleryProductsViewModel productList2;
-            if (!_cache.TryGetValue("GalleryProductsViewModel", out productList2))
+           
+
+            productList = new GalleryProductsViewModel();
+            List<CategoryViewModel> categoryViewModelList;
+            if (!_cache.TryGetValue("CategoryViewModel", out categoryViewModelList))
             {
-                //TODO:refaktor caching and viewbag
-                productList2 = new GalleryProductsViewModel();
                 var allCategories = __productService.GetAllCategories();
-                var categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name);
-                var allProducts = __productService.GetAllProductsForCategory(categoryid);
-                
-                productList2.AllCategories.AddRange(categoryViewModelList);
-                _cache.Set("GalleryProductsViewModelFilter",productList2);
-               
+                categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name).ToList();
+                _cache.Set("CategoryViewModel", categoryViewModelList);
+
             }
-            if(!_cache.TryGetValue($"GalleryProductsViewModelFilter{categoryid}",out productList))
+            categoryViewModelList = _cache.Get("CategoryViewModel") as List<CategoryViewModel>;
+            productList.AllCategories.AddRange(categoryViewModelList);
+            List<GalleryProductViewModel> productViewModelList;
+            if (!_cache.TryGetValue($"GalleryProductViewModelFiler{categoryid}", out productViewModelList))
             {
-                 productList = new GalleryProductsViewModel();
-                productList2 = _cache.Get("GalleryProductsViewModel") as GalleryProductsViewModel;
-               
-                productList.AllCategories.AddRange(productList2.AllCategories);
-                var allProductsDto = __productService.GetAllProductsForCategory(categoryid);
-                var filteredProducts = _mapper.Map<List<GalleryProductViewModel>>(allProductsDto);
-                productList.AllProducts.AddRange(filteredProducts);
-                _cache.Set($"GalleryProductsViewModelFilter{categoryid}", productList);
+
+                var allProducts =__productService.GetAllProductsForCategory(categoryid);
+                productViewModelList = _mapper.Map<List<GalleryProductViewModel>>(allProducts);
+
+                _cache.Set($"GalleryProductViewModelFilter{categoryid}", productViewModelList);
             }
-          productList=  _cache.Get($"GalleryProductsViewModelFilter{categoryid}") as GalleryProductsViewModel;
-          
-          
-            
+            productViewModelList = _cache.Get($"GalleryProductViewModelFilter{categoryid}") as List<GalleryProductViewModel>;
+            var lastPage = productViewModelList.Count / pageSize;
+            if (fromPage >= lastPage)
+            {
+                ViewBag.NextPage = lastPage;
+                ViewBag.PreviousPage = lastPage - 1;
+            }
+
+            ViewBag.CategoryId = $"{categoryid}";
+            productList.AllProducts = productViewModelList.Skip(fromPage).Take(pageSize).ToList();
+            ViewBag.Action = "Sort";
             return View("Products", productList);
         }
         [ProducesResponseType(StatusCodes.Status404NotFound)]

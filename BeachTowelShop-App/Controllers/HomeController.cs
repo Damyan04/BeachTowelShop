@@ -35,9 +35,13 @@ namespace BeachTowelShop.Controllers
         
         public IActionResult Index()
         {
+            string sessionCookie = "BeachTowelShop-Session";
+            if (!Request.Cookies.ContainsKey(sessionCookie))
+            {
+                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+            }
 
-           
-           
+
             HomePageViewModel homePageViewModel;
            
             if (!_cache.TryGetValue("HomePageViewModel",out homePageViewModel))
@@ -76,6 +80,21 @@ namespace BeachTowelShop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
+        private void Set(string key, string value, int? expireTime)
+        {
+            CookieOptions option = new CookieOptions();
+
+            if (expireTime.HasValue)
+                option.Expires = DateTime.Now.AddMinutes(expireTime.Value);
+            else
+                option.Expires = DateTime.Now.AddMilliseconds(10);
+
+            option.SameSite = SameSiteMode.Strict;
+
+
+            Response.Cookies.Append(key, value, option);
+
+        }
+
     }
 }

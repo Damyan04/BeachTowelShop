@@ -30,15 +30,15 @@ namespace BeachTowelShop.Services
                 {
                     UserName = email,
                     Email = email,
-                    PhoneNumber = "6902341234"
+                    PhoneNumber = "6902341234",
+                    
                 };
 
                 var result = await userManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
+                
                     await userManager.AddPasswordAsync(user, password);
                     await userManager.AddToRoleAsync(user, role);
-                }
+                
                
             }
          
