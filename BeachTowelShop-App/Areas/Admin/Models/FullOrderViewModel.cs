@@ -1,4 +1,5 @@
 ﻿using BeachTowelShop.Models.Orders;
+using BeachTowelShop_App.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace BeachTowelShop.Areas.Admin.Models
         public bool Invoice { get; set; }
         public string DeliveryMethod { get; set; }
         public double Sum { get; set; }
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         public List<CartViewModel> ListOfProducts { get; set; } = new List<CartViewModel>();
         public List<TextOrderDataViewModel> TextOrderDataViews { get; set; } = new List<TextOrderDataViewModel>();

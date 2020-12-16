@@ -5,7 +5,7 @@
 <div class="container">
     <div class="info-page">
 
-        <form action="/" method="post" id="fullOrderInfo">
+        <form  method="post" id="fullOrderInfo">
             <table>
                 <tr class="wheat-smoke">
 
@@ -16,13 +16,10 @@
                     <td><span>Phone</span></td>
                     <td><span>City</span></td>
                     <td><span>Payment method</span></td>
-                    <td><span>Sum</span></td>
-                    <td><span>Delivery method</span></td>
-                    <td><span>Shipping Address</span></td>
-                    <td><span>Status</span></td>
-                    <td><span>Is there an Invoice</span></td>
+
 
                 </tr>
+
                 <tr class="cart-products">
                     <td class="cart-size-td"><span>@Model.Id</span></td>
                     <td class="cart-size-td"><span>@Model.Name</span></td>
@@ -31,12 +28,25 @@
                     <td class="cart-size-td">@Model.Phone</td>
                     <td class="cart-size-td">@Model.City</td>
                     <td class="cart-size-td">@Model.PaymentMethod</td>
+
+
+                </tr>
+                <tr class="wheat-smoke">
+                    <td><span>Sum</span></td>
+                    <td><span>Delivery method</span></td>
+                    <td><span>Shipping Address</span></td>
+                    <td><span>Status</span></td>
+                    <td><span>Is there an Invoice</span></td>
+                </tr>
+                <tr class="cart-products">
                     <td class="cart-size-td">@Model.Sum</td>
                     <td class="cart-size-td">@Model.DeliveryMethod</td>
                     <td class="cart-size-td">@Model.DeliveryAdress</td>
-                    <td class="cart-size-td">@Model.Status</td>
+                    <td class="cart-size-td">
+                        <select asp-for="@Model.Status" autocomplete="off" asp-items="Html.GetEnumSelectList<BeachTowelShop_App.Areas.Admin.Models.Status>()">
+                        </select>
+                    </td>
                     <td class="cart-size-td">@Model.Invoice</td>
-
                 </tr>
                 @if (Model.Invoice)
                 {
@@ -63,24 +73,42 @@
                     <td><span>Design</span></td>
                     <td><span>Photo path</span></td>
                     <td><span>Count</span></td>
+                    <td><span>Price</span></td>
                     <td><span>Sum</span></td>
                     <td><span>Size</span></td>
 
                 </tr>
+                @foreach (var item in Model.ListOfProducts)
+                {
+                    <tr class="cart-products">
+                        <td class="cart-size-td">@item.DesignName</td>
+                        <td class="cart-size-td">@item.DesignFolderPath</td>
 
-                <tr class="cart-products">
-                    <td class="cart-size-td">@Model.ListOfProducts[0].DesignName</td>
-                    <td class="cart-size-td">@Model.ListOfProducts[0].DesignFolderPath</td>
+                        <td class="cart-size-td">@item.Count</td>
+                        <td class="cart-size-td">@item.Price</td>
+                        <td class="cart-size-td">@item.Sum</td>
+                        <td class="cart-size-td">@item.Size</td>
 
-                    <td class="cart-size-td">@Model.ListOfProducts[0].Count</td>
-                    <td class="cart-size-td">@Model.ListOfProducts[0].Price</td>
-                    <td class="cart-size-td">@Model.ListOfProducts[0].Size</td>
+                    </tr>
+                }
 
-                </tr>
             </table>
 
-            <button type="submit">Save changes</button>
+            <button type="submit" asp-action="ChangeStatus" asp-controller="Admin" asp-route-status="@Model.Status" asp-route-id="@Model.Id">Save changes</button>
         </form>
     </div>
 </div>
+@section scripts{
+    <script>
+        $("[name=size]").on("change", function () {
+            var analystId = $(this).val();
+            console.log(analystId);
+            @Model.Status=analystId;
+            //var accept = $(this).closest('td').next().find("a")[0];
+            //var oldUrl = accept.href;
+            //var newUrl = oldUrl + "&analystid=" + analystId;
+            //$(accept).attr("href", newUrl);
+        })
+    </script>
+}
 

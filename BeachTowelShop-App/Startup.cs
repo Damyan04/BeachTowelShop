@@ -170,7 +170,7 @@ namespace BeachTowelShop
 
                 endpoints.MapRazorPages();
             });
-            UserCreationService.Initialize(context,userManager,role,"admins","nikoi69@abv.com","P@@$Sword123").Wait();
+            //UserCreationService.Initialize(context,userManager,role,"admins","nikoi69@abv.com","P@@$Sword123").Wait();
         }
     }
 }

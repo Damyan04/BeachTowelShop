@@ -2,8 +2,20 @@
 @{
     ViewData["Title"] = "Admin-Order";
 }
+<div class="row-div" style="justify-content: flex-end;margin-top:5em;margin-bottom:-8em;">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+
+            <li class="page-item"><a class="page-link" asp-action="Orders" asp-route-startPage="0">First</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Orders" asp-route-startPage="@(ViewBag.NextPage)" >Next</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Orders" asp-route-startPage="@(ViewBag.PreviousPage)" >Previous</a></li>
+
+        </ul>
+    </nav>
+</div>
 <div class="container admin">
     <h2>Orders</h2>
+    
     <div class="cart">
 
         <div class="cart-size">

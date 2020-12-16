@@ -49,12 +49,33 @@ namespace BeachTowelShop.Areas.Admin
             return View();
         }
         [Authorize(Roles = "admins")]
-        [Route("Admin/Orders")]
-        public IActionResult Orders()
+        [Route("Admin/Orders/{startPage?}")]
+        public IActionResult Orders(int startPage = 0)
         {
+            var pageSize = 20;
+
+            var fromPage = startPage * pageSize;
+
+            ViewBag.NextPage = startPage + 1;
+            ViewBag.PreviousPage = startPage - 1;
+
             // add login controler
-            var allOrdersDtoList = __adminService.GetAllOrders().OrderByDescending(a => a.Status);
-            var orderDtoList = _mapper.Map<List<OrderViewModel>>(allOrdersDtoList);
+
+            List<OrderViewModel> orderDtoList;
+            if(!_cache.TryGetValue("AdminOrderViewModel", out orderDtoList))
+            {
+                var allOrdersDtoList = __adminService.GetAllOrders().OrderByDescending(a => a.Status);
+                orderDtoList = _mapper.Map<List<OrderViewModel>>(allOrdersDtoList);
+                _cache.Set("AdminOrderViewModel", orderDtoList);
+            }
+            orderDtoList=_cache.Get("AdminOrderViewModel") as List<OrderViewModel>;
+            var lastPage = orderDtoList.Count / pageSize;
+            if (fromPage >= lastPage)
+            {
+                ViewBag.NextPage = lastPage;
+               
+            }
+            orderDtoList = orderDtoList.Skip(fromPage).Take(pageSize).ToList();
             return View(orderDtoList);
         }
         [Authorize(Roles = "admins")]
@@ -266,7 +287,31 @@ namespace BeachTowelShop.Areas.Admin
             _cache.Remove("CategoryViewModel");
             return RedirectToAction("UploadItem");
         }
-       
+        [Authorize(Roles = "admins")]
+        [HttpPost]
+        public IActionResult ChangeStatus(string status,string id)
+        {
+            if (status != null && id != null)
+            {
+
+            
+            var statusName= (Status)Enum.Parse(typeof(Status), status);
+            status = statusName.ToString();
+            __adminService.ChangeStatus(id, status);
+            }
+            var fullOrderDto = __adminService.GetOrderById(id);
+            var fullOrderViewModel = _mapper.Map<FullOrderViewModel>(fullOrderDto);
+            var disignViewModelList = _mapper.Map<List<CartViewModel>>(fullOrderDto.FinishedDesings);
+            var textViewModelList = _mapper.Map<List<TextOrderDataViewModel>>(fullOrderDto.TextForDesings);
+            fullOrderViewModel.ListOfProducts.AddRange(disignViewModelList);
+            fullOrderViewModel.TextOrderDataViews.AddRange(textViewModelList);
+            _cache.Remove("AdminOrderViewModel");
+            var allOrdersDtoList = __adminService.GetAllOrders().OrderByDescending(a => a.Status);
+           var orderDtoList = _mapper.Map<List<OrderViewModel>>(allOrdersDtoList);
+            _cache.Set("AdminOrderViewModel", orderDtoList);
+            return View("Info", fullOrderViewModel);
+        }
+
         private IActionResult CreateImg(List<IFormFile> pic,string name, List<PictureDto> picturePathList)
         {
             var picturePath = $"C:/Users/damot/source/repos/BeachTowelShop/BeachTowelShop-App/wwwroot/pictures";
@@ -311,6 +356,7 @@ namespace BeachTowelShop.Areas.Admin
             }
             return Ok();
         }
+       
 
     }
 }

@@ -26,5 +26,6 @@ namespace BeachTowelShop.Services.Interfaces
         void CreateCategoryAndPictureForItem(List<PictureDto> picturePathList, List<string> categoryList,string id);
         public void DeleteCategory(string productId,string categoryId);
         public void DeletePicture(string productId, string picturePathId);
+        void ChangeStatus(string id, string status);
     }
 }

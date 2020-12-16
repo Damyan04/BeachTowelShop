@@ -21,6 +21,13 @@ namespace BeachTowelShop.Services
             _mapper = mapper;
         }
 
+        public void ChangeStatus(string id, string status)
+        {
+          var order=  _appDbContext.Orders.Where(a => a.Id == id).FirstOrDefault();
+            order.Status = status;
+            _appDbContext.SaveChanges();
+        }
+
         public void CreateCategoryAndPictureForItem(List<PictureDto> picturePathList, List<string> categoryList,string id)
         {
             var product = _appDbContext.Products.Where(a => a.Id == id).FirstOrDefault();
