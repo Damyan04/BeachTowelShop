@@ -26,8 +26,8 @@ function showFonts() {
    $('.dropdown-menu').css("display") == "block" ? $('.dropdown-menu').hide() : $('.dropdown-menu').show();
 }
 function check() {
-    let speedy = $("#speedy");
-    let econt = $("#econt");
+    let speedy = $("#1");
+    let econt = $("#2");
     let office = $("#office");
     let invoice = $('#invoice');
     let invoicediv = $('#invoice-div');

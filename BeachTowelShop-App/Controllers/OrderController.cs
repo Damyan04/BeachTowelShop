@@ -182,6 +182,7 @@ namespace BeachTowelShop.Controllers
                         {
                             __orderService.CreateOrder(userDetailsDto);
                             _cache.Remove($"CartViewModel{userId}");
+                            _cache.Remove("AdminOrderViewModel");
 
                             return View();
                         }

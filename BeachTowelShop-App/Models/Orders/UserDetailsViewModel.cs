@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,9 +23,14 @@ namespace BeachTowelShop.Models.Orders
         public string City { get; set; } 
         [Required]
         [Phone]
-        public string Phone { get; set; } 
-        public string DeliveryMethod { get; set;  } //make it an enum
-        public string PaymentMethod { get; set; } //make it an enum
+        [MinLength(8)]
+        public string Phone { get; set; }
+        [EnumDataType(typeof(DeliveryMethod))]
+        public DeliveryMethod DeliveryMethod { get; set;  } //make it an enum
+        [EnumDataType(typeof(PaymentMethod))]
+        public PaymentMethod PaymentMethod { get; set; } //make it an enum
+
+        [DefaultValue(false)]
         public bool Invoice { get; set; }
       
         public double Sum { get; set; } 

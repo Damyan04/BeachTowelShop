@@ -122,8 +122,8 @@
                 </label>
                 <select id="list2" asp-for="InvoiceType">
                     <option value="">--Choose a option--</option>
-                    <option value="volvo">Legal entity</option>
-                    <option value="saab">Individual</option>
+                    <option value="Legal entity">Legal entity</option>
+                    <option value="Individual">Individual</option>
                 </select>
             </div>
 
@@ -147,8 +147,15 @@
 
         <h3>Delivery</h3>
         <div class="row-div">
+            @foreach (var item in Html.GetEnumSelectList<BeachTowelShop.Models.Orders.DeliveryMethod>().OrderByDescending(a => a.Value).ToList())
+            {
+            <label for="@item.Value" class="radio">
+                <input type="radio" id="@item.Value" onclick="check()" value="@item.Text" asp-for="DeliveryMethod">
+                <span>To @item.Text.Substring(0,item.Text.Length - 6) @item.Text.Substring(Math.Max(0, item.Text.Length - 6))</span>
 
-            <label for="adress" class="radio">
+            </label>
+            }
+            @*<label for="adress" class="radio">
                 <input type="radio" id="adress" onclick="check()" value="Adress" checked="checked" asp-for="DeliveryMethod">
                 <span>To a address</span>
 
@@ -161,38 +168,34 @@
             <label for="econt" class="radio">
                 <input type="radio" id="econt" onclick="check()" value="econt" asp-for="DeliveryMethod">
                 <span>ECONT OFFICE</span>
-            </label>
+            </label>*@
         </div>
         <div class="row-div " style="display:none" id="office">
             <label for="list">
 
             </label>
             <select id="list" asp-for="DeliveryAdress">
-                <option value="hide">--Choose a office--</option>
-                <option value="volvo">Volvo</option>
-                <option value="saab">Saab</option>
-                <option value="mercedes">Mercedes</option>
-                <option value="audi">Audi</option>
+                <option value="address">--Choose a office--</option>
+                <option value="OFICE1">OFICE1</option>
+                <option value="OFICE1">OFICE1</option>
+                <option value="OFICE1">OFICE1</option>
+                <option value="OFICE1">OFICE1</option>
             </select>
         </div>
 
         <h3>Payment</h3>
         <div class="row-div">
 
-            <label for="cash" class="radio">
-                <input type="radio" id="cash" value="cash" checked="checked" asp-for="PaymentMethod">
-                <span>Cash</span>
-            </label>
+            @foreach (var item in Html.GetEnumSelectList<BeachTowelShop.Models.Orders.PaymentMethod>().OrderByDescending(a=>a.Value).ToList())
+            {
 
-            <label for="card" class="radio">
-                <input type="radio" id="card" value="card" asp-for="PaymentMethod">
-                <span>Card</span>
-            </label>
+                <label for="@item.Value+10" class="radio">
+                    <input type="radio" id="@item.Value+10" value="@item.Text"  asp-for="PaymentMethod">
+                    <span>@item.Text</span>
+                </label>
 
-            @*<label for="cash1" class="radio">
-                    <input type="radio" id="cash1" value="card2" asp-for="PaymentMethod">
-                    <span>Плащане с карта</span>
-                </label>*@
+               
+            }
         </div>
         <div class="buttons">
             <input type="submit" id="final" value="Finish Order" class="button" asp-controller="Order" asp-action="Page" asp-route-id="3">
