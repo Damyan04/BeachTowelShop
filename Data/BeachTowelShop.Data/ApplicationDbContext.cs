@@ -22,7 +22,7 @@ namespace BeachTowelShop.Data
         public DbSet<ProductSize> ProductSizes { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
-        public DbSet<Size> Sizes { get; set; }
+        public  DbSet<Size> Sizes { get; set; }
         public DbSet<Order> Orders { get; set; }
 
 
@@ -31,7 +31,7 @@ namespace BeachTowelShop.Data
         public DbSet<CartItem> CartItems { get; set; }
       // public DbSet<OriginalPictureName> OriginalPictureNames { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Server=.;Database=BeachTowelShop;Integrated Security=true;");
+            => optionsBuilder.UseSqlServer("Server=.;Database=BeachTowelShop2;Integrated Security=true;");
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

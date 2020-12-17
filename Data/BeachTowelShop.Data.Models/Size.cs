@@ -23,7 +23,7 @@ namespace BeachTowelShop.Data.Models
 
         public string Pixels { get; set; }
 
-        public string Price { get; set; }
+        public double Price { get; set; }
         public ICollection<ProductSize> ProductSizes { get; set; }
 
         public string SizePicturePath { get; set; }

@@ -63,27 +63,19 @@
                     <label asp-for="InvoiceFirm">* Firm</label>
                     <input type="text" id="company" asp-for="InvoiceFirm" placeholder="Firm">
                     <span asp-validation-for="InvoiceCity" class="text-danger"></span>
+                    <span asp-validation-for="InvoiceCity" class="text-danger"></span>
                     <label asp-for="InvoiceCity">
                         * City
                     </label>
-                    @*TODO:*@
-                    <select id="list3" asp-for="InvoiceCity">
-                        <option value="">Choose a city</option>
-                        <option value="volvo">City1</option>
-                        <option value="saab">City1</option>
-                        <option value="mercedes">City1</option>
-                        <option value="audi">City1</option>
-                    </select>
+                    <input type="text" id="invoice-city" asp-for="InvoiceCity">
                     <span asp-validation-for="InvoiceType" class="text-danger"></span>
                     <label for="list2" asp-for="InvoiceType">
                         Invoice type
                     </label>
                     <select id="list2" asp-for="InvoiceType">
-                        <option value="">Choose a type</option>
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="audi">Audi</option>
+                        <option value="">--Choose a option--</option>
+                        <option value="Legal entity">Legal entity</option>
+                        <option value="Individual">Individual</option>
                     </select>
                 </div>
 
@@ -155,20 +147,7 @@
 
             </label>
             }
-            @*<label for="adress" class="radio">
-                <input type="radio" id="adress" onclick="check()" value="Adress" checked="checked" asp-for="DeliveryMethod">
-                <span>To a address</span>
-
-            </label>
-            <label for="speedy" class="radio">
-                <input type="radio" id="speedy" onclick="check()" value="speedy" asp-for="DeliveryMethod">
-                <span> SPEEDY OFFICE</span>
-            </label>
-
-            <label for="econt" class="radio">
-                <input type="radio" id="econt" onclick="check()" value="econt" asp-for="DeliveryMethod">
-                <span>ECONT OFFICE</span>
-            </label>*@
+            
         </div>
         <div class="row-div " style="display:none" id="office">
             <label for="list">

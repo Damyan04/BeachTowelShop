@@ -127,7 +127,7 @@ namespace BeachTowelShop.Services
                 var allGenericSizes= _appDbContext.Sizes.ToList();
                 foreach (var size in allGenericSizes)
                 {
-                    var genericSizesWithPrice = new ProductSize { ProductId = product.Id, SizeId = size.Id, Price = double.Parse(size.Price) };
+                    var genericSizesWithPrice = new ProductSize { ProductId = product.Id, SizeId = size.Id, Price = size.Price };
                     product.ProductSizes.Add(genericSizesWithPrice);
                 }
                
@@ -292,7 +292,7 @@ namespace BeachTowelShop.Services
             {
                 //TODO:Make it not string in the db
                 item.Name = sizeDto.Name;
-                item.Price = sizeDto.Price.ToString();
+                item.Price = sizeDto.Price;
             }
 
             _appDbContext.SaveChanges();

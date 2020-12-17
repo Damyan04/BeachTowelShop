@@ -42,7 +42,7 @@ namespace BeachTowelShop
                         Configuration.GetConnectionString("ApplicationDbContext"), b => b.MigrationsAssembly("BeachTowelShop.Data")));
             services.AddIdentity<BeachTowelShop.Data.Models.User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
    .AddDefaultTokenProviders().AddDefaultUI();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            services.AddMvc()
     .AddRazorPagesOptions(options =>
     {
            // options.AllowAreas = true;
@@ -66,9 +66,9 @@ namespace BeachTowelShop
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
             services.AddRazorPages();
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
-
+           
           //  services.AddDistributedMemoryCache();
-            
+
 
             services.AddSession(options =>
             {
@@ -105,20 +105,10 @@ namespace BeachTowelShop
             //services.AddScoped(ISeeder, Seeder);
             //services.AddSingleton<IEmailSender, EmailSender>();
 
-
-               //services.AddScoped<IUserClaimsPrincipalFactory<User>,
-               //    AdditionalUserClaimsPrincipalFactory>();
-            //   services.AddAuthorization(options =>
-            //options.AddPolicy("TwoFactorEnabled",
-            //    x => x.RequireClaim("amr", "mfa")));
-
-
-            // we can't await async in Main method, so here this is okay
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ApplicationDbContext context,RoleManager<IdentityRole> role,UserManager<User> userManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ApplicationDbContext context, RoleManager<IdentityRole> role, UserManager<User> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -143,7 +133,7 @@ namespace BeachTowelShop
             app.UseAuthentication();
             app.UseAuthorization();
            app.UseCookiePolicy();
-            //app.UseCookiePolicy();
+          
             app.UseSession();
             
             app.UseEndpoints(endpoints =>
@@ -155,22 +145,13 @@ namespace BeachTowelShop
                 endpoints.MapControllerRoute(
         name: "Identity",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-                //app.UseMvc(routes =>
-                //{
-                //    routes.MapRoute(
-                //      name: "areas",
-                //      template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                //    );
-                //});
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapRazorPages();
             });
-            //UserCreationService.Initialize(context,userManager,role,"admins","nikoi69@abv.com","P@@$Sword123").Wait();
+            
         }
     }
 }
