@@ -136,7 +136,7 @@ namespace BeachTowelShop.Services
         public double GetPriceForSizeGeneric(string size)
         {
             var price = _appDbContext.Sizes.Where(a => a.Name == size).Select(b => b.Price).FirstOrDefault();
-            return double.Parse(price);
+            return price;
         }
 
         public ProductDto GetProductById(string itemid)

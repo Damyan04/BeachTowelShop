@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using BeachTowelShop.Services.Interfaces;
 
 namespace BeachTowelShop_App.Areas.Identity.Pages.Account
 {
@@ -18,9 +19,9 @@ namespace BeachTowelShop_App.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<User> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailSender;
 
-        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<User> userManager, IEmailService emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -57,7 +58,7 @@ namespace BeachTowelShop_App.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
+                 _emailSender.SendEmail(
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

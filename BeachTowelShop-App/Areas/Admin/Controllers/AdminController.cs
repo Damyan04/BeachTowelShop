@@ -27,14 +27,16 @@ namespace BeachTowelShop.Areas.Admin
         private readonly IProductService __productService;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
+        private readonly IEmailService _emailService;
 
         private readonly IAdminService __adminService;
-        public AdminController(IProductService productService, IMapper mapper, IAdminService adminService, IMemoryCache memoryCache)
+        public AdminController(IProductService productService, IMapper mapper, IAdminService adminService, IMemoryCache memoryCache, IEmailService emailService)
         {
             __productService = productService;
             _mapper = mapper;
             __adminService = adminService;
             _cache = memoryCache;
+            _emailService = emailService;
             // __orderService = orderService;
         }
 
@@ -289,15 +291,18 @@ namespace BeachTowelShop.Areas.Admin
         }
         [Authorize(Roles = "admins")]
         [HttpPost]
-        public IActionResult ChangeStatus(string status,string id)
+        public IActionResult ChangeStatus(string status,string id,string email)
         {
             if (status != null && id != null)
             {
-
-            
             var statusName= (Status)Enum.Parse(typeof(Status), status);
             status = statusName.ToString();
             __adminService.ChangeStatus(id, status);
+                
+            }
+            if (email != null)
+            {
+                _emailService.SendEmail(email, "Order status", $"Hey,the status of your order is {status}");
             }
             var fullOrderDto = __adminService.GetOrderById(id);
             var fullOrderViewModel = _mapper.Map<FullOrderViewModel>(fullOrderDto);

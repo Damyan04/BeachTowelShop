@@ -43,11 +43,11 @@
             <ul class="discounts">
                 <li>Discounts</li>
                 <li><p>Sign up for our email </p><p>we mail only discounts - no spam</p></li>
-                <form>
-                    <input type="text" name="firstname" placeholder="Enter email">
-                    <button>
-                        I want a discount
-                    </button>
+                <form method="post">
+                    <input type="text" name="email" placeholder="Enter email">
+                    <input type="submit" asp-action="SendDiscounts" asp-controller="Email"  value="I want a discount"/>
+                       
+                    
                 </form>
             </ul>
             <ul class="contacts">

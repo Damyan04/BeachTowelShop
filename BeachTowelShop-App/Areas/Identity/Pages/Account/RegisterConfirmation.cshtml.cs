@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using BeachTowelShop.Services.Interfaces;
 
 namespace BeachTowelShop_App.Areas.Identity.Pages.Account
 {
@@ -14,9 +15,9 @@ namespace BeachTowelShop_App.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<User> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly IEmailService _sender;
 
-        public RegisterConfirmationModel(UserManager<User> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<User> userManager, IEmailService sender)
         {
             _userManager = userManager;
             _sender = sender;

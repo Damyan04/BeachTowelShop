@@ -9,6 +9,7 @@ using BeachTowelShop.Data;
 using BeachTowelShop.Data.Models;
 using BeachTowelShop.Services;
 using BeachTowelShop.Services.Automapper;
+using BeachTowelShop.Services.Data;
 using BeachTowelShop.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,8 +67,9 @@ namespace BeachTowelShop
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
             services.AddRazorPages();
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
-           
-          //  services.AddDistributedMemoryCache();
+            services.AddScoped<IEmailService, EmailService>();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            //  services.AddDistributedMemoryCache();
 
 
             services.AddSession(options =>
@@ -103,7 +105,7 @@ namespace BeachTowelShop
             });
             // services.AddTransient(typeof(ISeeder), typeof(Seeder));
             //services.AddScoped(ISeeder, Seeder);
-            //services.AddSingleton<IEmailSender, EmailSender>();
+            //services.AddSingleton<IEmailService, EmailSender>();
 
         }
 

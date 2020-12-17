@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using BeachTowelShop.Services.Interfaces;
 
 namespace BeachTowelShop_App.Areas.Identity.Pages.Account.Manage
 {
@@ -18,12 +19,12 @@ namespace BeachTowelShop_App.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailSender;
 
         public EmailModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender)
+            IEmailService emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -99,7 +100,7 @@ namespace BeachTowelShop_App.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
+                 _emailSender.SendEmail(
                     Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -135,7 +136,7 @@ namespace BeachTowelShop_App.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
+            _emailSender.SendEmail(
                 email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
