@@ -24,5 +24,6 @@ namespace BeachTowelShop.Services.Interfaces
         ICollection<SizeDto>GetSizes();
         ICollection<CommentDto>GetGeneralComments();
         double GetPriceForSizeGeneric(string size);
+        List<string> GetAllPicturePaths();
     }
 }

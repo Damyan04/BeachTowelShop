@@ -29,15 +29,22 @@ $(document).ready(function () {
     let span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal 
-    btn.onclick = function () {
-        modal.style.display = "block";
+    if (btn != null) {
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
     }
+  
 
     // When the user clicks on <span> (x), close the modal
+    if (span != undefined) {
+
+   
     span.onclick = function () {
         modal.style.display = "none";
 
        
+        }
     }
     
     // When the user clicks anywhere outside of the modal, close it

@@ -1,4 +1,5 @@
-﻿<div class="buttons">
+﻿@model BeachTowelShop.Models.Products.OrderProductViewModel
+<div class="buttons">
     <input type="submit" value="Finish design and Add to Cart" class="button" onclick="createDesign()">
    
 </div>
@@ -26,6 +27,13 @@
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <div id="gallery-mod">
+                        @for (int i = 0; i < @Model.ModalPictures.Count; i++)
+                        {
+                            <div class="sizer">
+                                <img src="~/@Model.ModalPictures[i]" alt="Alternate Text" class="img-polaroid" />
+                            </div>
+                        }
+                        @*
                         <div class="sizer">
                             <img src="~/pictures/heart.jpg" alt="Alternate Text" class="img-polaroid" />
                         </div>
@@ -34,7 +42,7 @@
                         </div>
                         <div class="sizer">
                             <img src="~/pictures/panda.jpg" alt="Alternate Text" class="img-polaroid" />
-                        </div>
+                        </div>*@
                     </div>
                 </div>
 

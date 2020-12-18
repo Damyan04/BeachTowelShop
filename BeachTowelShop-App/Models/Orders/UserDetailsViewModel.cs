@@ -47,6 +47,7 @@ namespace BeachTowelShop.Models.Orders
         public string InvoiceCity { get; set; } 
         public string InvoiceType { get; set; }
         public string DeliveryAdress { get; set; }
+       
 
     }
 }

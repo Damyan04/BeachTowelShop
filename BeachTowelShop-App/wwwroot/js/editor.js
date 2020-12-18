@@ -17,24 +17,26 @@ var line4;
 			 
 		  });
 		  let selectSize = document.getElementById('size');
-		  let wh = selectSize.value.split(':');
-		  console.log(selectSize);
-		  canvas.setHeight(wh[1]);
-		  canvas.setWidth(wh[0]);
-		  canvas.setBackgroundImage('/pictures/towel1.png', canvas.renderAll.bind(canvas));
-		
-		  canvas.on({
-			  'object:moving': function (e) {
-				  e.target.opacity = 0.5;
-			  }, 'object:moving': onObjectSelected,
-			  'object:modified': function (e) {
-				  e.target.opacity = 0.6;
-			  }, 'object:modified':onObjectSelected,
-			  'object:selected': onObjectSelected,
-			  'selection:cleared': onSelectedCleared,
-			  'selection:updated': onObjectSelected
-			  
-		 });
+		  if (selectSize != null) {
+			  let wh = selectSize.value.split(':');
+			  canvas.setHeight(wh[1]);
+			  canvas.setWidth(wh[0]);
+			  canvas.setBackgroundImage('/pictures/towel1.png', canvas.renderAll.bind(canvas));
+
+			  canvas.on({
+				  'object:moving': function (e) {
+					  e.target.opacity = 0.5;
+				  }, 'object:moving': onObjectSelected,
+				  'object:modified': function (e) {
+					  e.target.opacity = 0.6;
+				  }, 'object:modified': onObjectSelected,
+				  'object:selected': onObjectSelected,
+				  'selection:cleared': onSelectedCleared,
+				  'selection:updated': onObjectSelected
+
+			  });
+          }
+		  
 		// piggyback on `canvas.findTarget`, to fire "object:over" and "object:out" events
  		canvas.findTarget = (function(originalFn) {
 		  return function() {
@@ -64,17 +66,21 @@ var line4;
  		canvas.on('object:out', function(e) {		
 		  
 				e.target.opacity = 1;
-		});
-		document.getElementById('add-text').onclick = function() {
-			var text = $("#text-string").val();
-			
-			if (text != "") {
-				createText(text);
-				$("#texteditor").css('display', 'flex');
-				$("#imageeditor").css('display', 'flex');
-				
-				$("#all-types").css('display', 'flex');
-			}
+			});
+		  let addText = document.getElementById('add-text');
+		  if (addText != null) {
+			  addText.onclick = function () {
+				  var text = $("#text-string").val();
+
+				  if (text != "") {
+					  createText(text);
+					  $("#texteditor").css('display', 'flex');
+					  $("#imageeditor").css('display', 'flex');
+
+					  $("#all-types").css('display', 'flex');
+				  }
+          }
+		
 			//console.log(canvas);
             //canvas.item(canvas.item.length-1).hasRotatingPoint = true;    
 			
@@ -150,8 +156,11 @@ var line4;
                   });
 		         // image.scale(0.1).setCoords();
                   
-		
-		  document.getElementById('resize-selected').onclick = function () {
+		  let resizeSelected = document.getElementById('resize-selected');
+		  if (resizeSelected != null) {
+
+          
+		  resizeSelected.onclick = function () {
 			  var activeObject = canvas.getActiveObject();
 			  if (activeObject && activeObject.type === 'image') {
 				 
@@ -184,8 +193,13 @@ var line4;
 			  $('.text3').text(((activeObject.scaleX).toFixed(1)) + '\u{0025}');
 			  onSelectedCleared();
 			  canvas.discardActiveObject().renderAll();
-		  };
-	  document.getElementById('remove-selected').onclick = function() {		  
+			  };
+		  }
+		  let removeSelected = document.getElementById('remove-selected');
+		  if (resizeSelected != null) {
+
+
+		  removeSelected.onclick = function() {		  
 		  var activeObject = canvas.getActiveObject();
 
 		    if (activeObject) {
@@ -193,7 +207,8 @@ var line4;
 		      $("#text-string").val("");
 		    }
 		    
-		  };
+			  };
+		  }
 		  $('#clear-selected').click(
 			  function () {
 				  var activeObject = canvas.getActiveObject();
@@ -231,7 +246,9 @@ var line4;
 				 
 				  canvas.discardActiveObject().renderAll();
 			  });
-		
+		  if (selectSize != null) {
+
+        
 		  selectSize.onchange = function () {
 			
 			  let selectSize = document.getElementById('size');
@@ -243,9 +260,12 @@ var line4;
 			  //canvas.clear();
 			  //canvas.setBackgroundImage('/pictures/towel1.png', canvas.renderAll.bind(canvas));
 			  canvas.discardActiveObject().renderAll();
-		  };
+			  };
+		  }
 		  var scaleControl = document.getElementById('scale-control');
-		  
+		  if (scaleControl != null) {
+
+        
 		  scaleControl.onchange = function () {
 			  var activeObject = canvas.getActiveObject();
 			
@@ -253,8 +273,12 @@ var line4;
 			  let b = '\u{0025}';
 			  $('span[class="text3"]').text(parseFloat(this.value) + b);
 			  canvas.renderAll();
-		  };
+			  };
+		  }
 		  var angleControl = document.getElementById('angle-control');
+		  if (angleControl != null) {
+
+       
 		  angleControl.oninput = function () {
 			  var activeObject = canvas.getActiveObject();
 			 
@@ -262,8 +286,12 @@ var line4;
 			  var a = '\u{00B0}';
 			  $('span[class="text"]').text(parseInt(this.value) +a);
 			  canvas.renderAll();
-		  };
+			  };
+		  }
 		  var sizeControl = document.getElementById('size-control');
+		  if (scaleControl != null) {
+
+         
 		  sizeControl.oninput = function () {
 			  var activeObject = canvas.getActiveObject();
 			  
@@ -271,7 +299,8 @@ var line4;
 			 
 			  $('span[class="text2"]').text(parseFloat(this.value) + 'px');
 			  canvas.renderAll();
-		  };
+			  };
+		  }
 	  $("#text-bold").click(function() {		  
 		  var activeObject = canvas.getActiveObject();
 		  if (activeObject && activeObject.type === 'text') {

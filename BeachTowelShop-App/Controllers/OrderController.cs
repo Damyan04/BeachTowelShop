@@ -56,6 +56,7 @@ namespace BeachTowelShop.Controllers
             {
                 case 1:
                     OrderProductViewModel orderProductViewmodel;
+                    List<string> modalPictures;
                     if (!_cache.TryGetValue("OrderProductViewModel", out orderProductViewmodel))
                     {
 
@@ -66,6 +67,13 @@ namespace BeachTowelShop.Controllers
 
                         _cache.Set("OrderProductViewModel", orderProductViewmodel);
                     }
+                    if (!_cache.TryGetValue($"ModalPictures", out modalPictures))
+                    {
+                        modalPictures = __productService.GetAllPicturePaths();
+                        orderProductViewmodel.ModalPictures.AddRange(modalPictures);
+                        _cache.Set("ModalPictures",modalPictures);
+                    }
+                    orderProductViewmodel.ModalPictures = _cache.Get($"ModalPictures") as List<string>;
                     orderProductViewmodel = _cache.Get("OrderProductViewModel") as OrderProductViewModel;
                     return View(orderProductViewmodel);
                   
@@ -80,7 +88,7 @@ namespace BeachTowelShop.Controllers
                     var userId = Request.Cookies[cookie];
                     var cartHasItems = false;
                     cartHasItems = __orderService.HasItems(userId);
-                   
+                    
                     if (Request.Cookies.ContainsKey("BeachTowelShop-Session") && cartHasItems)
                     {
                         List<CartViewModel> viewListViewModel;
@@ -89,13 +97,12 @@ namespace BeachTowelShop.Controllers
                         {
                             var viewListDto = __orderService.GetItemsInCart(userId);
                             viewListViewModel = _mapper.Map<List<CartViewModel>>(viewListDto);
-
-
                             detailsViewModel.CartViewModelList.AddRange(viewListViewModel);
                             _cache.Set($"CartViewModel{userId}", viewListViewModel);
                         }
-
+                        
                         detailsViewModel.CartViewModelList = _cache.Get($"CartViewModel{userId}") as List<CartViewModel>;
+                        
                         return View(detailsViewModel);
 
 

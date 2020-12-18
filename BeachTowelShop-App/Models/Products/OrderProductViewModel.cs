@@ -13,6 +13,7 @@ namespace BeachTowelShop.Models.Products
         }
         public List<SizeViewModel> SizeList { get; set; }
         public int Count { get; set; }
-       
+        public List<string> ModalPictures { get; set; } = new List<string>();
+
     }
 }

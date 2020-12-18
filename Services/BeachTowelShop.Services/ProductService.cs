@@ -30,6 +30,12 @@ namespace BeachTowelShop.Services
 
         }
 
+        public List<string> GetAllPicturePaths()
+        {
+            var products = _appDbContext.ProductPictures.Select(a => a.Picture.Path).Distinct().ToList();
+            return products;
+        }
+
         public ICollection<GalleryProductDto> GetAllProducts()
         {
             //need picture URL,Name
