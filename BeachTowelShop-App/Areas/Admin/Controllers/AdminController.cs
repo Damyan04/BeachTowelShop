@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using BeachTowelShop.Areas.Admin.Models;
@@ -120,6 +121,13 @@ namespace BeachTowelShop.Areas.Admin
             __adminService.SaveSizesToDb(sizesDto);
             _cache.Remove("HomePageViewModel");
             _cache.Remove("OrderProductViewModel");
+            var allProductsDto = __adminService.GetAllProductsForAdmin();
+            var allProductsViewModel = _mapper.Map<List<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>>(allProductsDto);
+            foreach (var item in allProductsViewModel)
+            {
+                _cache.Remove($"ProductViewModelList{item.Id}");
+            }
+            
             return RedirectToAction("SizeAndPrice");
         }
 
@@ -215,6 +223,15 @@ namespace BeachTowelShop.Areas.Admin
             var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
             _cache.Remove("GalleryProductViewModel");
             _cache.Remove("CategoryViewModel");
+            if (updatedProductDto != null)
+            {
+                _cache.Remove($"ProductViewModelList{id}");
+                foreach (var item in updatedProductViewModel.CategoryViews)
+                {
+                    _cache.Remove($"GalleryProductViewModelFiler{item.Id}");
+                }
+            }
+           
             return View("Item", updatedProductViewModel);
         }
         //AddPicAndCat
@@ -236,6 +253,17 @@ namespace BeachTowelShop.Areas.Admin
             var updatedProductViewModel = _mapper.Map<BeachTowelShop_App.Areas.Admin.Models.ProductViewModel>(updatedProductDto);
             _cache.Remove("GalleryProductViewModel");
             _cache.Remove("CategoryViewModel");
+            if (updatedProductDto != null)
+            {
+                _cache.Remove($"ProductViewModelList{id}");
+                foreach (var item in updatedProductViewModel.CategoryViews)
+                {
+                    _cache.Remove($"GalleryProductViewModelFiler{item.Id}");
+                }
+               
+
+            }
+           
             return View("Item", updatedProductViewModel);
         }
         [Authorize(Roles = "admins")]
@@ -319,7 +347,8 @@ namespace BeachTowelShop.Areas.Admin
 
         private IActionResult CreateImg(List<IFormFile> pic,string name, List<PictureDto> picturePathList)
         {
-            var picturePath = $"C:/Users/damot/source/repos/BeachTowelShop/BeachTowelShop-App/wwwroot/pictures";
+            string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var picturePath = $"{applicationPath}/wwwroot/pictures";
 
             //var picturePathList = new List<PictureDto>();
             if (pic == null)

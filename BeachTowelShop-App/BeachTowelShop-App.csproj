@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>BeachTowelShop_App</RootNamespace>
+    <UserSecretsId>e5b36820-8205-4e7c-bdaf-2455eb4e38c6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

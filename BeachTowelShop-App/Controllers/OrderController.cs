@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -308,7 +309,8 @@ namespace BeachTowelShop.Controllers
 
         private void CreateProduct(string cookieValueFromReq, Image img, ObjectsInCanvas objectsInCanvas)
         {
-            string path = $"C:/Users/damot/source/repos/BeachTowelShop/BeachTowelShop-App/wwwroot/received/{cookieValueFromReq.Substring(Math.Max(0, cookieValueFromReq.Length - 10))}";
+            string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string path = $"{applicationPath}/wwwroot/received/{cookieValueFromReq.Substring(Math.Max(0, cookieValueFromReq.Length - 10))}";
             OrderDataViewModel orderDataViewModel = new OrderDataViewModel();
             var fullPath = path;
             //NOT SURE IF WE WANT THAT

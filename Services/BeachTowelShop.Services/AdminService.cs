@@ -147,7 +147,7 @@ namespace BeachTowelShop.Services
             {
                 _appDbContext.ProductCategories.Remove(categoryPair);
                 _appDbContext.SaveChanges();
-                var doesCategoryExists = _appDbContext.ProductPictures.Where(a => a.PictureId == categoryId).FirstOrDefault();
+                var doesCategoryExists = _appDbContext.ProductCategories.Where(a => a.CategoryId == categoryId).FirstOrDefault();
                 if (doesCategoryExists == null)
                 {
                     var category = _appDbContext.Categories.Where(a => a.Id == categoryId).FirstOrDefault();
@@ -317,8 +317,14 @@ namespace BeachTowelShop.Services
             }
             foreach (var category in categories)
             {
-                _appDbContext.Categories.Update(category);
-                _appDbContext.SaveChanges();
+                var doesCategoryExists = _appDbContext.Categories.Where(a => a.Name == category.Name).FirstOrDefault();
+                if (doesCategoryExists == null)
+                {
+                    _appDbContext.Categories.Update(category);
+                    _appDbContext.SaveChanges();
+                }
+                
+               
             }
             foreach (var price in prices)
             {

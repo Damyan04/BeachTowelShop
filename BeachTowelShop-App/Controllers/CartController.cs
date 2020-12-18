@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using BeachTowelShop.Models.Cart;
@@ -177,8 +179,9 @@ namespace BeachTowelShop.Controllers
 
                 try
                 {
-
-                    string rootFolderPath = $"C:/Users/damot/source/repos/BeachTowelShop/BeachTowelShop-App/wwwroot/{cartItem.ImgName}/";
+                    string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                   
+                    string rootFolderPath = $"{applicationPath}/wwwroot/{cartItem.ImgName}/";
                     string filesToDelete = $"{productId}";
                     string[] fileList = System.IO.Directory.GetFiles(rootFolderPath, filesToDelete);
                     foreach (string file in fileList)
