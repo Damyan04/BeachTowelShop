@@ -5,7 +5,7 @@
     let fd = new FormData();
     fd.append('image', files[0]);
     $.ajax({
-        url: 'https://localhost:44381/Order/CheckImg',
+        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Order/CheckImg',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -16,36 +16,17 @@
         processData: false,
         success: function (response) {
             if (response != 0) {
-                //TODO: use the old code somehow-this res is working
-                //var img = new Image();
-                //img.src = 'data:image/jpeg;base64,' + response;
-                //var offset = 50;
-                //var left = fabric.util.getRandomInt(0 + offset, 200 - offset);
-                //var top = fabric.util.getRandomInt(0 + offset, 400 - offset);
+              
                 var opacity = 0.8;
            
-                //fabric.Image.fromURL(img.src, function (image) {
-                //    image.set({
-                //        angle: 0,
-                //        opacity: opacity,
-                //        padding: 0,
-                //        cornersize: 10,
-                //        hasRotatingPoint: true,
-                //        rotatingPointOffset: 40,
-                //        cornerStyle: 'circle',
-                //        originX: "center",
-                //        originY: "center",
-
-                //    });
+                
                 var img = document.createElement('img');
                 img.onload = function () {
                
                     var oImg = new fabric.Image(img);
                     var oImg = oImg.set({
 
-                        //left: 50,
-                        //top: 100,
-                        //angle: 00
+                      
                          angle: 0,
                        opacity: opacity,
                        padding: 0,
@@ -104,7 +85,7 @@ function addToCart() {
     });
    
     $.ajax({
-        url: 'https://localhost:44381/Products/AddToCart',
+        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Products/AddToCart',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -151,7 +132,7 @@ function createDesign() {
     })
   
     $.ajax({
-        url: 'https://localhost:44381/Order/CreateImg',
+        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Order/CreateImg',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -179,7 +160,7 @@ function createDesign() {
 }
 function checkCart(){
     $.ajax({
-        url: 'https://localhost:44381/Order/CheckCart',
+        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Order/CheckCart',
         type: 'GET',
          
         beforeSend: function (xhr) {
@@ -200,7 +181,7 @@ function removeFromCart() {
     let data = JSON.stringify({'productId':productId,"size":size});
    
     $.ajax({
-        url: 'https://localhost:44381/Cart/DeleteFromCart',
+        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Cart/DeleteFromCart',
         type: 'delete',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -240,7 +221,7 @@ function changeCart() {
     let data = JSON.stringify({ 'productid': productId,'count':count,'size':size });
     console.log(data);
     $.ajax({
-        url: 'https://localhost:44381/Cart/ChangeInCart',
+        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Cart/ChangeInCart',
         type: 'put',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -266,18 +247,4 @@ function changeCart() {
             }
         },
     });
-}
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
