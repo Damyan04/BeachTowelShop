@@ -118,7 +118,7 @@ function createDesign() {
     let size = $('#size').children("option").filter(":selected")[0].attributes.sizeName.value;
    
     let objects = canvas.getObjects();
-    let img = canvas.toDataURL({ multiplier: 10 });
+    let img = canvas.toDataURL({ multiplier: 1 });
    
    
   
