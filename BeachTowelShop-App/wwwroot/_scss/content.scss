@@ -1,0 +1,556 @@
+//code for every section begins
+$aColor: #242f3f;
+$h1FontSize: 2.5em;
+$h2FontSize: 1.7em;
+$h3FontSize: 1.4em;
+$grey1: rgb(234, 234, 234);
+$grey2: rgb(248, 248, 248);
+$black: rgb(50, 50, 50);
+$pFontSize: 1.6em;
+$pLineHeight: 1.4;
+$orange: rgb(236, 100, 55);
+$blackFooter: rgb(38, 38, 38);
+$blue: rgb(45, 86, 127);
+
+
+//code for every section ends
+
+#top-page{
+    background-image:url("");
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+    
+}
+
+// first text code  starts
+#top {
+    padding-top: 5em;
+    text-align: center;
+    font-style: italic;
+    color: $black;
+
+    h1 {
+        font-weight: 700;
+        margin-top: 1em;
+        padding: 1em;
+        //maybe not needed font-size: 2.5em;
+    }
+
+    .line {
+        p {
+            padding: 0;
+            line-height: 1.7;
+        }
+    }
+
+    p {
+        font-weight: 400;
+        line-height: $pLineHeight;
+        letter-spacing: normal;
+        font-size: $pFontSize;
+        padding: 1em;
+    }
+}
+
+.button {
+    margin-top: 2em;
+    //button in the after the first text
+    a {
+        padding: 0.8em 2em 0.8em 2em;
+        border-radius: 5em;
+        line-height: $pLineHeight;
+        font-size: 1em;
+        font-weight: 700;
+        color: white;
+        background-color: $orange;
+        text-decoration: none;
+    }
+}
+// first text code ends
+// gallery code begins
+#gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-gap: 1.5rem;
+    align-items: center;
+    padding: 10em 3em 10em 3em;
+
+    .picture {
+        width: 100%;
+        height: auto;
+    }
+
+    .gallery__img {
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .item {
+        float: left;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+
+        & img {
+            -webkit-transition: all .3s linear;
+            transition: all .3s linear;
+        }
+
+        &:hover img {
+            -ms-transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+
+        &:hover .middle {
+            opacity: 1;
+        }
+
+        &:hover h2, a.info {
+            opacity: 1;
+            -ms-transform: translatey(0);
+            -webkit-transform: translatey(0);
+            transform: translatey(0);
+        }
+
+        &:hover a.info {
+            -webkit-transition-delay: .1s;
+            transition-delay: .1s;
+        }
+    }
+
+    .middle {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        background-color: rgba(0,0,0,0.5);
+        -webkit-transition: all .4s ease-in-out;
+        transition: all .3s ease-in-out;
+    }
+
+    h2 {
+        color: #fff;
+        position: relative;
+        background: rgba(0,0,0,0.6);
+        -webkit-transform: translatey(-100px);
+        -ms-transform: translatey(-100px);
+        transform: translatey(-100px);
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .1s ease-in-out;
+        padding: 0.5em;
+        margin-top: 1em;
+    }
+
+    .info {
+        text-decoration: none;
+        display: inline-block;
+        text-transform: uppercase;
+        color: #fff;
+        border: 1px solid #fff;
+        background-color: transparent;
+        opacity: 1;
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .1s ease-in-out;
+        margin: 10.5vh 0 0;
+        padding: 0.7em 1.2em;
+
+        &:hover {
+            box-shadow: 0 0 5px #fff;
+        }
+    }
+}
+
+// gallery code ends
+
+// section after gallery code begins
+#section {
+    display: flex;
+    padding: 7em 5em 5em 5em;
+
+    .img {
+        padding-top: 2em;
+    }
+
+    .text {
+        text-align: left;
+
+        p {
+            line-height: 2;
+            margin-left: 2.5em;
+        }
+    }
+}
+// section after gallery code ends
+
+// how-is-done code begins
+#how-is-done {
+    display: flex;
+    flex-direction: column;
+    padding: 4em 7em 0 5em;
+    overflow: hidden;
+    //making text on the left how is done div
+    .row-left {
+        margin-bottom: 4em;
+        margin-top: 3em;
+        display: flex;
+
+        h2 {
+            text-align: left;
+            font-size: $h2FontSize;
+            font-weight: bold;
+            padding-bottom: 1em;
+        }
+
+        p {
+            text-align: left;
+            line-height: 1.7;
+            margin-right: 15em;
+        }
+
+        .img-div {
+            margin-top: 2.5em;
+            margin-right: 5em;
+            margin-bottom: 1em;
+            max-width: 100%;
+
+            .img {
+                height: auto;
+                width: auto;
+            }
+        }
+    }
+    //making text on the right how is done div
+    .row-right {
+        margin-bottom: 4em;
+        margin-top: 3em;
+        display: flex;
+
+        h2 {
+            text-align: left;
+            font-size: $h2FontSize;
+            font-weight: bold;
+            padding-bottom: 1em;
+        }
+
+        p {
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .text {
+            margin-left: 12em;
+        }
+
+        .img-div {
+            margin-top: 2.5em;
+            margin-left: 5em;
+            margin-bottom: 1em;
+            max-width: 100%;
+
+            .img {
+                width: auto;
+                height: auto;
+            }
+        }
+    }
+}
+// how-is-done code ends
+// section before prices code begins
+#section-new {
+    display: flex;
+    justify-content: center;
+    padding: 3em;
+
+    a {
+        font-weight: bold;
+        font-size: 2em;
+        color:$orange;
+    }
+}
+// section before prices code ends
+
+// prices code begins
+#prices {
+    h1 {
+        padding: 0.5em 0 0.5em 0;
+        margin-top: 1em;
+    }
+
+    .text {
+        display: flex;
+        justify-content: center;
+
+        i {
+            //icon in the prices text(truck)
+            margin-right: 1em;
+            color: $blue;
+            padding-top: 0.6em;
+        }
+    }
+
+    p {
+        text-align: center;
+        line-height: 1.7;
+    }
+
+    ul {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        margin-top: 5em;
+
+        .inner {
+            display: flex;
+            flex-flow: row nowrap;
+            border-bottom: 0.2em solid rgb(225, 218, 218);
+            //margin top bottom after the first element
+            &:nth-child(n+2) {
+                padding: 3em 0 3em 0;
+            }
+        }
+
+        li {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            margin-left: 4em;
+
+            p {
+                font-weight: 700;
+                font-size: 1.5em;
+                padding: 1em 0 1em 0;
+            }
+
+            a {
+                font-size: 1.3em;
+                color: $orange;
+            }
+        }
+    }
+}
+// prices code ends
+//buttons for the carrossel code begins
+#scroller {
+    padding: 3em 0 5em 0;
+
+    .title {
+        display: flex;
+        justify-content: center;
+
+        h4 {
+            text-transform: uppercase;
+            margin: 0 5em 2.5em 5em;
+            line-height: 2em;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        i {
+            color: $blackFooter;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+//buttons for carrossel code ends
+
+//carrossel comments code begins
+#reviews {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 3em;
+
+    .review {
+        background-color: $grey1;
+        padding: 2em 2em 3em 2em;
+        margin-right: 1.5em;
+        //element in the right corner
+    }
+}
+//carrossel comments code ends
+// about us code begins
+#about-us {
+    text-align: left;
+    padding: 5em 10em 5em 10em;
+
+    p {
+        line-height: $pLineHeight;
+        text-align: left;
+        font-size: 1em;
+
+        &:last-of-type {
+            margin-top: 2em;
+        }
+    }
+
+    .border {
+        border-bottom: 0.1em solid rgb(229, 229, 229);
+        padding: 2em 0 0 0;
+    }
+
+    h2 {
+        margin: 0.5em 0 1.5em 0;
+    }
+
+    h3 {
+        margin: 1em 0 1em 0;
+    }
+
+    h1 {
+        margin-top: 0;
+        margin-bottom: 0.1em;
+    }
+}
+// about us code ends
+
+//question section code begins
+#questions {
+    padding: 3em 5em 0 5em;
+
+    h1 {
+        text-align: left;
+        padding-left: 0.2em;
+        margin: 1em 0 1em 0;
+    }
+
+    .content {
+        display: flex;
+
+        .picture {
+            display: flex;
+            justify-content: flex-end;
+            height: 100%;
+            margin-left: 22em;
+            margin-top: 2em;
+        }
+    }
+
+    .text-content {
+        display: flex;
+        flex-flow: column nowrap;
+
+        p {
+            margin: 0.5em 0.5em 0.5em 0.5em;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+
+        i {
+            margin: 0.7em 0.5em 0.5em 0.5em;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .visible {
+            display: flex;
+
+            p {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        .more-content {
+            display: flex;
+            flex-flow: column;
+            margin: 0 2em 0 2em;
+
+            ul {
+                margin: 1em 0.5em 1em 0.5em;
+
+                li {
+                    line-height: 1.6;
+                    font-size: 0.9em;
+                }
+            }
+        }
+    }
+}
+//question section code ends
+
+//picture before footer code begins
+#viewport {
+    background-image: url("/pictures/home2.jpg");
+    height: 40em;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 12em;
+    display: flex;
+    align-items: center;
+    color: white;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+
+    h1 {
+        margin: 2.5em 0 1.5em 0;
+        font-weight: 700;
+      
+        font-size: 2.5em;
+    }
+
+    button {
+        color: white;
+        padding: 1.2em 2em 1.2em 2em;
+        font-weight: 700;
+        background-color: transparent;
+        text-transform: uppercase;
+        line-height: 1.2em;
+        letter-spacing: 0.1em;
+        font-size: 0.9em;
+        cursor: default;
+        border: 1px solid #fff;
+        background-color: transparent;
+        opacity: 1;
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .1s ease-in-out;
+
+        &:hover {
+            box-shadow: 0 0 10px #fff;
+        }
+    }
+
+    a {
+        cursor: pointer;
+        color: white;
+    }
+}
+
+.scrollup {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    bottom: 20px;
+    right: 20px;
+    color: $orange;
+
+    &:hover {
+        color: $blackFooter;
+    }
+}
+#cookieConsent {
+    position: fixed;
+    bottom: 20px;
+    left: 35em;
+    color: #ec6437;
+}
+
+
+//picture before footer code begins

@@ -1,0 +1,156 @@
+$orange: rgb(236, 100, 55);
+$buttonLineHeigt: 1.4;
+$white: rgb(248, 248, 248);
+$black: rgb(38, 38, 38);
+.admin {
+    padding-top: 7em !important;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    .item-page {
+        margin: 5em 0 0 0 !important;
+    }
+
+    .add-cart {
+        margin-top: 4em;
+    }
+
+    #productEdit {
+        .button {
+            margin: 0 !important;
+        }
+
+        .description {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+        }
+
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
+
+    & * {
+        margin-bottom: 1em;
+    }
+
+    i {
+        margin-left: 2em;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    h3 {
+        font-weight: 700;
+    }
+    .column-div {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        margin-bottom: 5em;
+        width: 100%;
+        padding: 6em;
+        border-color: $black;
+        border-style: solid;
+        border-width: 6em;
+        border-radius: 10em;
+
+        &:nth-child(1n) {
+            background-color: $orange;
+        }
+
+        &:nth-child(2n) {
+            background-color: $white;
+        }
+    }
+
+    .buttons{
+    display:flex;
+    justify-content:center;
+    margin-top:1.5em;
+    }
+    .row-div{
+        justify-content:center;
+    }
+    .button {
+        width: 100%;
+    }
+
+    button {
+        width: 50%;
+        padding: 2em;
+    }
+
+    label {
+        cursor: pointer;
+        font-weight: 700;
+    }
+
+    #import-file {
+        text-align: center;
+        width: 100%;
+        cursor: pointer;
+    }
+}
+
+.account {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
+    align-content: space-between;
+   
+}
+#size-price {
+    display:flex;
+    flex-flow:column nowrap;
+    align-items: center;
+    form {
+        margin: 2em;
+        justify-content: center;
+        display: flex;
+        align-items:baseline;
+        width:50%;
+        input[type="text"]{
+            width:10em;
+        }
+        input {
+            margin: 0 0.5em 0 0.5em;
+        }
+
+        label {
+            margin: 0.5em 1em 0.5em 0;
+            width:3em !important;
+        }
+    }
+}
+#account {
+    .form-group {
+        margin: 1em;
+    }
+}
+#productEdit{
+    display:flex;
+}
+.checkbox {
+    display: flex;
+    align-items: center;
+
+    #Input_RememberMachine {
+        width: 2em;
+    }
+}
+#recovery-code-login {
+    color: $orange !important;
+}
+.info-page {
+    display: flex;
+    justify-content: space-between;
+    margin-top:10em;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+}

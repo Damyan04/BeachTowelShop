@@ -1,0 +1,199 @@
+$aLineHeight: 1.7;
+$navHoverOrange: rgb(255, 102, 0);
+$orange: rgb(236, 100, 55);
+$black: rgb(50, 50, 50);
+$footerColorP: rgb(128, 145, 145);
+$inputLineHeight:1.2em;
+$inputFontSize:1.1em;
+$iconColor: rgb(68, 68, 68);
+$footerEndColor: rgb(63, 63, 63);
+$pLineHeight:1.7;
+// navbar code begins
+header {
+    background-color: white;
+    //navbar always on top
+    position: fixed;
+    z-index: 3000;
+    top: 0;
+    width: 100%;
+    //navbar always on top ends
+    nav {
+        display: flex;
+        padding: 1.5em;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+
+        button {
+            margin-right: 2em;
+        }
+
+        #title {
+            margin-left: 5em;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content:space-between;
+            //making nav list be centered
+            li {
+                font-size: 1em;
+                margin-right: 1.5em; //margin nav list elements
+                a {
+                    color: black;
+                    line-height: $aLineHeight;
+
+                    &:hover {
+                        color: $navHoverOrange;
+                    }
+                }
+                //button in the navbar code begins
+                &:last-child {
+                    a {
+                        padding: 0.9em 1.3em 0.9em 1.3em;
+                        border-radius: 5em;
+                        font-size: 0.9em;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        font-weight: 700;
+                        color: white;
+                        background-color: $orange;
+                        text-decoration: none;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+
+        i {
+            margin-right: 5em;
+            color: $black;
+
+            &:hover {
+                cursor: pointer;
+                color: $orange;
+            }
+        }
+    }
+}
+    // navbar code  ends 
+
+    //footer start
+footer{
+    color:white;
+  
+}
+#footer-lists {
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1em 10em 0 10em;
+
+    ul {
+        display: flex;
+        flex-flow: column nowrap;
+        margin: 5em 0 5em 0;
+
+        li {
+            margin: 0.5em 0 0.5em 0;
+
+            p {
+                margin: 0.5em 0 0.5em 0;
+                color: $footerColorP;
+            }
+
+            &:first-child {
+                margin-bottom: 2em;
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+        }
+    }
+
+    form {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-start;
+
+        input {
+            padding: 0.5em;
+            width: 100%;
+            letter-spacing: 2px;
+            line-height: $inputLineHeight;
+            font-size: $inputFontSize;
+            margin: 0;
+        }
+
+        button {
+            padding: 0.5em;
+            width: 100%;
+            letter-spacing: 2px;
+            line-height: $inputLineHeight;
+            font-size: $inputFontSize;
+            font-weight: 700;
+            background-color: $orange;
+            color: white;
+            border: none;
+        }
+    }
+
+    .contacts {
+        display: flex;
+
+        li:nth-child(n+2) {
+            margin: 1em 0 1em 0;
+            color: $footerColorP;
+        }
+
+        i {
+            color: $iconColor;
+            margin: 0 1em 0 0;
+        }
+    }
+
+    .about-site {
+        a {
+            color: white;
+
+            &:hover {
+                text-decoration: underline;
+                color: $footerColorP;
+                cursor: pointer;
+            }
+        }
+    }
+}
+.footer-end {
+    background-color: $footerEndColor;
+    padding: 0.5em;
+    font-size: 0.9em;
+
+    .content {
+        display: flex;
+        align-items: flex-start;
+        padding: 1em 10em 1em 10em;
+        flex-flow: column nowrap;
+
+        p {
+            line-height: $pLineHeight;
+            font-size: 1em;
+            color: $footerColorP;
+
+            a {
+                color: white;
+
+                &:hover {
+                    text-decoration: underline;
+                    color: $footerColorP;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+   //footer end
+
