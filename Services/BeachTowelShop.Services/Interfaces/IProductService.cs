@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeachTowelShop.Services.Interfaces
 {
@@ -21,8 +22,8 @@ namespace BeachTowelShop.Services.Interfaces
 
         double GetPriceForSize(string size, string productId);
         bool VerifyId(string productId);
-        ICollection<SizeDto>GetSizes();
-        ICollection<CommentDto>GetGeneralComments();
+        Task<ICollection<SizeDto>>GetSizes();
+        Task<ICollection<CommentDto>>GetGeneralComments();
         double GetPriceForSizeGeneric(string size);
         List<string> GetAllPicturePaths();
     }

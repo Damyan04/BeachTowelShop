@@ -33,12 +33,12 @@ namespace BeachTowelShop.Controllers
 
         [Route("/")]
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string sessionCookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(sessionCookie))
             {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
             }
 
 
@@ -50,11 +50,13 @@ namespace BeachTowelShop.Controllers
 
                 homePageViewModel = new HomePageViewModel();
 
-                  var towelsDtoList = __productService.GetSizes();
-            var towelViewModelList = _mapper.Map < List < HomePageTowelsViewModel >> (towelsDtoList);
+            var towelsDtoList = await __productService.GetSizes().ConfigureAwait(false);
+                var generalCommentsDtoList = await __productService.GetGeneralComments().ConfigureAwait(false);
+              
+                var towelViewModelList = _mapper.Map < List < HomePageTowelsViewModel >> (towelsDtoList);
 
-            homePageViewModel.Towels.AddRange(towelViewModelList.OrderBy(a => a.Price));
-                var generalCommentsDtoList=__productService.GetGeneralComments();
+                homePageViewModel.Towels.AddRange(towelViewModelList.OrderBy(a => a.Price));
+              
                 var generalCommetsViewModelList=_mapper.Map<List<CommentViewModel>>(generalCommentsDtoList);
                 homePageViewModel.Comments.AddRange(generalCommetsViewModelList);
                 _cache.Set("HomePageViewModel", homePageViewModel);
@@ -70,17 +72,17 @@ namespace BeachTowelShop.Controllers
             return View(homePageViewModel);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        private void Set(string key, string value, int? expireTime)
+        private async Task Set(string key, string value, int? expireTime)
         {
             CookieOptions option = new CookieOptions();
 

@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+
 namespace BeachTowelShop.Services
 {
     public class ProductService : IProductService
@@ -124,9 +126,9 @@ namespace BeachTowelShop.Services
             return sizeDtoList;
         }
 
-        public ICollection<CommentDto> GetGeneralComments()
+        public async Task<ICollection<CommentDto>> GetGeneralComments()
         {
-            var generalCommentsList = _appDbContext.Comments.Where(a => a.ProductId == null);
+            var generalCommentsList =  _appDbContext.Comments.Where(a => a.ProductId == null);
             var generalCommentsDtoList = _mapper.Map<List<CommentDto>>(generalCommentsList);
             return generalCommentsDtoList;
         }
@@ -172,9 +174,9 @@ namespace BeachTowelShop.Services
             return similarProductsDto;
         }
 
-        public ICollection<SizeDto> GetSizes()
+        public async Task<ICollection<SizeDto>> GetSizes()
         {
-            var towelSizes = _appDbContext.Sizes.ToList();
+            var towelSizes = await _appDbContext.Sizes.ToListAsync();
             if (!towelSizes.Any())
             {
                 return new List<SizeDto>();
