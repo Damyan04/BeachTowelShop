@@ -40,7 +40,7 @@ namespace BeachTowelShop.Controllers
         // GET: Order
 
 
-        public IActionResult Page(int id, UserDetailsViewModel detailsViewModel)
+        public async Task<IActionResult> Page(int id, UserDetailsViewModel detailsViewModel)
         {
             if (id < 1 || id > 3)
             {
@@ -88,7 +88,7 @@ namespace BeachTowelShop.Controllers
 
                     var userId = Request.Cookies[cookie];
                     var cartHasItems = false;
-                    cartHasItems = __orderService.HasItems(userId);
+                    cartHasItems = await __orderService.HasItems(userId).ConfigureAwait(false);
                     
                     if (Request.Cookies.ContainsKey("BeachTowelShop-Session") && cartHasItems)
                     {
@@ -125,7 +125,7 @@ namespace BeachTowelShop.Controllers
                     }
 
                      userId = Request.Cookies[cookie];
-                    var hasItems = __orderService.HasItems(userId);
+                    var hasItems = await __orderService.HasItems(userId).ConfigureAwait(false);
                     if (!hasItems)
                     {
                         break;

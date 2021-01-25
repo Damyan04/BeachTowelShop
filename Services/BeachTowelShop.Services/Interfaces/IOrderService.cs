@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeachTowelShop.Services.Interfaces
 {
@@ -9,11 +10,11 @@ namespace BeachTowelShop.Services.Interfaces
     {
         UserSessionCartDto SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto);
 
-        List<UserSessionCartDto> GetItemsInCart(string sessionId);
+        Task<List<UserSessionCartDto>> GetItemsInCart(string sessionId);
 
-        bool HasItems(string sessionId);
+        Task<bool> HasItems(string sessionId);
 
-        void DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionCartDto);
+        Task DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionCartDto);
 
         UserSessionCartDto UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto);
 
@@ -22,7 +23,7 @@ namespace BeachTowelShop.Services.Interfaces
 
         double GetSumForSession(string sessionId);
 
-       string GetItemFolderPath(string productId);
+       Task<string> GetItemFolderPath(string productId);
 
     }
 }

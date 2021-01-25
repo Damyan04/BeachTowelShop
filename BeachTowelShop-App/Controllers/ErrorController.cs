@@ -12,14 +12,14 @@ namespace BeachTowelShop.Controllers
     public class ErrorController : Controller
     {
         [Route("error/404")]
-        public IActionResult Error404()
+        public async Task<IActionResult> Error404()
         {
 
           
             return View();
         }
         [Route("error/400")]
-        public IActionResult Error400()
+        public async Task<IActionResult> Error400()
         {
 
 
@@ -27,7 +27,7 @@ namespace BeachTowelShop.Controllers
         }
 
         [Route("error/{code:int}")]
-        public IActionResult Error(int code)
+        public async Task<IActionResult> Error(int code)
         {
             // handle different codes or just return the default error view
             var error = new ErrorViewModel();

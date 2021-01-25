@@ -3,10 +3,12 @@ using BeachTowelShop.Data;
 using BeachTowelShop.Data.Models;
 using BeachTowelShop.Services.Data;
 using BeachTowelShop.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeachTowelShop.Services
 {
@@ -51,27 +53,27 @@ namespace BeachTowelShop.Services
         }
         }
 
-        public void DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionDto)
+        public async Task DeleteItemFromCart(string sessionId, UserSessionCartDto userSessionDto)
         {
            var item= _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionDto.ProductId&&a.Size.Contains(userSessionDto.Size)&&a.OrderId==null).FirstOrDefault();
             if (item != null)
             {
-                var textPropertiesList = _appDbContext.TextProperties.Where(a => a.UserSessionId == sessionId && a.CartItemId == item.Id&&a.OrderId==null).ToList();
+                var textPropertiesList = await _appDbContext.TextProperties.Where(a => a.UserSessionId == sessionId && a.CartItemId == item.Id&&a.OrderId==null).ToListAsync();
 
                 _appDbContext.CartItems.Remove(item);
                 _appDbContext.TextProperties.RemoveRange(textPropertiesList);
-                _appDbContext.SaveChanges();
+               await _appDbContext.SaveChangesAsync();
             }
         }
 
-        public string GetItemFolderPath(string productId)
+        public async Task<string> GetItemFolderPath(string productId)
         {
             return _appDbContext.CartItems.Where(a => a.ProductId == productId&&a.OrderId==null).Select(a => a.DesignFolderPath).FirstOrDefault();
         }
 
-        public List<UserSessionCartDto> GetItemsInCart(string sessionId)
+        public async Task<List<UserSessionCartDto>> GetItemsInCart(string sessionId)
         {
-          var items= _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.OrderId == null).ToList();
+          var items= await _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.OrderId == null).ToListAsync();
          
             var itemsDto = _mapper.Map<List<UserSessionCartDto>>(items);
             return itemsDto;
@@ -82,7 +84,7 @@ namespace BeachTowelShop.Services
           return  _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId&&a.OrderId==null).Select(a => a.Sum).Sum();
         }
 
-        public bool HasItems(string sessionId)
+        public async Task<bool> HasItems(string sessionId)
         {
            return _appDbContext.CartItems.Any(a => a.UserSessionId == sessionId && a.OrderId == null);
         }

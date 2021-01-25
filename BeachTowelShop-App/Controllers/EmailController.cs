@@ -17,11 +17,11 @@ namespace BeachTowelShop_App.Controllers
         }
       
         [HttpPost]
-        public IActionResult SendDiscounts(string email)
+        public async Task<IActionResult> SendDiscounts(string email)
         {
             if (email != null)
             {
-                _emailService.SendEmail(email, "Discount", "Hey,here is your discount");
+               await _emailService.SendEmail(email, "Discount", "Hey,here is your discount").ConfigureAwait(false);
             }
              
             return RedirectToAction("Index","Home");

@@ -128,7 +128,7 @@ namespace BeachTowelShop.Services
 
         public async Task<ICollection<CommentDto>> GetGeneralComments()
         {
-            var generalCommentsList =  _appDbContext.Comments.Where(a => a.ProductId == null);
+            var generalCommentsList = await _appDbContext.Comments.Where(a => a.ProductId == null).ToListAsync();
             var generalCommentsDtoList = _mapper.Map<List<CommentDto>>(generalCommentsList);
             return generalCommentsDtoList;
         }

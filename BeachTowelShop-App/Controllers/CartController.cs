@@ -37,12 +37,12 @@ namespace BeachTowelShop.Controllers
 
         // GET: Cart
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string cookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(cookie))
             {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false) ;
             }
             
             var userId = Request.Cookies[cookie];
@@ -51,7 +51,7 @@ namespace BeachTowelShop.Controllers
           
 
 
-            hasItems = __orderService.HasItems(userId);
+            hasItems = await __orderService.HasItems(userId).ConfigureAwait(false);
                 
             
           
@@ -64,7 +64,7 @@ namespace BeachTowelShop.Controllers
             List<CartViewModel> viewListViewModel;
             if(!_cache.TryGetValue($"CartViewModel{userId}", out viewListViewModel))
             {
-            var viewListDto = __orderService.GetItemsInCart(userId);
+            var viewListDto = await __orderService.GetItemsInCart(userId).ConfigureAwait(false);
              viewListViewModel = _mapper.Map<List<CartViewModel>>(viewListDto);
                 _cache.Set($"CartViewModel{userId}", viewListViewModel);
             }
@@ -76,7 +76,7 @@ namespace BeachTowelShop.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DeleteFromCart([FromBody]CartItemViewModel cartItem)
+        public async Task<IActionResult> DeleteFromCart([FromBody]CartItemViewModel cartItem)
         {
             if (!ModelState.IsValid)
             {
@@ -85,14 +85,15 @@ namespace BeachTowelShop.Controllers
             string cookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(cookie))
             {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
             }
             
 
             var userId = Request.Cookies[cookie];
+            
             var productId = cartItem.ProductId;
             var cartItemDto = _mapper.Map<UserSessionCartDto>(cartItem);
-            cartItem.ImgName = __orderService.GetItemFolderPath(productId);
+            cartItem.ImgName = await __orderService.GetItemFolderPath(productId).ConfigureAwait(false);
             __orderService.DeleteItemFromCart(userId, cartItemDto);
 
          //   var cartViewModel = _mapper.Map<CartViewModel>(cartItemDto);
@@ -123,7 +124,7 @@ namespace BeachTowelShop.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ChangeInCart([FromBody]CartItemViewModel cartItem)
+        public async Task<IActionResult> ChangeInCart([FromBody]CartItemViewModel cartItem)
         {
            
           
@@ -134,7 +135,7 @@ namespace BeachTowelShop.Controllers
             string cookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(cookie))
             {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
             }
             
             //double price = __productService.GetPriceForSizeGeneric(cartItem.Size);
@@ -199,7 +200,7 @@ namespace BeachTowelShop.Controllers
         }
 
 
-        private void Set(string key, string value, int? expireTime)
+        private async Task Set(string key, string value, int? expireTime)
         {
             CookieOptions option = new CookieOptions();
 
@@ -208,7 +209,7 @@ namespace BeachTowelShop.Controllers
             else
                 option.Expires = DateTime.Now.AddMilliseconds(10);
             option.SameSite = SameSiteMode.Strict;
-            Response.Cookies.Append(key, value, option);
+          Response.Cookies.Append(key, value, option);
             
         }
        
