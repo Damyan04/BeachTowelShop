@@ -94,9 +94,9 @@ namespace BeachTowelShop.Controllers
             var productId = cartItem.ProductId;
             var cartItemDto = _mapper.Map<UserSessionCartDto>(cartItem);
             cartItem.ImgName = await __orderService.GetItemFolderPath(productId).ConfigureAwait(false);
-            __orderService.DeleteItemFromCart(userId, cartItemDto);
+            await __orderService.DeleteItemFromCart(userId, cartItemDto).ConfigureAwait(false);
 
-         //   var cartViewModel = _mapper.Map<CartViewModel>(cartItemDto);
+        
             var itemsInCache = _cache.Get($"CartViewModel{userId}") as List<CartViewModel>;
            var item= itemsInCache.Where(a=>a.ProductId== cartItemDto.ProductId&&a.SessionId== userId&&a.Size==cartItemDto.Size).FirstOrDefault();
             itemsInCache.Remove(item);
@@ -111,7 +111,7 @@ namespace BeachTowelShop.Controllers
             }
             
             
-            DeleteFromServerAsync(productId, cartItem);
+            await DeleteFromServerAsync(productId, cartItem).ConfigureAwait(false);
             //TODO:Make it async as it is irelevent for the user
             
            
@@ -151,7 +151,7 @@ namespace BeachTowelShop.Controllers
             
             var userCartDto=_mapper.Map<UserSessionCartDto>(cartItem);
             
-           var updatedItemDto= __orderService.UpdateCart(userId, userCartDto);
+           var updatedItemDto= await __orderService.UpdateCart(userId, userCartDto).ConfigureAwait(false);
             var itemsInCache = _cache.Get($"CartViewModel{userId}") as List<CartViewModel>;
             var item = itemsInCache.Where(a => a.ProductId == userCartDto.ProductId && a.SessionId == userId&&a.Size==updatedItemDto.Size).FirstOrDefault();
             var updatedItem = _mapper.Map<CartViewModel>(updatedItemDto);

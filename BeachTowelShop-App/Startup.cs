@@ -79,6 +79,7 @@ namespace BeachTowelShop
                 options.Cookie.IsEssential = true;
                 
                 options.Cookie.SameSite = SameSiteMode.None;
+                
              
 
 

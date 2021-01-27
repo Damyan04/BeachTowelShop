@@ -8,23 +8,23 @@ namespace BeachTowelShop.Services.Interfaces
 {
    public interface IProductService
     {
-       ICollection<CategoryDto> GetAllCategories();
-        ICollection<GalleryProductDto> GetAllProducts();
+       Task<ICollection<CategoryDto>> GetAllCategories();
+       Task <ICollection<GalleryProductDto>> GetAllProducts();
 
-        ICollection<GalleryProductDto> GetAllProductsForCategory(string categoryId);
+       Task<ICollection<GalleryProductDto>> GetAllProductsForCategory(string categoryId);
 
-        ProductDto GetProductById(string itemid);
+        Task<ProductDto> GetProductById(string itemid);
 
-        ICollection<ProductDto> GetSimilarProductsById(string itemid);
-        ICollection<SizeDto> GetAllSizesForProductById(string itemid);
+        Task<ICollection<ProductDto>> GetSimilarProductsById(string itemid);
+        Task<ICollection<SizeDto>> GetAllSizesForProductById(string itemid);
 
-        ICollection<SizeDto> GetAllSizes();
+        Task<ICollection<SizeDto>> GetAllSizes();
 
-        double GetPriceForSize(string size, string productId);
-        bool VerifyId(string productId);
+        Task<double> GetPriceForSize(string size, string productId);
+        Task<bool> VerifyId(string productId);
         Task<ICollection<SizeDto>>GetSizes();
         Task<ICollection<CommentDto>>GetGeneralComments();
-        double GetPriceForSizeGeneric(string size);
-        List<string> GetAllPicturePaths();
+        Task<double> GetPriceForSizeGeneric(string size);
+        Task<List<string>> GetAllPicturePaths();
     }
 }

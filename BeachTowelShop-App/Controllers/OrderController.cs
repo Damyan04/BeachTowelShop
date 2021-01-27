@@ -61,7 +61,7 @@ namespace BeachTowelShop.Controllers
                     if (!_cache.TryGetValue("OrderProductViewModel", out orderProductViewmodel))
                     {
 
-                        var sizesDto = __productService.GetAllSizes();
+                        var sizesDto = await __productService.GetAllSizes().ConfigureAwait(false);
                         var sizesViewModelForProduct = _mapper.Map<List<SizeViewModel>>(sizesDto).OrderBy(x => x.SizeName);
                         orderProductViewmodel = new OrderProductViewModel();
                         orderProductViewmodel.SizeList.AddRange(sizesViewModelForProduct);
@@ -70,7 +70,7 @@ namespace BeachTowelShop.Controllers
                     }
                     if (!_cache.TryGetValue($"ModalPictures", out modalPictures))
                     {
-                        modalPictures = __productService.GetAllPicturePaths();
+                        modalPictures = await __productService.GetAllPicturePaths().ConfigureAwait(false);
                         orderProductViewmodel.ModalPictures.AddRange(modalPictures);
                         _cache.Set("ModalPictures",modalPictures);
                     }
@@ -83,7 +83,7 @@ namespace BeachTowelShop.Controllers
 
                     if (!Request.Cookies.ContainsKey(cookie))
                     {
-                        Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                        await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
                     }
 
                     var userId = Request.Cookies[cookie];
@@ -96,7 +96,7 @@ namespace BeachTowelShop.Controllers
                         //string cookieValueFromReq = null;
                         if (!_cache.TryGetValue($"CartViewModel{userId}", out viewListViewModel))
                         {
-                            var viewListDto = __orderService.GetItemsInCart(userId);
+                            var viewListDto = await __orderService.GetItemsInCart(userId).ConfigureAwait(false);
                             viewListViewModel = _mapper.Map<List<CartViewModel>>(viewListDto);
                             detailsViewModel.CartViewModelList.AddRange(viewListViewModel);
                             _cache.Set($"CartViewModel{userId}", viewListViewModel);
@@ -121,7 +121,7 @@ namespace BeachTowelShop.Controllers
 
                     if (!Request.Cookies.ContainsKey(cookie))
                     {
-                        Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                        await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
                     }
 
                      userId = Request.Cookies[cookie];
@@ -137,7 +137,7 @@ namespace BeachTowelShop.Controllers
                             List<CartViewModel> viewListViewModel;
                             if (!_cache.TryGetValue($"CartViewModel{userId}", out viewListViewModel))
                             {
-                                var viewListDto = __orderService.GetItemsInCart(userId);
+                                var viewListDto = await __orderService.GetItemsInCart(userId).ConfigureAwait(false);
                                 viewListViewModel = _mapper.Map<List<CartViewModel>>(viewListDto);
 
                                 ViewData["error"] = "";
@@ -159,7 +159,7 @@ namespace BeachTowelShop.Controllers
                             List<CartViewModel> viewListViewModel;
                             if (!_cache.TryGetValue($"CartViewModel{userId}", out viewListViewModel))
                             {
-                                var viewListDto = __orderService.GetItemsInCart(userId);
+                                var viewListDto = await __orderService.GetItemsInCart(userId).ConfigureAwait(false);
                                 viewListViewModel = _mapper.Map<List<CartViewModel>>(viewListDto);
 
 
@@ -175,7 +175,7 @@ namespace BeachTowelShop.Controllers
 
                         if (!Request.Cookies.ContainsKey(cookie))
                         {
-                            Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                            await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
                         }
                         ViewData["error"] = "";
                         var cookieId = Request.Cookies[cookie];
@@ -183,12 +183,12 @@ namespace BeachTowelShop.Controllers
 
                         var userDetailsDto = _mapper.Map<UserDetailsDto>(detailsViewModel);
                         userDetailsDto.UsersessionId = userId;
-                        userDetailsDto.Sum = __orderService.GetSumForSession(userId);
+                        userDetailsDto.Sum = await __orderService.GetSumForSession(userId).ConfigureAwait(false);
                       
 
                         if (userDetailsDto.Sum > 0 &&hasItems)
                         {
-                            __orderService.CreateOrder(userDetailsDto);
+                            await __orderService.CreateOrder(userDetailsDto).ConfigureAwait(false);
                             _cache.Remove($"CartViewModel{userId}");
                             _cache.Remove("AdminOrderViewModel");
 
@@ -207,7 +207,7 @@ namespace BeachTowelShop.Controllers
             if (!_cache.TryGetValue("OrderProductViewModel", out orderProductViewmodel2))
             {
 
-                var sizesDto = __productService.GetAllSizes();
+                var sizesDto = await __productService.GetAllSizes().ConfigureAwait(false);
                 var sizesViewModelForProduct = _mapper.Map<List<SizeViewModel>>(sizesDto).OrderBy(x => x.SizeName);
                 orderProductViewmodel2 = new OrderProductViewModel();
                 orderProductViewmodel2.SizeList.AddRange(sizesViewModelForProduct);
@@ -227,7 +227,7 @@ namespace BeachTowelShop.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CheckImg(IFormFile image)
+        public async Task<IActionResult> CheckImg(IFormFile image)
         {
             // var userId = HttpContext.Request.Cookies["user_id"];
             if (image==null)
@@ -264,7 +264,7 @@ namespace BeachTowelShop.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateImg([FromBody] ObjectsInCanvas objectsInCanvas)
+        public async  Task<IActionResult> CreateImg([FromBody] ObjectsInCanvas objectsInCanvas)
         {
             if (!ModelState.IsValid)
             {
@@ -281,14 +281,14 @@ namespace BeachTowelShop.Controllers
                 string cookie = "BeachTowelShop-Session";
                 if (!Request.Cookies.ContainsKey(cookie))
                 {
-                  Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                 await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
                 }
                 if (Request.Cookies[cookie] != null)
                 {
 
                     string cookieValueFromReq = Request.Cookies[cookie];
 
-                   CreateProduct(cookieValueFromReq, img, objectsInCanvas);
+                   await CreateProduct(cookieValueFromReq, img, objectsInCanvas).ConfigureAwait(false);
 
                 }
 
@@ -307,9 +307,9 @@ namespace BeachTowelShop.Controllers
             return Ok("Added to Cart");
         }
 
-        private void CreateProduct(string cookieValueFromReq, Image img, ObjectsInCanvas objectsInCanvas)
+        private async Task CreateProduct(string cookieValueFromReq, Image img, ObjectsInCanvas objectsInCanvas)
         {
-            string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string applicationPath = "C:\\Users\\damot\\source\\repos\\BeachTowelShop\\BeachTowelShop-App"; //Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string path = $"{applicationPath}/wwwroot/received/{cookieValueFromReq.Substring(Math.Max(0, cookieValueFromReq.Length - 10))}";
             OrderDataViewModel orderDataViewModel = new OrderDataViewModel();
             var fullPath = path;
@@ -339,7 +339,7 @@ namespace BeachTowelShop.Controllers
             orderDataViewModel.DesignFolderPath = splitPath[0] + "/" + splitPath[1];
             orderDataViewModel.Size = objectsInCanvas.Size;
             orderDataViewModel.Count = int.Parse(objectsInCanvas.Count);
-            orderDataViewModel.Price = __productService.GetPriceForSizeGeneric(orderDataViewModel.Size);
+            orderDataViewModel.Price = await __productService.GetPriceForSizeGeneric(orderDataViewModel.Size).ConfigureAwait(false);
             orderDataViewModel.ProductId = splitPath[2];
             orderDataViewModel.Sum = orderDataViewModel.Price * orderDataViewModel.Count;
             // orderDataViewModel.SessionId = Request.Cookies[cookie];
@@ -395,7 +395,7 @@ namespace BeachTowelShop.Controllers
                 }
                 var userSessionDto = _mapper.Map<UserSessionCartDto>(orderDataViewModel);
                 var userTextList = _mapper.Map<List<UserTextSessionDto>>(listTextOrderDataViewModel);
-                var cartItemDto = __orderService.SaveToCart(userSessionDto, userTextList);
+                var cartItemDto = await __orderService.SaveToCart(userSessionDto, userTextList).ConfigureAwait(false);
 
                 var userId = cookieValueFromReq;
 
@@ -419,7 +419,7 @@ namespace BeachTowelShop.Controllers
 
 
 
-        private void Set(string key, string value, int? expireTime)
+        private async Task Set(string key, string value, int? expireTime)
         {
             CookieOptions option = new CookieOptions();
 

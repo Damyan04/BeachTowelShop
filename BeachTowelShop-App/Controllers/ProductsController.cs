@@ -33,12 +33,12 @@ namespace BeachTowelShop.Controllers
        
         [AllowAnonymous]
         [Route("Products")]
-        public IActionResult Products(int startPage=0)
+        public async Task<IActionResult> Products(int startPage=0)
         {
             string sessionCookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(sessionCookie))
             {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+               await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100).ConfigureAwait(false);
             }
             var pageSize = 20;
 
@@ -53,7 +53,7 @@ namespace BeachTowelShop.Controllers
             List<CategoryViewModel> categoryViewModelList;
             if (!_cache.TryGetValue("CategoryViewModel", out categoryViewModelList))
             {
-                var allCategories = __productService.GetAllCategories();
+                var allCategories = await __productService.GetAllCategories().ConfigureAwait(false);
                 categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name).ToList();
                 _cache.Set("CategoryViewModel", categoryViewModelList);
                
@@ -64,7 +64,7 @@ namespace BeachTowelShop.Controllers
             if (!_cache.TryGetValue("GalleryProductViewModel", out productViewModelList))
             {
                 
-                var allProducts = __productService.GetAllProducts();
+                var allProducts = await __productService.GetAllProducts().ConfigureAwait(false);
                  productViewModelList = _mapper.Map<List<GalleryProductViewModel>>(allProducts);
                
                 _cache.Set("GalleryProductViewModel", productViewModelList);
@@ -90,7 +90,7 @@ namespace BeachTowelShop.Controllers
         // GET: Products/id?
         [Route("Products/Sort")]
       
-        public IActionResult GetItemsForCategory(string categoryid, int startPage = 0)
+        public async Task<IActionResult> GetItemsForCategory(string categoryid, int startPage = 0)
         {
             var pageSize = 20;
 
@@ -105,7 +105,7 @@ namespace BeachTowelShop.Controllers
             List<CategoryViewModel> categoryViewModelList;
             if (!_cache.TryGetValue("CategoryViewModel", out categoryViewModelList))
             {
-                var allCategories = __productService.GetAllCategories();
+                var allCategories = await __productService.GetAllCategories().ConfigureAwait(false);
                 categoryViewModelList = _mapper.Map<List<CategoryViewModel>>(allCategories).OrderBy(a => a.Name).ToList();
                 _cache.Set("CategoryViewModel", categoryViewModelList);
 
@@ -116,7 +116,7 @@ namespace BeachTowelShop.Controllers
             if (!_cache.TryGetValue($"GalleryProductViewModelFiler{categoryid}", out productViewModelList))
             {
 
-                var allProducts =__productService.GetAllProductsForCategory(categoryid);
+                var allProducts =await __productService.GetAllProductsForCategory(categoryid).ConfigureAwait(false);
                 productViewModelList = _mapper.Map<List<GalleryProductViewModel>>(allProducts);
 
                 _cache.Set($"GalleryProductViewModelFilter{categoryid}", productViewModelList);
@@ -135,23 +135,23 @@ namespace BeachTowelShop.Controllers
             return View("Products", productList);
         }
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Item(string itemid)
+        public async Task<IActionResult> Item(string itemid)
         {
             
             ProductViewModelList list;
             if (!_cache.TryGetValue($"ProductViewModelList{itemid}",out list))
             {
                 list = new ProductViewModelList();
-                var IsIdValid = __productService.VerifyId(itemid);
+                var IsIdValid = await __productService.VerifyId(itemid).ConfigureAwait(false);
                 if (!IsIdValid)
                 {
                     return NotFound();
                 }
-                var productDto = __productService.GetProductById(itemid);
+                var productDto = await __productService.GetProductById(itemid).ConfigureAwait(false);
                 var productViewModel = _mapper.Map<ProductViewModel>(productDto);
-                var similarProductsDto = __productService.GetSimilarProductsById(itemid);
+                var similarProductsDto = await __productService.GetSimilarProductsById(itemid).ConfigureAwait(false);
                 var similarProducts = _mapper.Map<List<ProductViewModel>>(similarProductsDto);
-                var sizesDtoForProduct = __productService.GetAllSizesForProductById(itemid);
+                var sizesDtoForProduct = await __productService.GetAllSizesForProductById(itemid).ConfigureAwait(false);
                 var sizesViewModelForProduct = _mapper.Map<List<SizeViewModel>>(sizesDtoForProduct).OrderBy(x => x.Price);
                 list.Product = productViewModel;
                 list.SimilarProducts.AddRange(similarProducts);
@@ -169,12 +169,12 @@ namespace BeachTowelShop.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]     
         [Route("Products/AddToCart")]
-        public IActionResult AddToCart([FromBody] CartViewModel cartViewModels)
+        public async Task<IActionResult> AddToCart([FromBody] CartViewModel cartViewModels)
         {
             string sessionCookie = "BeachTowelShop-Session";
             if (!Request.Cookies.ContainsKey(sessionCookie))
             {
-                Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
+                await Set("BeachTowelShop-Session", Guid.NewGuid().ToString(), 100);
             }
             if (Request.Cookies[sessionCookie] == null)
             {
@@ -202,7 +202,7 @@ namespace BeachTowelShop.Controllers
                 orderDataViewModel.DesignFolderPath = values[0];
                 orderDataViewModel.DesignName =values[1];
             }
-            var doesIdExist = __productService.VerifyId(cartViewModels.ProductId);
+            var doesIdExist = await __productService.VerifyId(cartViewModels.ProductId).ConfigureAwait(false);
             if (!doesIdExist)
             {
                 return NotFound();
@@ -211,14 +211,14 @@ namespace BeachTowelShop.Controllers
            
             
             
-            orderDataViewModel.Price = __productService.GetPriceForSize(orderDataViewModel.Size, cartViewModels.ProductId);
+            orderDataViewModel.Price =await __productService.GetPriceForSize(orderDataViewModel.Size, cartViewModels.ProductId).ConfigureAwait(false);
             orderDataViewModel.ProductId = cartViewModels.ProductId;
             orderDataViewModel.SessionId = Request.Cookies[sessionCookie];
             orderDataViewModel.Sum = orderDataViewModel.Price * orderDataViewModel.Count;
                                                                    
             var userSessionDto = _mapper.Map<UserSessionCartDto>(orderDataViewModel);
            
-          var updateItem=  __orderService.SaveItemToCart(userSessionDto);
+          var updateItem=  await __orderService.SaveItemToCart(userSessionDto).ConfigureAwait(false);
 
             List<CartViewModel> itemsInCache;
             if (!_cache.TryGetValue($"CartViewModel{userId}", out itemsInCache))
@@ -241,7 +241,7 @@ namespace BeachTowelShop.Controllers
                  
              
             }
-        private void Set(string key, string value, int? expireTime)
+        private async Task Set(string key, string value, int? expireTime)
         {
             CookieOptions option = new CookieOptions();
 

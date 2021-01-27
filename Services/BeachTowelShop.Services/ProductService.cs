@@ -23,39 +23,39 @@ namespace BeachTowelShop.Services
             _mapper = mapper;
         }
 
-        public ICollection<CategoryDto> GetAllCategories()
+        public async Task<ICollection<CategoryDto>> GetAllCategories()
         {
-            var data = _appDbContext.Categories.ToList();
+            var data = await _appDbContext.Categories.ToListAsync();
 
             var dataDto = _mapper.Map<List<CategoryDto>>(data);
             return dataDto;
 
         }
 
-        public List<string> GetAllPicturePaths()
+        public async Task<List<string>> GetAllPicturePaths()
         {
-            var products = _appDbContext.ProductPictures.Select(a => a.Picture.Path).Distinct().ToList();
+            var products = await _appDbContext.ProductPictures.Select(a => a.Picture.Path).Distinct().ToListAsync();
             return products;
         }
 
-        public ICollection<GalleryProductDto> GetAllProducts()
+        public async Task<ICollection<GalleryProductDto>> GetAllProducts()
         {
             //need picture URL,Name
-            var products = _appDbContext.Products.ToList();
+            var products = await _appDbContext.Products.ToListAsync();
             
             
             
         var dataDto = _mapper.Map<List<GalleryProductDto>>(products);
             foreach (var item in dataDto)
             {
-                var lowPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id&&a.Price>0).Select(a => a.Price).ToList();
+                var lowPriceList = await _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id&&a.Price>0).Select(a => a.Price).ToListAsync();
                 double lowPrice = 0;
                 double highPrice = 0;
                 if (lowPriceList.Count > 0)
                 {
                     lowPrice = lowPriceList.Min(p => p);
                 }
-                var highPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id&&a.Price>0).Select(a => a.Price).ToList();
+                var highPriceList = await _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id&&a.Price>0).Select(a => a.Price).ToListAsync();
                 if (highPriceList.Count > 0)
                 {
                     highPrice = lowPriceList.Max(p => p);
@@ -63,11 +63,11 @@ namespace BeachTowelShop.Services
                 item.LowestPrice = lowPrice;
                 item.HighPrice = highPrice;
             }
-            var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
+            var pictures = await _appDbContext.ProductPictures.Include(a => a.Picture).ToListAsync();
             //TODO:refaktor with linq
             foreach (var item in products)
             {
-                var picturesPath =pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
+                var picturesPath = pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
                 
                 dataDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(picturesPath);
             }
@@ -75,23 +75,23 @@ namespace BeachTowelShop.Services
             return dataDto;
         }
 
-        public ICollection<GalleryProductDto> GetAllProductsForCategory(string categoryId)
+        public async Task<ICollection<GalleryProductDto>> GetAllProductsForCategory(string categoryId)
         {
-            var productIds = _appDbContext.ProductCategories.Where(c => c.CategoryId == categoryId).Select(p => p.Product).ToList();
+            var productIds = await _appDbContext.ProductCategories.Where(c => c.CategoryId == categoryId).Select(p => p.Product).ToListAsync();
            
             //var products = _appDbContext.Products.Where(p => productIds.Any());
             var dataDto = _mapper.Map<List<GalleryProductDto>>(productIds);
             //TODO:refaktor with linq
             foreach (var item in dataDto)
             {
-                var lowPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id && a.Price > 0).Select(a => a.Price).ToList();
+                var lowPriceList = await _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id && a.Price > 0).Select(a => a.Price).ToListAsync();
                 double lowPrice = 0;
                 double highPrice = 0;
                 if (lowPriceList.Count > 0)
                 {
                     lowPrice = lowPriceList.Min(p => p);
                 }
-                var highPriceList = _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id && a.Price > 0).Select(a => a.Price).ToList();
+                var highPriceList = await _appDbContext.ProductSizes.Where(a => a.ProductId == item.Id && a.Price > 0).Select(a => a.Price).ToListAsync();
                 if (highPriceList.Count > 0)
                 {
                     highPrice = lowPriceList.Max(p => p);
@@ -99,10 +99,10 @@ namespace BeachTowelShop.Services
                 item.LowestPrice = lowPrice;
                 item.HighPrice = highPrice;
             }
-            var pictures = _appDbContext.ProductPictures.Include(a => a.Picture).ToList();
+            var pictures = await _appDbContext.ProductPictures.Include(a => a.Picture).ToListAsync();
             foreach (var item in productIds)
             {
-                var picturesPath =pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
+                var picturesPath = pictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
 
                 dataDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(picturesPath);
             }
@@ -110,16 +110,16 @@ namespace BeachTowelShop.Services
             return dataDto;
         }
 
-        public ICollection<SizeDto> GetAllSizes()
+        public async Task<ICollection<SizeDto>> GetAllSizes()
         {
-            var sizes = _appDbContext.Sizes.ToList();
+            var sizes = await _appDbContext.Sizes.ToListAsync();
             var sizesDto = _mapper.Map<List<SizeDto>>(sizes);
             return sizesDto;
         }
 
-        public ICollection<SizeDto> GetAllSizesForProductById(string itemid)
+        public async Task<ICollection<SizeDto>> GetAllSizesForProductById(string itemid)
         {
-            var sizesForProduct = _appDbContext.ProductSizes.Include(m => m.Size).Where(i => i.ProductId == itemid).ToList();
+            var sizesForProduct = await _appDbContext.ProductSizes.Include(m => m.Size).Where(i => i.ProductId == itemid).ToListAsync();
 
             var sizeDtoList = _mapper.Map<List<SizeDto>>(sizesForProduct);
 
@@ -133,7 +133,7 @@ namespace BeachTowelShop.Services
             return generalCommentsDtoList;
         }
 
-        public double GetPriceForSize(string sizeName,string productId)
+        public async Task<double> GetPriceForSize(string sizeName,string productId)
         {
 
             var sizeId = _appDbContext.Sizes.Where(a => a.Name == sizeName).Select(b => b.Id).FirstOrDefault();
@@ -141,33 +141,33 @@ namespace BeachTowelShop.Services
             return towelPrice;
         }
 
-        public double GetPriceForSizeGeneric(string size)
+        public async Task<double> GetPriceForSizeGeneric(string size)
         {
-            var price = _appDbContext.Sizes.Where(a => a.Name == size).Select(b => b.Price).FirstOrDefault();
-            return price;
+           return _appDbContext.Sizes.Where(a => a.Name == size).Select(b => b.Price).FirstOrDefault();
+           
         }
 
-        public ProductDto GetProductById(string itemid)
+        public async Task<ProductDto> GetProductById(string itemid)
         {
 
             var product = _appDbContext.Products.Where(item => item.Id == itemid).FirstOrDefault();
             var productDto = _mapper.Map<ProductDto>(product);
-            var pictures = _appDbContext.ProductPictures.Where(p => p.ProductId == productDto.Id).Select(p => p.Picture.Path).ToList();
+            var pictures = await _appDbContext.ProductPictures.Where(p => p.ProductId == productDto.Id).Select(p => p.Picture.Path).ToListAsync();
             productDto.PictureList.AddRange(pictures);
             return productDto;
         }
 
-        public ICollection<ProductDto> GetSimilarProductsById(string itemid)
+        public async Task<ICollection<ProductDto>> GetSimilarProductsById(string itemid)
         {
-            var categories = _appDbContext.ProductCategories.Where(c => c.ProductId == itemid).Select(p => p.CategoryId).ToList();
+            var categories = await _appDbContext.ProductCategories.Where(c => c.ProductId == itemid).Select(p => p.CategoryId).ToListAsync();
             Random rnd = new Random();
-            var similarProducts = _appDbContext.ProductCategories.Where(c => categories.Any(x => c.CategoryId == x)).Select(p => p.Product).Where(x => x.Id != itemid).Take(4).ToList();
+            var similarProducts = await _appDbContext.ProductCategories.Where(c => categories.Any(x => c.CategoryId == x)).Select(p => p.Product).Where(x => x.Id != itemid).Take(4).ToListAsync();
             var similarProductsDto = _mapper.Map<List<ProductDto>>(similarProducts);
 
             //TODO:refaktor with linq
             foreach (var item in similarProductsDto)
             {
-                var pictures = _appDbContext.ProductPictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToList();
+                var pictures = await _appDbContext.ProductPictures.Where(p => p.ProductId == item.Id).Select(p => p.Picture.Path).ToListAsync();
 
                 similarProductsDto.Where(p => p.Id == item.Id).FirstOrDefault().PictureList.AddRange(pictures);
             }
@@ -185,7 +185,7 @@ namespace BeachTowelShop.Services
             return towelSizeDto;
         }
 
-        public bool VerifyId(string productId)
+        public async Task<bool> VerifyId(string productId)
         {
             var item = _appDbContext.Products.Where(a => a.Id == productId).FirstOrDefault();
             if (item != null)

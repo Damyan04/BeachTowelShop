@@ -22,24 +22,24 @@ namespace BeachTowelShop.Services
             _mapper = mapper;
         }
 
-        public void CreateOrder(UserDetailsDto userDetailsViewDto)
+        public async Task CreateOrder(UserDetailsDto userDetailsViewDto)
         {
             var order = _mapper.Map<Order>(userDetailsViewDto);
           
        
-            var cartItems = _appDbContext.CartItems.Where(a => a.UserSessionId == userDetailsViewDto.UsersessionId && a.OrderId == null).ToList();
+            var cartItems = await _appDbContext.CartItems.Where(a => a.UserSessionId == userDetailsViewDto.UsersessionId && a.OrderId == null).ToListAsync();
             if (cartItems.Count>0)
             {
 
            
-            var textItems = _appDbContext.TextProperties.Where(a => a.UserSessionId==userDetailsViewDto.UsersessionId && a.OrderId == null).ToList();
+            var textItems = await _appDbContext.TextProperties.Where(a => a.UserSessionId==userDetailsViewDto.UsersessionId && a.OrderId == null).ToListAsync();
             _appDbContext.Orders.Add(order);
             order.CartItems.AddRange(cartItems);
            order.TextProperties.AddRange(textItems);
             order.Status = "Unconfirmed";
            
             _appDbContext.Orders.Add(order);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
             foreach (var item in cartItems)
             {
                var productToUpdate= _appDbContext.Products.Where(a => a.Id == item.ProductId).FirstOrDefault();
@@ -47,7 +47,7 @@ namespace BeachTowelShop.Services
                 {
                     productToUpdate.OrderCount += item.Count;
                     _appDbContext.Products.Update(productToUpdate);
-                    _appDbContext.SaveChanges();
+                  await  _appDbContext.SaveChangesAsync();
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace BeachTowelShop.Services
             return itemsDto;
         }
 
-        public double GetSumForSession(string sessionId)
+        public async Task<double> GetSumForSession(string sessionId)
         {
           return  _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId&&a.OrderId==null).Select(a => a.Sum).Sum();
         }
@@ -89,14 +89,14 @@ namespace BeachTowelShop.Services
            return _appDbContext.CartItems.Any(a => a.UserSessionId == sessionId && a.OrderId == null);
         }
 
-        public UserSessionCartDto SaveItemToCart(UserSessionCartDto userSessionDto)
+        public async Task<UserSessionCartDto> SaveItemToCart(UserSessionCartDto userSessionDto)
         {
             var session = _appDbContext.UserSessions.FirstOrDefault(a => a.Id == userSessionDto.UserSessionId);
             if (session==null)
             {
                 var userSession = new UserSession() { Id=userSessionDto.UserSessionId };
                 _appDbContext.UserSessions.Add(userSession);
-                _appDbContext.SaveChanges();
+               await _appDbContext.SaveChangesAsync();
             }
             var item = _mapper.Map<CartItem>(userSessionDto);
             var item2 = _appDbContext.CartItems.Where(a => a.UserSessionId == userSessionDto.UserSessionId && a.ProductId == userSessionDto.ProductId && a.Size.Contains(userSessionDto.Size)&&a.OrderId==null).FirstOrDefault();
@@ -105,39 +105,39 @@ namespace BeachTowelShop.Services
                 item2.Count += userSessionDto.Count;
                 item2.Sum += userSessionDto.Sum;
                 _appDbContext.CartItems.Update(item2);
-                _appDbContext.SaveChanges();
+               await _appDbContext.SaveChangesAsync();
                 userSessionDto.Count = item2.Count;
                 userSessionDto.Sum = item2.Sum;
             }
             else
             {
                 _appDbContext.CartItems.Add(item);
-                _appDbContext.SaveChanges();
+                await _appDbContext.SaveChangesAsync();
             }
             return userSessionDto;
             
         }
 
-        public UserSessionCartDto SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto)
+        public async Task<UserSessionCartDto> SaveToCart(UserSessionCartDto userSessionDto, List<UserTextSessionDto> userTextSessionDto)
         {
             var session = _appDbContext.UserSessions.FirstOrDefault(a => a.Id == userSessionDto.UserSessionId);
             if (session == null)
             {
                 var userSession = new UserSession() { Id = userSessionDto.UserSessionId };
                 _appDbContext.UserSessions.Add(userSession);
-                _appDbContext.SaveChanges();
+               await _appDbContext.SaveChangesAsync();
             }
             var item = _mapper.Map<CartItem>(userSessionDto);
             _appDbContext.CartItems.Add(item);
-            _appDbContext.SaveChanges();
+           await _appDbContext.SaveChangesAsync();
             var textList = _mapper.Map<List<TextProperty>>(userTextSessionDto);
             textList.ForEach(a => a.CartItemId = item.Id);
             _appDbContext.TextProperties.AddRange(textList);
-            _appDbContext.SaveChanges();
+           await _appDbContext.SaveChangesAsync();
             return userSessionDto;
         }
 
-        public UserSessionCartDto UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto)
+        public async Task<UserSessionCartDto> UpdateCart(string sessionId, UserSessionCartDto userSessionCartDto)
         {
             var item = _appDbContext.CartItems.Where(a => a.UserSessionId == sessionId && a.ProductId == userSessionCartDto.ProductId && a.Size==userSessionCartDto.Size && a.OrderId==null).FirstOrDefault();
             if (item != null)
@@ -148,7 +148,7 @@ namespace BeachTowelShop.Services
                 userSessionCartDto.Sum = item.Sum;
                 userSessionCartDto.Size = item.Size;
             }
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
 
             return userSessionCartDto;
             
