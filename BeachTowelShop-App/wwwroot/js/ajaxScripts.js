@@ -5,7 +5,7 @@
     let fd = new FormData();
     fd.append('image', files[0]);
     $.ajax({
-        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Order/CheckImg',
+        url: 'https://localhost:44381/Order/CheckImg',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -85,7 +85,7 @@ function addToCart() {
     });
    
     $.ajax({
-        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Products/AddToCart',
+        url: 'https://localhost:44381/Products/AddToCart',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -132,7 +132,7 @@ function createDesign() {
     })
   
     $.ajax({
-        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Order/CreateImg',
+        url: 'https://localhost:44381/Order/CreateImg',
         type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -160,7 +160,7 @@ function createDesign() {
 }
 function checkCart(){
     $.ajax({
-        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Order/CheckCart',
+        url: 'https://localhost:44381/Order/CheckCart',
         type: 'GET',
          
         beforeSend: function (xhr) {
@@ -181,7 +181,7 @@ function removeFromCart() {
     let data = JSON.stringify({'productId':productId,"size":size});
    
     $.ajax({
-        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Cart/DeleteFromCart',
+        url: 'https://localhost:44381/Cart/DeleteFromCart',
         type: 'delete',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
@@ -221,7 +221,7 @@ function changeCart() {
     let data = JSON.stringify({ 'productid': productId,'count':count,'size':size });
     console.log(data);
     $.ajax({
-        url: 'https://beachtowelshop-app20201218135840.azurewebsites.net/Cart/ChangeInCart',
+        url: 'https://localhost:44381/Cart/ChangeInCart',
         type: 'put',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
