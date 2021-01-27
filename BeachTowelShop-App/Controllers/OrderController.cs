@@ -309,7 +309,7 @@ namespace BeachTowelShop.Controllers
 
         private async Task CreateProduct(string cookieValueFromReq, Image img, ObjectsInCanvas objectsInCanvas)
         {
-            string applicationPath = "C:\\Users\\damot\\source\\repos\\BeachTowelShop\\BeachTowelShop-App"; //Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string path = $"{applicationPath}/wwwroot/received/{cookieValueFromReq.Substring(Math.Max(0, cookieValueFromReq.Length - 10))}";
             OrderDataViewModel orderDataViewModel = new OrderDataViewModel();
             var fullPath = path;
